@@ -1,9 +1,8 @@
 # Paths are relative to the repo root; model scorer YAMLs use lerobot/ as before.
-# Draft inference adapters: run --dry-run first. Model loading requires --allow-inference.
+# Inspect jobs with --dry-run. Model loading requires --allow-inference.
 # Native checkpoints must have completed training; pending entries are shown in dry-run.
 # Both protocols use RAW scores (window=1), without temporal smoothing.
 # Both metric and latency protocols retain every valid scored endpoint.
-# Historical reports retain their recorded replay_legacy configuration.
 # WM-PU = mean coordinate SD over FM-WM endpoint samples, conditioned on executed
 # actions and therefore timestamped at the endpoint. Ward-inspired, not their model.
 # ACE = joint XYZ histogram entropy summed across the ACT chunk, z ~ N(0,I),

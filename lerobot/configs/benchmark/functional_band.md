@@ -2,9 +2,8 @@
 
 This is a **FAIL-Detect-style adaptation with an expert-derived template**, not
 an exact reproduction. It compares `episode`, `functional_band`, and diagnostic
-`wall_time_bin` thresholds on identical verified PRL episodes. The historical
-`time_varying` name remains an alias for the binwise algorithm; existing archives
-are never rewritten.
+`wall_time_bin` thresholds on identical verified policy rollouts.
+`time_varying` is an alias for the binwise algorithm.
 
 ## Data and computation
 
@@ -73,7 +72,7 @@ we do not use absolute residuals or the lower-band sign appearing in the paper's
 Appendix B expression. Its constant modulation is `1/T`; `g=1` differs only by
 an overall positive scaling of h when T is fixed, and avoids an evaluation-length
 dependency here. Its plotting script uses `>=` for upper-band crossing, whereas
-we retain strict `>` (ties do not alarm). References inspected 2026-10-08.
+we retain strict `>` (ties do not alarm).
 
 Applicable scorers: WM-NC/PE/PU, VAE and ACT-native logpZO/RND, and ACT ACE,
 including already scored K/L variants. Checkpoints, ODE settings, state inclusion,
@@ -89,13 +88,13 @@ constant, rather than being replaced with a different score.
 Run from the repository root using the existing `lerobot` environment:
 
 ```bash
-# Read-only model/data inspection; writes only the new plan directory.
+# Inspect model and dataset prerequisites.
 python lerobot/utils/functional_benchmark.py \
   --output logs/functional_plan --plan-only
 
-# One-task/method smoke: generate only missing expert-validation scores.
+# Generate missing expert-validation scores for one task and method.
 python lerobot/utils/functional_benchmark.py \
-  --output fomofd/tasks/benchmark_results/functional/smoke \
+  --output fomofd/tasks/benchmark_results/functional/needle_rnd \
   --variants main --tasks needle_pickup --methods rnd --allow-inference
 
 # All curated scorer/checkpoint variants, one scorer at a time.
@@ -117,9 +116,8 @@ Each output has separate `<variant>/{episode,wall_time_bin,functional_band}/`
 reports, plus frozen templates/manifests, calibration residuals/h, first-alarm
 records, per-checkpoint/seed provenance, ODE settings, onset summaries, deadline
 rates, ROC/matched-FAR tables, and a combined HTML/Markdown comparison. FAR/FDR
-include episode counts and descriptive 95% Wilson intervals; the previous
-unified reports did not contain confidence intervals. `availability.json` and
-`state.json` expose failures and pending work. No model training is performed.
+include episode counts and descriptive 95% Wilson intervals.
+`availability.json` and `state.json` record input availability and job status.
 
 ```bash
 PYTHONPATH=lerobot/utils:lerobot/tests CUDA_VISIBLE_DEVICES='' \

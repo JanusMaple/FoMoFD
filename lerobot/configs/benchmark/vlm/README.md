@@ -25,7 +25,3 @@ Choose a new output directory for a changed protocol. Resume uses recorded
 outcomes; interrupted or indeterminate attempts are not silently retried.
 Per-recording outputs preserve prompts, responses, frame timestamps, decisions,
 and timing so that the public aggregate can be reproduced.
-
-Earlier prompt and protocol configurations are retained for source
-reproducibility. Their development results are excluded from public downloads
-and are not substituted for the paper's v9 baseline.

@@ -36,8 +36,8 @@ No dataset regeneration is required. PRL data remain for calibration/evaluation.
 
 Train each fraction from scratch. The full-data reference is the existing
 `fomofd/tasks/TASK/model/fm_wm/fm_wm_vfmfvae_z8_both_state_off_k4_l4_action_both_data100_seed0/checkpoints/best.pt`;
-`data100.yaml` describes its settings and is not a request to retrain it.
-The earlier 25/50/75% configs are older drafts and are outside this proposed sweep.
+`data100.yaml` describes its settings. The reported sweep uses the
+one-third, two-thirds, and full-data configurations.
 
 From `lerobot/`, for example:
 
@@ -46,7 +46,7 @@ python -m models.flow_matching_wm.train --config configs/needle_pickup/data_size
 python -m models.flow_matching_wm.train --config configs/needle_pickup/data_size_ablation_k4_l4/data66.yaml
 ```
 
-New checkpoints use the shared task-level `model/fm_wm/` folder with names such as
+Checkpoints use the shared task-level `model/fm_wm/` folder with names such as
 `fm_wm_vfmfvae_z8_both_state_off_k4_l4_action_both_data33_seed0` and its `data66`
 counterpart. Changing the data fraction does not directly reduce GPU memory or
 runtime per optimizer step; runtime depends on the cap and when early stopping

@@ -145,8 +145,7 @@ streaming:
   report_alarm_completions_after_source_end_separately: true
 
 evaluation:
-  # Proposed VLM scope; no launch is authorized by this draft configuration.
-  # A WM-based skip mask must not determine which failures these new models see.
+  # Evaluate all test failures independently of other detectors.
   selection: all_test_episodes
   skip_based_on_wm_or_other_detector_results: false
   test_success_range_inclusive: [19, 38]

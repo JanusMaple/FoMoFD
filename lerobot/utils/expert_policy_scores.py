@@ -41,7 +41,7 @@ PLOT_NOTE = (
 NOTE = (
     'Descriptive comparison of main K4/L4 WM-NC raw scores on expert validation '
     'and successful policy rollouts. All eligible endpoint windows are retained '
-    '(no smoothing, functional normalization, or historical paper tail trimming). '
+    '(without smoothing or functional normalization). '
     'Pooled windows give longer episodes more weight; episode-balanced windows '
     'give each episode equal total weight. Episode maxima give each episode equal '
     'weight but depend on window count and execution phase. Overlapping windows '

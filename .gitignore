@@ -3,22 +3,20 @@ dvrk_ws/build/
 dvrk_ws/install/
 dvrk_ws/.vscode/
 __pycache__/
+.pytest_cache/
 .vscode/
 data/
 model/
 prl_data/
 legacy/
-# Local logs, audit reports (logs/audits/), and unfinished development tools.
 logs/
-# Generated reports, immutable result archives, and the local results viewer.
 /fomofd/tasks/benchmark_results/
-# Portable, generated review site (videos and exported score curves).
-# Generated public source/site packages; build from the reviewed working tree.
-/public_release/
-# Generated local checkpoint relocation inventory; weights remain under model/.
 /fomofd/tasks/model_locations.json
-# Protect the former generated-audit location as well.
 /reproducibility/audit/
+
+# Keep the static website's exported score data in the repository.
+!fomofd/tasks/review_site/data/
+!fomofd/tasks/review_site/data/**
 
 fomofd/assets/models/OR_scene_s1371/*
 !fomofd/assets/models/OR_scene_s1371/surgical_background.usd

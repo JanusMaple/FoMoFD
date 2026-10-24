@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Export concise current result tables; preserve full provenance in local logs."""
+"""Export current result tables with exact counts and documented protocols."""
 from __future__ import annotations
 
 import argparse

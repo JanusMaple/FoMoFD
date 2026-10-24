@@ -45,30 +45,21 @@ preserves robot state, actions, episode IDs, raw-frame indices, and wall timesta
 The `1x16x768` shape in baseline configs is only an adapter for the existing
 flattening loader; query tokens do not form a spatial image grid.
 
-The local preparation orchestrator can generate all eight datasets from the repo
-root. It is currently a development tool under ignored `logs/`:
+Prepare expert ACT-token features from the repository root:
 
 ```bash
 conda activate lerobot
-python logs/development/dataset_preparation/prepare_datasets.py \
-  --task all --representations native --splits data prl_data
-# After inspecting that dry-run plan:
-python logs/development/dataset_preparation/prepare_datasets.py \
-  --task all --representations native --splits data prl_data --execute --resume
+python lerobot/utils/npz_to_le_v21.py \
+  --task needle_pickup --including_gripper \
+  --gripper_transform std_scale --gripper_std_scale 10 \
+  --shift_actions_to_next_obs --extract_camera_tokens \
+  --act_ckpt_dir fomofd/tasks/needle_pickup/model/act_dinov2/checkpoints/200000/pretrained_model
 ```
 
-`--resume` skips completed datasets only after checking metadata, checkpoint and
-extraction-code hashes, episode mappings, and expert splits. Partial conversion
-staging directories are never mistaken for completed datasets. Existing VAE
-datasets are not modified. `meta/preparation.json` records the actual checkpoint,
-representation, normalization, and extraction source hashes;
-`meta/preparation_splits.json` records the expert episode split.
-
-The reusable converter itself is tracked at `utils/npz_to_le_v21.py`. Without the
-local orchestrator, its `--extract_camera_tokens --act_ckpt_dir PATH` mode writes
-the same features; the orchestrator additionally validates and records preparation
-provenance and splits. Action alignment must follow the recording convention:
-expert and simulated PRL use `--shift_actions_to_next_obs`; real PRL does not.
+Use `--prl` to prepare policy rollouts. Expert demonstrations and simulated
+policy rollouts use `--shift_actions_to_next_obs`; real policy rollouts omit
+that flag. The converter also accepts explicit `--raw_dir` and `--output_dir`
+paths. Use the matching task's frozen ACT checkpoint for feature extraction.
 
 ## Training configuration
 
@@ -94,22 +85,13 @@ python -m models.fiper_rnd.train --config configs/needle_pickup/policy_native/rn
 ```
 
 Use the corresponding wrist configs for wrist models. Checkpoints go to the
-existing task-level model families with new names such as
+task-level model families with names such as
 `logpzo_act_tokens_q16_d768_fix_state_on_data100_seed0` and
 `rnd_act_tokens_q16_d768_fix_state_off_data100_seed0`.
 
-The scoring overrides select native PRL features and inherit camera/state/model
-settings from the matching trained checkpoint. They must not be used with VAE
-checkpoints. The unified benchmark still points to the existing VAE baselines;
-switch its paths explicitly after native models have actually been trained.
-
-A comparison of episode-maximum calibration and time-varying conformal bands is
-pending. Both should reuse the same raw score cache and reserve test data for
-evaluation; changing the threshold alone does not require retraining logpZO.
-At the current 5% target, retain all 19 successful calibration episodes for the
-conformal quantile. Splitting those 19 further leaves too few calibration episodes
-for a finite distribution-free threshold using the usual `(n+1)` rank correction.
-Fit the time-dependent center/scale on separate data (for example, expert
-validation data), or collect additional successful rollouts for fitting. The
-clock, variable-length masking, and treatment of times beyond the fitting
-support must be specified before inspecting test results.
+The scoring overrides select ACT-token policy-rollout features and inherit
+camera, state, and model settings from the trained checkpoint. The unified
+benchmark registers these baselines as `logpzo_native` and `rnd_native`.
+They use their own checkpoints, separate from supplementary VAE-feature
+variants. Calibration and functional-band definitions are documented in
+[the evaluation protocol](benchmark/PROTOCOL.md).

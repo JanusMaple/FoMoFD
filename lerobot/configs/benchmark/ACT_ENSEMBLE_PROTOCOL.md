@@ -4,8 +4,6 @@ Source: [Thompson et al., Early Failure Detection in Autonomous Surgical Soft-Ti
 
 **Report names:** **AEU** is our primary positional variant (signed change in positional ensemble variance); **AEU-Rot** is the supplementary rotational variant. AEU is our descriptive abbreviation for Action Ensemble Uncertainty, not a method name claimed by the source paper. Both variants use both cameras. Internal IDs remain `act_ensemble_pos` and `act_ensemble_rot`, preserving cache and checkpoint identities.
 
-Main-method charts and tables show AEU only. AEU-Rot remains available under **All comparisons**, the **Supplementary detectors** latency filter, and the supplementary summary table; original score records are retained.
-
 This is an ACT-based adaptation, not a DeformerNet reproduction. The paper uses five independently initialized goal-conditioned point-cloud policies and primarily assesses the initial change in position/rotation disagreement. We use three existing RGB/state ACT policies (seeds 1000, 1001, 1002), all at the final 200,000-step checkpoint, on the original recorded single-policy rollouts. We do not execute an ensemble controller or add interventions.
 
 Each member uses its own saved state/action normalization, learned visual token compressor and ACT weights. The shared DINO backbone is reused only after exact weight equality checks. Evaluation mode disables dropout/state augmentation. The VAE latent is zero, as in deterministic ACT deployment; this measures between-policy disagreement, unlike ACE's within-policy prior samples. The first predicted action of each four-action chunk is used, without temporal action aggregation.
@@ -24,7 +22,7 @@ post-onset detection relative to the three-annotation mean. Both episode
 thresholds and expert-derived functional bands are available. Online latency
 uses decision completion and reports late returns separately.
 
-Settings were selected before failure scoring. Development validation uses only the first eight observations of success-calibration episode 0 in each task. It checks finite physical outputs, rotation validity, nonzero member diversity, batch/single agreement, memory and throughput. No failure results select the checkpoint, action horizon, score sign, or batch size.
+Settings were selected before failure scoring. Numerical validation uses only the first eight observations of success-calibration episode 0 in each task. It checks finite physical outputs, rotation validity, nonzero member diversity, batch/single agreement, memory and throughput. No failure results select the checkpoint, action horizon, score sign, or batch size.
 
 ```bash
 python lerobot/utils/unified_benchmark.py \
@@ -43,8 +41,7 @@ The export step verifies the saved configuration, onset snapshot, post-onset row
 semantics and score hashes before attaching the frozen-protocol declaration
 required by the online planner. It preserves numerical results and source reports.
 Launch replay with this checkout's `lerobot`, `lerobot/utils` and
-`lerobot/policies/act_dinov2/src` directories on `PYTHONPATH`, as the experiment
-queue does; this avoids resolving an editable ACT installation from another repo.
+`lerobot/policies/act_dinov2/src` directories on `PYTHONPATH`.
 
 The corrected continuous-score replay retains the existing offline-detected-failure selection, now based on the primary annotator's post-onset detection. It replays each selected episode through source exhaustion, recording every returned decision. This measures conditional online latency/retention; it does not measure full-test online FAR/FDR. Onsets never control scheduling or stopping. Source-end late returns are reported separately.
 

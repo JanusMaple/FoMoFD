@@ -1,10 +1,8 @@
-# Edit task_description and time_limit_seconds for each task here.
-# Describe the objects, intended actions, and completion condition in your own words.
+# Task descriptions and fixed wall-time allowances for the VLM prompt.
 # Use the same description and deadline for both views and all episodes of a task.
 # Do not add episode outcomes, onset annotations, or a particular test episode's events.
-# The 30-second allowance was chosen by the user; it is not a measured episode duration.
+# The 30-second allowance is a fixed parameter, not a measured episode duration.
 # All times are recorded wall-clock seconds, including simulation.
-# Changing this file requires a new frozen plan and development check before a full run.
 schema_version: 1
 tasks:
   needle_pickup:

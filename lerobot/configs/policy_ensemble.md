@@ -23,11 +23,9 @@ FM-WM 90/10 episode split. PRL episodes are not training inputs.
 
 ## Dataset prerequisite
 
-The image-input dataset `data/processed_le_v21` is currently absent locally.
-The existing VAE and ACT-token datasets lack the required RGB columns and cannot
-be substituted: each new policy must learn its own visual token compressor.
-Only four expert episodes were converted in an ignored smoke-test directory;
-the full RGB datasets still need preparation.
+Training requires RGB expert demonstrations in `data/processed_le_v21`.
+VAE and ACT-token datasets cannot substitute for the RGB inputs: each policy
+learns its own visual token compressor.
 
 Before launching training, prepare the RGB expert dataset once per task using
 the original next-observation action alignment and gripper standard-deviation
@@ -57,7 +55,7 @@ Use the repository runner, which resolves config paths relative to `lerobot/`:
 
 ```bash
 conda activate lerobot
-cd /path/to/fomofd
+cd /path/to/FoMoFD
 bash lerobot/run_act_ensemble.sh needle_pickup 1001
 ```
 
@@ -74,7 +72,7 @@ Do not launch these configs directly with `lerobot-train` if you want best/last
 retention: that command still writes numbered checkpoints. The wrapper uses
 LeRobot's existing training loop, preprocessing, optimizer and checkpoint writer,
 and replaces only the checkpoint-retention and logging callbacks. It imports
-the ACT plugin from this checkout rather than a sibling repository installation.
+the ACT plugin from this checkout.
 
 ## Best and last checkpoints
 
@@ -93,5 +91,6 @@ the ACT plugin from this checkout rather than a sibling repository installation.
   automated resume is not implemented. A hard interruption loses updates since
   the most recent saved `last`; existing complete checkpoints remain available.
 
-The training split is unchanged: all expert episodes. No early stopping was
-added. Ensemble disagreement scoring and benchmark integration remain future work.
+All expert episodes are used for training with a fixed step budget. See the
+[AEU evaluation protocol](benchmark/ACT_ENSEMBLE_PROTOCOL.md) for ensemble
+disagreement scoring and benchmark commands.

@@ -833,7 +833,7 @@ def build_plan(report_dir, methods, tasks, calibration, selection, *, frozen_pro
         if selection != 'all-test' and row['outcome'] != 'failure':
             continue
         candidates[row['task'], row['method'], row['view']].add(int(row['episode_index']))
-    # Latency rows retain every WM endpoint, unlike historical paper trimming.
+    # Latency rows retain every valid world-model endpoint.
     # Deduplication across annotators prevents counting/replaying an episode twice.
     for row in latency_rows:
         if row['calibration'] == calibration and row['first_alarm_raw_frame']:
@@ -1119,8 +1119,8 @@ def assert_exclusive_gpu(config):
             raise RuntimeError(f'Offline queue is still running: {state_path}')
     result = subprocess.run(['nvidia-smi', '--query-compute-apps=pid,process_name', '--format=csv,noheader'],
                             check=True, text=True, capture_output=True)
-    # Desktop display/remote-desktop processes are allowed; another compute job
-    # would invalidate the intended dedicated-desktop latency measurement.
+    # Display processes are allowed; concurrent compute jobs invalidate
+    # the dedicated-GPU latency measurement.
     busy = [line for line in result.stdout.splitlines() if line.strip() and
             not any(name in line for name in ['gnome-remote-desktop', 'snapd-desktop-integration', 'Xorg'])]
     if busy:

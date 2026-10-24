@@ -5,9 +5,8 @@ python lerobot/utils/export_review_site.py
 python lerobot/utils/export_review_site.py --tasks shunt_insertion --episodes 41 46
 
 Existing videos are reused only when the raw input, validity mask and encoder
-settings match. No inference, calibration, label edits or publication occurs.
-The output uses local script assets rather than fetch, so index.html also works
-from disk. Public data is selected explicitly; full local reports are not copied.
+settings match. The output uses bundled script assets so index.html also
+works directly from disk. Result tables use the current evaluation protocol.
 """
 from __future__ import annotations
 
@@ -107,7 +106,7 @@ def read_tables():
 
 
 def recent_summary_tables(summary):
-    """Development-run summaries are local provenance, not public results."""
+    """Retain the empty training-summary field for site-schema compatibility."""
     return {}
 
 

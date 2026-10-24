@@ -42,9 +42,9 @@ The public endpoint tensor remains `[B, 2, 16, 16, 8]`, fixed then wrist, so the
 existing trainer, ODE transport, endpoint sampling and low-level scorer work
 with the new checkpoint. The scorer already saves `scores_union`, the joint
 score over all channels. Its per-view scores are contributions from the
-jointly conditioned model, not independent single-camera detectors. Future
-benchmark registration should identify this as a distinct joint-input model
-and calibrate its joint score separately from the existing AND/OR fusions.
+jointly conditioned model, not independent single-camera detectors.
+Evaluation calibrates its joint score separately from AND/OR combinations
+of independently calibrated detectors.
 
 ## Capacity and training budgets
 
@@ -105,9 +105,8 @@ python -m models.flow_matching_wm.score \
 ```
 
 CPU tests cover the joint forward/backward pass, loss scale, cross-camera
-dependence, ODE transport, score reduction, dataset normalization and checkpoint
-reload. Legacy fixed-only, wrist-only and separate dual-view models were also
-compared against the pre-change code for exact weights, losses and gradients.
+dependence, ODE transport, score reduction, dataset normalization, and
+checkpoint reload:
 
 ```bash
 # From repository root:

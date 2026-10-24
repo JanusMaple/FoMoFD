@@ -1,7 +1,6 @@
-"""CPU-only reviewer evidence derived from verified reports and recorded clocks.
+"""Evaluation summaries from verified reports and recorded clocks.
 
-This module does not score models, change thresholds, or alter archived results.
-It supplements the concise report with explicit denominators and coverage gaps.
+Tables retain explicit denominators, measurement coverage, and latency definitions.
 """
 from collections import defaultdict
 from pathlib import Path
@@ -251,11 +250,11 @@ def sections_for(data, root, config, resolve):
         post=sum(r.get('post_alarm') is True for r in a); unknown=sum(r.get('post_alarm') is None for r in a)
         return f"{sum(r.get('any_time_alarm', r['alarm']) for r in rows)}/{len(rows)}; {post}/{len(rows)}"+(f' +{unknown} unknown' if unknown else '')
     add('action_failure','Action conditioning by failure mode',
-        'Each cell = any-time detected/total; any crossing at/after onset detected/total. K=L=4, seed 0. NoAct, AdaLN and cross-attention share the main evaluation set; early and post-onset crossings can overlap. Ring was retrained from K=3; other action checkpoints were reused. See analyses/2026-10-14/action_protocol_audit/report.md for the historical-result audit.',
+        'Each cell = any-time detected/total; any crossing at/after onset detected/total. K=L=4, seed 0. NoAct, AdaLN and cross-attention share the main evaluation set; early and post-onset crossings can overlap.',
         ['Task','Failure','Origin','View','NoAct any; post','AdaLN any; post','Cross-attention any; post','Both any; post'],
         [[TASKS[t],mode,o,v,*[detection_cell(groups.get(a,[])) for a in action_variants]] for (t,mode,o,v),groups in sorted(action.items())])
     add('origins','Natural versus induced failure detection',
-        'Origin labels are the manually specified natural/induced groups. This does not equate natural with manipulation failure, or induced with environmental failure. Per-failure results preserve the distinctions; an agreed mapping to the paper’s four failure categories is still needed.',
+        'Origin labels are the manually specified natural/induced groups. This does not equate natural with manipulation failure, or induced with environmental failure. Failure categories are defined separately in failure_categories.yaml.',
         ['Detector','Origin','Any-time; post-onset detected/total'],
         [[detector(m,v),o,detection_cell(rows)] for (m,v,o),rows in sorted(origin.items())])
 
@@ -331,12 +330,11 @@ def sections_for(data, root, config, resolve):
             ['Task','Seed','Best step','Final step','Best validation flow'],
             [[TASKS[r['task']],r['seed'],r['best_step'],r['final_step'],f"{r['best_val_flow']:.6f}"] for r in rows],rows)
 
-    # Include detailed sensitivity findings, especially the historical shunt discrepancy.
     study=next((s for s in data.get('studies',[]) if s['id']=='main_calibration_sensitivity_500'),None)
     if study:
         def spread(r,m,scale=100):return f"{scale*r[m+'_mean']:.1f} ± {scale*r[m+'_sd']:.1f} [{scale*r[m+'_p05']:.1f}, {scale*r[m+'_p95']:.1f}]"
         add('calibration','500-split main-model calibration sensitivity by task',
-            'All 500 reproducible 19/20 success splits retained; original failures fixed. With n=19 and alpha=0.05, ceil((n+1)*(1-alpha))=19: the threshold is the maximum of 19 calibration episode maxima. Functional calibration instead takes the maximum trajectory residual (s(t)-mu(t))/g(t); the expert-validation template is frozen, default g(t)=1, with wall-time interpolation and boundary hold. This is an expert-template adaptation of FAIL-Detect. Nominal marginal coverage assumes exchangeable successful trajectories conditional on the frozen model/template; it does not guarantee FAR ≤5% in each finite test batch. Mean ± SD and 5th–95th percentiles are resampling sensitivity, not confidence intervals or independent experiments. Mean FAR near 5% follows rank symmetry, not validation of exchangeability. Current shunt-fixed episode FAR is 0/20, not the historical paper’s 6/20; these current scores cannot explain that historical value. See the study report for its historical-reference tail calculation.',
+            'All 500 reproducible 19/20 success splits retained; original failures fixed. With n=19 and alpha=0.05, ceil((n+1)*(1-alpha))=19: the threshold is the maximum of 19 calibration episode maxima. Functional calibration instead takes the maximum trajectory residual (s(t)-mu(t))/g(t); the expert-validation template is frozen, default g(t)=1, with wall-time interpolation and boundary hold. This is an expert-template adaptation of FAIL-Detect. Nominal marginal coverage assumes exchangeable successful trajectories conditional on the frozen model/template; it does not guarantee FAR ≤5% in each finite test batch. Mean ± SD and 5th–95th percentiles are resampling sensitivity, not confidence intervals or independent experiments. Mean FAR near 5% follows rank symmetry, not validation of exchangeability.',
             ['Task','View','Protocol','Original FAR% / FDR%','FAR% mean ± SD [5–95]','FDR% mean ± SD [5–95]','Threshold mean ± SD [5–95]'],
             [[TASKS[r['task']],r['view'],r['calibration'],f"{100*r['original_FAR']:.1f} / {100*r['original_FDR']:.1f}",spread(r,'FAR'),spread(r,'FDR'),spread(r,'threshold',1)] for r in study['summary']],study['summary'])
 
@@ -427,8 +425,8 @@ def markdown_sections(sections, heading=2):
 def write_review_evidence(data, root, config_path, resolve, suffix=''):
     root=Path(root); config=yaml.safe_load(Path(config_path).read_text())
     sections=sections_for(data,root,config,resolve)
-    coverage={'id':'coverage','title':'Reviewer-comment evidence map','note':'Available evidence is not a claim that every requested experiment has been completed. The status and limits below distinguish measured results from manuscript discussion or missing data.',
-              'columns':['Comments','Question','Evidence','Remaining limitation / action'],
+    coverage={'id':'coverage','title':'Evaluation coverage','note':'Measurement coverage and limitations for each comparison.',
+              'columns':['Reference','Comparison','Measurements','Limitations'],
               'rows':[[r['comments'],r['question'],r['evidence'],r['gap']] for r in config['coverage']],
               'records':config['coverage'],'figures':[]}
     sections.insert(0,coverage)
@@ -439,11 +437,11 @@ def write_review_evidence(data, root, config_path, resolve, suffix=''):
     stem='reviewer_evidence'+suffix
     note=data.get('offline_protocol',{}).get('note','Original model scores and thresholds are unchanged.')
     (root/(stem+'.yaml')).write_text(yaml.safe_dump(payload,sort_keys=False,allow_unicode=True,width=140))
-    (root/(stem+'.md')).write_text('\n'.join(['# Reviewer evidence supplement','',
+    (root/(stem+'.md')).write_text('\n'.join(['# Evaluation details','',
         f'Companion to [summary](summary{suffix}.md) and the [interactive results](index.html). '+note,'',*markdown_sections(sections)]))
-    output=['<!doctype html><html lang="en"><meta charset="utf-8"><title>FoMo-FD reviewer evidence</title>',
+    output=['<!doctype html><html lang="en"><meta charset="utf-8"><title>FoMo-FD evaluation details</title>',
             '<style>body{font:16px system-ui;color:#163345;max-width:1450px;margin:30px auto;padding:0 24px}a{color:#146e84}table{border-collapse:collapse;font-size:13px;width:100%}th,td{padding:8px;border-bottom:1px solid #d4e0e5;text-align:left}th{background:#eaf1f4}section{margin:32px 0}details{overflow:auto}summary{cursor:pointer;padding:12px;background:#edf3f5}img{width:100%;max-width:1100px}nav{display:flex;gap:12px;flex-wrap:wrap}p{line-height:1.5}</style>',
-            '<h1>Reviewer evidence</h1><p><a href="index.html">Interactive charts</a> · <a href="summary.md">Complete summary</a> · <a href="reviewer_evidence.md">Evidence Markdown</a> · <a href="reviewer_evidence.yaml">Evidence YAML</a></p>',
+            '<h1>Evaluation details</h1><p><a href="index.html">Interactive charts</a> · <a href="summary.md">Complete summary</a> · <a href="reviewer_evidence.md">Details Markdown</a> · <a href="reviewer_evidence.yaml">Details YAML</a></p>',
             '<p>Snapshot: '+html.escape(data['created'])+'. '+html.escape(note)+'</p>',
             '<nav>'+''.join('<a href="#'+s['id']+'">'+html.escape(s['title'])+'</a>' for s in sections)+'</nav>']
     for s in sections:

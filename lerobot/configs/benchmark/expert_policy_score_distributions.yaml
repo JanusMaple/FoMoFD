@@ -1,4 +1,4 @@
-# Separate descriptive experiment. Reuses frozen scores; no training/inference.
+# Descriptive cohort comparison using frozen scores.
 schema_version: 1
 source: fomofd/tasks/benchmark_results/functional/2026-10-08/all_available
 variant: main

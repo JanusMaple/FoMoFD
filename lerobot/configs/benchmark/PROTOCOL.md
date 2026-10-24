@@ -55,4 +55,4 @@ model uses K = L = 4 and one RK4 integration step per score.
 
 [Fusion definitions](FUSION_PROTOCOL.md) specify common endpoint support.
 [Public result tables](../../../docs/results/README.md) contain the current
-measurements. Local archives retain the full input hashes and run provenance.
+measurements.

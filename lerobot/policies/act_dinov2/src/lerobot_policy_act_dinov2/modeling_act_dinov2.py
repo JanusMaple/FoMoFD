@@ -75,8 +75,6 @@ class ACTDINOv2Policy(PreTrainedPolicy):
         self.reset()
 
     def get_optim_params(self) -> dict:
-        # TODO(aliberts, rcadene): As of now, lr_backbone == lr
-        # Should we remove this and just `return self.parameters()`?
         return [
             {
                 "params": [
@@ -473,7 +471,6 @@ class ACTDINOv2(nn.Module):
             vae_encoder_input = torch.cat(vae_encoder_input, axis=1)
 
             # Prepare fixed positional embedding.
-            # Note: detach() shouldn't be necessary but leaving it the same as the original code just in case.
             pos_embed = self.vae_encoder_pos_enc.clone().detach()  # (1, S+2, D)
 
             # Prepare key padding mask for the transformer encoder. We have 1 or 2 extra tokens at the start of the
@@ -506,7 +503,6 @@ class ACTDINOv2(nn.Module):
         else:
             # When not using the VAE encoder, we set the latent to be all zeros.
             mu = log_sigma_x2 = None
-            # TODO(rcadene, alexander-soare): remove call to `.to` to speedup forward ; precompute and use buffer
             latent_sample = torch.zeros([batch_size, self.config.latent_dim], dtype=torch.float32).to(
                 batch[OBS_STATE].device
             )
@@ -558,7 +554,6 @@ class ACTDINOv2(nn.Module):
 
         # Forward pass through the transformer modules.
         encoder_out = self.encoder(encoder_in_tokens, pos_embed=encoder_in_pos_embed)
-        # TODO(rcadene, alexander-soare): remove call to `device` ; precompute and use buffer
         decoder_in = torch.zeros(
             (self.config.chunk_size, batch_size, self.config.dim_model),
             dtype=encoder_in_pos_embed.dtype,

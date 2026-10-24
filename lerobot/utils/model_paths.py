@@ -34,7 +34,7 @@ def resolve_model_path(value, base=None, *, manifest=None):
         relative = path.relative_to(root).as_posix()
     except ValueError:
         return path
-    # Exact files override directory mappings, e.g. original PACE config.json.
+    # Exact-file mappings take precedence over directory mappings.
     for old, new in sorted(data['relocations'].items(), key=lambda p: len(p[0]), reverse=True):
         if relative == old or relative.startswith(old + '/'):
             target = (root / (new + relative[len(old):])).resolve()

@@ -51,9 +51,9 @@ From the repo root in the `lerobot` environment:
 # CPU-only plan; select a new output directory.
 python lerobot/utils/online_benchmark.py \
   --config lerobot/configs/benchmark/online_all_test.yaml \
-  --output logs/experiments/2026-10-08/all_test_streaming/new_plan
+  --output logs/plans/all_test_streaming
 
-# Explicit GPU run; no concurrent training/scoring on this desktop.
+# Timed GPU evaluation; run without concurrent GPU workloads.
 python -u lerobot/utils/online_benchmark.py \
   --config lerobot/configs/benchmark/online_all_test.yaml \
   --output fomofd/tasks/benchmark_results/streaming/new_full_test_run \
@@ -67,4 +67,3 @@ minute outside timed replay; the log and state update after each episode.
 The result directory contains `report.html`, `report.md`, `metrics.csv`,
 `onset_metrics.csv`, `deadline_rates.csv`, per-episode outcome/latency CSVs,
 per-trial score/timing traces, exact plan, model validation, and hardware metadata.
-Old conditional-latency archives are unchanged and are not merged into this run.

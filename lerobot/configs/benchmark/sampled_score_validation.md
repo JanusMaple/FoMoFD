@@ -5,30 +5,15 @@ ACE is an **ACT-based adaptation of FIPER's action branch**, not full FIPER.
 WM-PU is a **Ward-inspired uncertainty score on FoMo-FD's FM-WM**, not a
 reproduction of Ward's world model. Neither score is reversed to improve AUROC.
 
-Current experiment choice (2026-10-10): revise **ACE only**. Its fixed bins
-passed the expert fitting/checking protocol and the production CUDA check for
-all four tasks. The ACE-only settings, expert templates and new offline results
-live under
-`fomofd/tasks/benchmark_results/analyses/2026-10-10/ace_histogram_revision/`.
-The experiment compares episode and functional-band calibration. Its config
-explicitly selects only ACE, preserving the primary benchmark and old caches.
-In the results inspector, use **All comparisons → ACE · validated histogram**.
+ACE uses fixed XYZ histogram widths fitted to normal conditional sample
+spread. Expert fitting/checking and production batching checks cover all four
+tasks. This bin-resolution rule adapts the original workspace-bin construction;
+resolving numerical variation alone does not establish useful failure uncertainty.
 
-WM-PU retains the original **one RK4 step per sample**, with 16 samples and
-64 vector-field evaluations per score. Existing one-step results are reused.
-This is a compute-budget choice, **not a claim of numerical convergence**.
-The multistep production queue was cancelled; its normal-only convergence
-diagnostics remain available under
-`fomofd/tasks/benchmark_results/analyses/2026-10-10/sampled_score_revision_v2/`.
-The WM validation commands below are optional numerical diagnostics and are
-not prerequisites for the ACE-only experiment. Do not resume the cancelled
-mixed ACE/WM-PU queue to run ACE.
-
-The original ACE workspace bins suppressed its small ACT prior variation,
-producing constant scores. The revised protocol fits fixed XYZ histogram widths
-to the normal conditional sample spread. This changes the bin-resolution rule
-and must be reported as an adaptation. Resolving numerical variation does not
-establish that the prior expresses useful epistemic or failure uncertainty.
+WM-PU uses one RK4 step per sample, with 16 samples and 64 vector-field
+evaluations per score. This is a compute-budget choice, not a numerical
+convergence claim. The multistep checks below are optional diagnostics; their
+settings do not replace the reported one-step configuration.
 
 `sampled_score_validation.yaml` declares all selection rules before evaluation:
 
@@ -40,7 +25,7 @@ establish that the prior expresses useful epistemic or failure uncertainty.
    Select the coarsest fit-passing fixed width from the declared multiplier
    grid. Require the same widths to pass the disjoint checking episodes.
    Degeneracy, saturation and entropy-range criteria are numerical health
-   checks, not a failure-detection objective. A failed check stops the revision.
+   checks, not a failure-detection objective. A failed check rejects the candidate settings.
 3. WM-PU: use three randomly selected expert-validation episodes, three eligible
    windows per episode (10%, 50%, 90%), and 16 identical Gaussian initial samples
    at every RK4 refinement. Try 1, 2, 4, 8, 16, 32, 64 steps. For both cameras,
@@ -60,7 +45,7 @@ establish that the prior expresses useful epistemic or failure uncertainty.
    requires 16 solves and 64N field evaluations per window (both views together).
    New offline results do not replace online latency measured with old settings.
 
-The staged commands are:
+Run the numerical diagnostics with:
 
 ```bash
 python lerobot/utils/validate_sampled_scores.py prepare --output NEW_RESULT_FOLDER
@@ -82,14 +67,3 @@ nested-prefix maxima. Relative phase uses the final duration and is strictly a
 descriptive offline variable. Failure-group diagnostics require matching frozen
 revised scores and cannot select settings. Length/phase associations are not a
 complete explanation of below-chance AUROC.
-
-The original 2026-10-09 queue and staged core patch are under
-`logs/benchmarks/2026-10-09/sampled_score_revision/`; results and validation
-artifacts are under
-`fomofd/tasks/benchmark_results/analyses/2026-10-09/sampled_score_revision/`.
-That queue waited for the imported-ablation offline **and online** run to finish
-before applying the patch. The separate ACE-only queue is under
-`logs/benchmarks/2026-10-10/ace_histogram_revision/`; monitor `run.log` there.
-Changed input hashes or a failed normal-data gate stop the queue. Revised ACE
-online latency has not been measured by this offline experiment. No commits
-are automatic.

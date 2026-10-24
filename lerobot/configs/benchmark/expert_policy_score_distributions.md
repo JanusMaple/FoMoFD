@@ -9,9 +9,8 @@ python lerobot/utils/analyze_experiments.py score-distributions \
   --output fomofd/tasks/benchmark_results/analyses/2026-10-20/expert_policy_score_distributions
 ```
 
-Use a fresh output directory for a new run. Existing output directories are rejected. No GPU, inference, training,
-calibration, or modification of primary results is involved. Missing or changed
-caches cause an error, never automatic inference.
+This analysis requires existing score caches and a fresh output directory.
+Missing or changed caches cause an error; score generation is a separate step.
 
 The source is the frozen functional-band experiment, which already scored the
 main models' exact saved expert validation splits: 25 episodes for each simulation

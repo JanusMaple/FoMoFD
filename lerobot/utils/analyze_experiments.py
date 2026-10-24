@@ -314,7 +314,7 @@ def plot_timing(output, episodes, support, tasks):
 def markdown_report(summaries, comparisons, episodes, replicates):
     lines = ["# Successful policy rollout timing", "",
              "Recorded wall time is used for both simulation and real tasks. Duration is last timestamp minus first timestamp; no frames/FPS estimate is substituted.", "",
-             "Only labeled successes are included. Calibration and test remain separate; all_success is a descriptive pool within each task. No detector was trained, scored, or calibrated.", "",
+             "Only labeled successes are included. Calibration and test remain separate; all_success pools the two cohorts within each task.", "",
              "| Task | Cohort | n | Mean ± sample SD (s) | Median [Q1, Q3] (s) | Min–max (s) | Duration CV (%) | Frame-count CV (%) |",
              "|---|---|---:|---:|---:|---:|---:|---:|"]
     def fmt(value):
@@ -339,8 +339,8 @@ def markdown_report(summaries, comparisons, episodes, replicates):
               "- A time-varying threshold is a calibration choice, separate from the logpZO score model. FAIL-Detect fits a time-indexed band with separate subsets for band shape and calibration. Its construction does not impose identical semantic task progress at each index. [FAIL-Detect, Appendix B](" + SOURCES["FAIL-Detect"] + ")",
               "- Timing variability can reduce a time-indexed band's efficiency; it does not by itself disprove conformal validity or show that a constant threshold detects failures better. Validity still depends on exchangeability and the calibration/horizon construction.",
               "- FIPER discusses temporal shifts and sparse support late in variable-length rollouts as practical limitations of time-varying thresholds. [FIPER, Appendix D](" + SOURCES["FIPER"] + ")",
-              "- With 19 successful calibration episodes per task, fitting band shape and calibrating its width on disjoint subsets further reduces calibration support. A future implementation must state its finite-sample quantile, horizon, and padding/masking rules; naive per-time quantiles do not automatically provide episode-level FAR control.",
-              "- For a reviewer comparison, reuse the same cached logpZO scores, fit/calibrate both threshold rules without test data, and evaluate held-out FAR/FDR and onset delay. No logpZO retraining is required just to change the threshold. Success milestone annotations would directly test the proposed progress-alignment explanation.", "",
+              "- With 19 successful calibration episodes per task, fitting band shape and calibrating its width on disjoint subsets further reduces calibration support. The threshold construction must specify its finite-sample quantile, horizon, and padding/masking rules; naive per-time quantiles do not automatically provide episode-level FAR control.",
+              "- Compare threshold rules on identical score traces, fitting and calibrating without test data. Evaluate held-out FAR/FDR and onset delay; recording duration alone does not identify semantic task progress.", "",
               "## Files", "",
               "- episodes.csv: per-success-episode duration, frame counts, and cadence diagnostics.",
               "- summary.csv: per-task, per-cohort descriptive statistics and CV intervals.",
