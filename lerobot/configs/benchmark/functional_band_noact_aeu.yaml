@@ -1,0 +1,16 @@
+# All 8 expert-score/template jobs completed on 2026-10-20; reuse cached scores.
+# No inference is performed unless --allow-inference is explicitly supplied.
+# Freeze these expert-only template settings before evaluating PRL failures.
+schema_version: 1
+catalog: lerobot/configs/benchmark/results_catalog.yaml
+labels: lerobot/configs/benchmark/prl_episode_labels.yaml
+evaluation_protocol: lerobot/configs/benchmark/evaluation_protocol_v3.yaml
+alpha: 0.05
+protocols: [episode, wall_time_bin, functional_band]
+template:
+  grid_seconds: 1.0
+  modulation: constant
+  scale_floor: 1.0e-6
+wall_time_bin:
+  bin_seconds: 1.0
+deadline_seconds: [1.0, 2.0, 5.0, 10.0]

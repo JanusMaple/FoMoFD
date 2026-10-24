@@ -1,0 +1,64 @@
+# ACT adaptation; see ACT_ENSEMBLE_PROTOCOL.md. Frozen before failure scoring.
+schema_version: 1
+evaluation_protocol: lerobot/configs/benchmark/evaluation_protocol.yaml
+labels: lerobot/configs/benchmark/prl_episode_labels.yaml
+alpha: 0.05
+score_seed: 0
+paper_protocol:
+  smoothing: trailing
+  window: 1
+  wm_frame_policy: all_endpoints
+  frame_limits:
+  - task: needle_pickup
+    episode_index: 5
+    raw_frame_stop: 122
+latency_protocol:
+  smoothing: trailing
+  window: 1
+  wm_frame_policy: all_endpoints
+  frame_limits:
+  - task: needle_pickup
+    episode_index: 5
+    raw_frame_stop: 122
+methods:
+- act_ensemble_pos
+- act_ensemble_rot
+score_batch_size: 8
+calibrations:
+- episode
+fusion:
+  wm_views: false
+  conditional_marginal: false
+tasks:
+  needle_pickup:
+    title: Needle Pickup (Sim.)
+    act_ensemble:
+      dataset: fomofd/tasks/needle_pickup/prl_data/processed_le_v21_tokens
+      checkpoints:
+      - fomofd/tasks/needle_pickup/model/act_dinov2/checkpoints/200000/pretrained_model/model.safetensors
+      - fomofd/tasks/needle_pickup/model/act_dinov2_ensemble/act_dinov2_weak_state_both_chunk4_seed1001/checkpoints/last/pretrained_model/model.safetensors
+      - fomofd/tasks/needle_pickup/model/act_dinov2_ensemble/act_dinov2_weak_state_both_chunk4_seed1002/checkpoints/last/pretrained_model/model.safetensors
+  ring_over_post:
+    title: Ring Over Post (Sim.)
+    act_ensemble:
+      dataset: fomofd/tasks/ring_over_post/prl_data/processed_le_v21_tokens
+      checkpoints:
+      - fomofd/tasks/ring_over_post/model/act_dinov2/checkpoints/200000/pretrained_model/model.safetensors
+      - fomofd/tasks/ring_over_post/model/act_dinov2_ensemble/act_dinov2_weak_state_both_chunk4_seed1001/checkpoints/last/pretrained_model/model.safetensors
+      - fomofd/tasks/ring_over_post/model/act_dinov2_ensemble/act_dinov2_weak_state_both_chunk4_seed1002/checkpoints/last/pretrained_model/model.safetensors
+  tissue_retraction:
+    title: Tissue Retraction (Real)
+    act_ensemble:
+      dataset: fomofd/tasks/tissue_retraction/prl_data/processed_le_v21_tokens
+      checkpoints:
+      - fomofd/tasks/tissue_retraction/model/act_dinov2/checkpoints/200000/pretrained_model/model.safetensors
+      - fomofd/tasks/tissue_retraction/model/act_dinov2_ensemble/act_dinov2_weak_state_both_chunk4_seed1001/checkpoints/last/pretrained_model/model.safetensors
+      - fomofd/tasks/tissue_retraction/model/act_dinov2_ensemble/act_dinov2_weak_state_both_chunk4_seed1002/checkpoints/last/pretrained_model/model.safetensors
+  shunt_insertion:
+    title: Shunt Insertion (Real)
+    act_ensemble:
+      dataset: fomofd/tasks/shunt_insertion/prl_data/processed_le_v21_tokens
+      checkpoints:
+      - fomofd/tasks/shunt_insertion/model/act_dinov2/checkpoints/200000/pretrained_model/model.safetensors
+      - fomofd/tasks/shunt_insertion/model/act_dinov2_ensemble/act_dinov2_weak_state_both_chunk4_seed1001/checkpoints/last/pretrained_model/model.safetensors
+      - fomofd/tasks/shunt_insertion/model/act_dinov2_ensemble/act_dinov2_weak_state_both_chunk4_seed1002/checkpoints/last/pretrained_model/model.safetensors

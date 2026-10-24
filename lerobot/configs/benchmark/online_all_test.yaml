@@ -1,0 +1,44 @@
+# Full streaming FAR/FDR: all 400 test episodes, no offline-detection selection.
+# Both frozen thresholds share one actual latest-window stream per detector.
+# K/L coverage follows the prior streaming plan: WM-NC variants; main K4/L4 once.
+schema_version: 2
+name: full_test_main_and_wm_nc_kl
+selection: all-test
+calibrations: [episode, functional_band]
+tasks: [needle_pickup, ring_over_post, tissue_retraction, shunt_insertion]
+device: cuda
+window_batch_size: 1
+replay_speed: 1
+warmup_windows: 3
+report_interval_seconds: 60
+deadline_seconds: [1, 2, 5, 10]
+offline_comparison: fomofd/tasks/benchmark_results/functional/2026-10-08/all_available
+# PRL sampled-score caches record this exact helper implementation.
+offline_scorer_revision: 3715e4c
+source_snapshot_dir: logs/experiments/2026-10-08/all_test_streaming/source_snapshot
+validation:
+  feature_rtol: 0.001
+  feature_atol: 0.0001
+  score_rtol: 0.01
+  score_atol: 0.0001
+targets:
+  - id: main
+    methods: [wm_nc, wm_pe, wm_pu, logpzo, rnd, logpzo_native, rnd_native, ace]
+  - id: wm_nc_k1_l4
+    methods: [wm_nc]
+    shape: {K: 1, L: 4}
+  - id: wm_nc_k2_l4
+    methods: [wm_nc]
+    shape: {K: 2, L: 4}
+  - id: wm_nc_k3_l4
+    methods: [wm_nc]
+    shape: {K: 3, L: 4}
+  - id: wm_nc_k6_l4
+    methods: [wm_nc]
+    shape: {K: 6, L: 4}
+  - id: wm_nc_k4_l1
+    methods: [wm_nc]
+    shape: {K: 4, L: 1}
+  - id: wm_nc_k4_l2
+    methods: [wm_nc]
+    shape: {K: 4, L: 2}

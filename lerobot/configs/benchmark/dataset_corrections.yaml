@@ -1,0 +1,12 @@
+schema_version: 1
+revision: prl_visual_validity_2026_10_15
+frame_id_space: zero_based_raw_recording
+storage_policy: preserve_raw_recordings_and_score_caches_apply_validity_mask
+corrections:
+  - task: needle_pickup
+    episode_index: 5
+    raw_frame_stop: 122
+    views: [fix, wrist]
+    applies_to: [calibration, test, resampled_calibration, resampled_test]
+    reason: Blue background enters the wrist image; truncate the synchronized episode from raw frame 122 inclusive.
+    provenance: User identified the visual artifact during review of existing results; this is a retrospective dataset correction, now frozen.

@@ -1,0 +1,75 @@
+#!/usr/bin/env python3
+"""Deployment-style per-frame runtime benchmark for the FIPER-RND baseline."""
+
+from __future__ import annotations
+
+import sys
+from pathlib import Path
+
+import torch
+
+
+REPO_ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(REPO_ROOT))
+
+from models.fiper_rnd.score import (  # noqa: E402
+    get_amp_dtype,
+    get_device,
+    load_merged_config,
+    load_model_from_checkpoint,
+)
+from utils._benchmark_single_frame_e2e_runtime import (  # noqa: E402
+    build_arg_parser,
+    run_benchmark,
+)
+
+
+def score_frame(
+    model: torch.nn.Module,
+    fix_obs: torch.Tensor | None,
+    wrist_obs: torch.Tensor | None,
+    state_obs: torch.Tensor | None,
+) -> torch.Tensor:
+    out = model.compute_scores(
+        fix_obs=fix_obs,
+        wrist_obs=wrist_obs,
+        state_obs=state_obs,
+    )
+    return out["scores"]
+
+
+def main() -> None:
+    parser = build_arg_parser(
+        "Benchmark deployment-style DINOv2/VFMF-VAE + FIPER-RND latency."
+    )
+    args = parser.parse_args()
+
+    config, train_config_path, _, _, _ = load_merged_config(
+        score_config_path=args.config,
+        checkpoint_path=args.checkpoint,
+        score_config_key=args.config_key,
+        train_config_key=None,
+    )
+    device = get_device(args.device or config.runtime.device)
+    amp_dtype = get_amp_dtype(config.runtime.amp_dtype)
+    model = load_model_from_checkpoint(config, args.checkpoint, device=device)
+
+    run_benchmark(
+        args=args,
+        method="fiper_rnd",
+        config=config,
+        model=model,
+        device=device,
+        amp_dtype=amp_dtype,
+        score_frame=score_frame,
+        method_summary={
+            "config": args.config,
+            "train_config": str(train_config_path),
+            "rnd_loss": config.model.rnd_loss,
+            "score_reduction": config.score.score_reduction,
+        },
+    )
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,12 @@
+# New CPU-only experiment; all primary results and the 200-split study are preserved.
+schema_version: 1
+source: fomofd/tasks/benchmark_results/functional/2026-10-08/all_available
+selection:
+  variants: [main]
+  methods: [wm_nc]
+seed: 20261013
+n_splits: 500
+unique_splits: true
+alpha: 0.05
+include_offline_metrics: true
+historical_shunt_fixed_wm_nc_far: 0.30

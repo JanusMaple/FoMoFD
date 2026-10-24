@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "protocol_id": "ral_revision_2026_10_20_v3",
+  "files": {
+    "offline_by_failure.csv": {
+      "rows": 3416,
+      "sha256": "30bdbf3edecfe5a88dbdd946719ea5f4451dea9da6eff4872cc8c4ecb711a71c"
+    },
+    "online_by_failure.csv": {
+      "rows": 746,
+      "sha256": "ce1348ec63a39ad88f51fefdd5d49054622848c1ad2c7a7cbd38cac70bb659a0"
+    },
+    "pairwise_latency_summary.csv": {
+      "rows": 35,
+      "sha256": "aaebd626b20dc93b99b5533918eac982ad6da8ec3aaed989dc0266d8041a37ab"
+    },
+    "online_episode_outcomes.csv": {
+      "rows": 6582,
+      "sha256": "61a762f3d63b23c6a10df7f189306d22735203ad1a6c9d826ebc9109e51658a3"
+    },
+    "pairwise_latency_episodes.csv": {
+      "rows": 5451,
+      "sha256": "b76e7a0823160b38882eb2e4b17aae9952fd94336023a596fd0364a3605b0124"
+    },
+    "fusion_metrics.csv": {
+      "rows": 408,
+      "sha256": "b313bf08e5c6222bbf4b5d33e9a40728eb70c05bbfed75c4affd5e3551d3e480"
+    },
+    "calibration_matched_far.csv": {
+      "rows": 20,
+      "sha256": "e65367e8650832ad7c65aabd8fe324c01d843b29711b762d7c27119c243936cb"
+    },
+    "expert_policy_score_distributions.csv": {
+      "rows": 32,
+      "sha256": "5208a8ddd585df42c7cc9fe0ecc60a5c65881b1b22eaad7e522d382b8af03c26"
+    },
+    "main_calibration_sensitivity_500.csv": {
+      "rows": 20,
+      "sha256": "a5295e63829a1e6399fd2793619142fff5c9f9ec45c1e6de4d6a227a205cc0b8"
+    },
+    "failure_categories.csv": {
+      "rows": 2108,
+      "sha256": "95d7e8319c6e2c82110e96ca2c81516b4452bd19d72e84e8a7fe167a534b5f3c"
+    }
+  }
+}

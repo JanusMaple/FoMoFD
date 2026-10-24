@@ -1,0 +1,60 @@
+# Single concat-channel WM, K4/L4, seed 0, full expert training data.
+# One joint score per endpoint; NC/PE sum coordinates, PU averages coordinate SD.
+# WM-PU: 16 samples, one RK4 step (64 vector-field evaluations per endpoint).
+schema_version: 1
+labels: lerobot/configs/benchmark/prl_episode_labels.yaml
+alpha: 0.05
+score_seed: 0
+wm_score_aggregation: joint
+score_batch_size: 1
+score_batch_sizes:
+  wm_nc: 8
+  wm_pe: 8
+  wm_pu: 8
+paper_protocol:
+  smoothing: centered
+  window: 1
+  wm_frame_policy: replay_legacy
+latency_protocol:
+  smoothing: trailing
+  window: 1
+  wm_frame_policy: all_endpoints
+tasks:
+  needle_pickup:
+    title: Needle Pickup (Sim.)
+    wm:
+      score_config: lerobot/configs/needle_pickup/flow_matching_wm_score.yaml
+      checkpoint: fomofd/tasks/needle_pickup/model/fm_wm/fm_wm_vfmfvae_z8_both_concat_channels_state_off_k4_l4_action_both_data100_seed0/checkpoints/best.pt
+  ring_over_post:
+    title: Ring Over Post (Sim.)
+    wm:
+      score_config: lerobot/configs/ring_over_post/flow_matching_wm_score.yaml
+      checkpoint: fomofd/tasks/ring_over_post/model/fm_wm/fm_wm_vfmfvae_z8_both_concat_channels_state_off_k4_l4_action_both_data100_seed0/checkpoints/best.pt
+  tissue_retraction:
+    title: Tissue Retraction (Real)
+    wm:
+      score_config: lerobot/configs/tissue_retraction/flow_matching_wm_score.yaml
+      checkpoint: fomofd/tasks/tissue_retraction/model/fm_wm/fm_wm_vfmfvae_z8_both_concat_channels_state_off_k4_l4_action_both_data100_seed0/checkpoints/best.pt
+  shunt_insertion:
+    title: Shunt Insertion (Real)
+    wm:
+      score_config: lerobot/configs/shunt_insertion/flow_matching_wm_score.yaml
+      checkpoint: fomofd/tasks/shunt_insertion/model/fm_wm/fm_wm_vfmfvae_z8_both_concat_channels_state_off_k4_l4_action_both_data100_seed0/checkpoints/best.pt
+methods:
+- wm_nc
+- wm_pe
+- wm_pu
+calibrations:
+- episode
+- wall_time_bin
+wall_time_bin:
+  bin_seconds: 1.0
+fusion:
+  wm_views: false
+  conditional_marginal: false
+wm_pu:
+  num_samples: 16
+  sample_batch_size: 1
+  precision: float32
+  matmul_precision: high
+  ode_steps: 1

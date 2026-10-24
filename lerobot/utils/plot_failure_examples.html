@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Failure Example Plot Selector</title><link rel="icon" href="data:,">
+<style>
+:root{color-scheme:light;--ink:#182c35;--muted:#62747c;--border:#d5dfe3;--accent:#176877}
+*{box-sizing:border-box}body{margin:0;background:#f2f5f6;color:var(--ink);font:14px system-ui,sans-serif}
+main{max-width:1600px;margin:25px auto;padding:0 24px 40px}h1{font-size:25px;margin:0 0 7px}p{line-height:1.5;margin:4px 0;color:var(--muted)}
+button,select,input{font:inherit}button,select,input[type=number]{border:1px solid var(--border);border-radius:6px;background:white;padding:7px;color:var(--ink)}
+button{cursor:pointer}button:hover{border-color:var(--accent)}button:disabled{opacity:.5;cursor:wait}.primary{background:var(--accent);color:white;border-color:var(--accent)}
+label{color:var(--muted);font-size:12px}select{max-width:100%;width:100%;margin-top:4px}input[type=range]{width:100%;accent-color:var(--accent)}input[type=checkbox],input[type=radio]{accent-color:var(--accent)}
+.toolbar{display:flex;align-items:end;gap:14px;flex-wrap:wrap;margin:20px 0 12px}.toolbar label{display:flex;gap:5px;align-items:center}.toolbar select{width:auto;margin:0}.toolbar input[type=number]{width:65px}
+.toolbar .file{position:relative;overflow:hidden}.file input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%}
+#status{min-height:22px;font-size:13px;margin:12px 0;color:var(--accent)}#status.error{color:#b12a29}
+.preview{padding:16px;background:white;border:1px solid var(--border);border-radius:10px;overflow:auto}.preview img{display:block;width:100%;min-width:750px;height:auto}.preview h2{font-size:14px;margin:0 0 10px}
+.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:20px}.card{background:white;border:1px solid var(--border);border-radius:10px;padding:15px;min-width:0}.card h2{margin:0 0 12px;font-size:15px}
+.selectors{display:grid;gap:9px}.mode-heading{display:flex;justify-content:space-between;align-items:center}.badge{font-size:11px;background:#eaf1f3;color:var(--accent);padding:3px 7px;border-radius:12px}
+.chart{width:100%;height:auto;display:block;margin:14px 0 0;cursor:crosshair;touch-action:none}.hint{font-size:11px;margin:6px 0 12px}.frames{display:grid;grid-template-columns:1fr 1fr;gap:10px}.frame img{width:100%;display:block;aspect-ratio:1;object-fit:contain;background:#f2f5f6;border-radius:4px;margin:7px 0}.frame input[type=number]{width:100%;margin-top:5px}.frame label{display:flex;align-items:center;gap:3px}.time{font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums;min-height:17px}
+.details{font-size:11px;margin-top:12px;color:var(--muted);overflow-wrap:anywhere}#downloads{font-size:13px;margin-left:4px}a{color:var(--accent)}[hidden]{display:none!important}
+@media(max-width:1050px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:600px){main{padding:0 12px}.cards{grid-template-columns:1fr}}
+</style>
+</head>
+<body><main>
+<h1>Failure Example Plot Selector</h1>
+<p>Choose four examples and two camera frames per example. Click a curve to set the active frame marker.</p>
+<div class="toolbar">
+<label>Camera <select id="view"><option value="wrist">Wrist</option><option value="fix">Fixed</option></select></label>
+<label>Time axis <select id="time_axis"><option value="seconds">Recorded seconds</option><option value="frames">Raw frames</option></select></label>
+<label>Titles <select id="title_layout"><option value="one_line">One line (up to 7 pt)</option><option value="two_lines">Two lines (7 pt)</option></select></label>
+<label><input id="show_ticks" type="checkbox">Numeric ticks</label>
+<label><input id="show_legend" type="checkbox">Legend</label>
+<label><input id="show_onset" type="checkbox">Onset line</label>
+<label>Onset labels <select id="onset_annotator" aria-label="Onset reference"></select></label>
+<label><input id="transparent" type="checkbox">Transparent background</label>
+<label>Width (in) <input id="width" type="number" min="5" max="16" step="0.1"></label>
+<label>Height (in) <input id="height" type="number" min="1.8" max="8" step="0.05"></label>
+<button id="reset">Reset to defaults</button><button class="file">Load selection<input id="load" type="file" accept=".json,.selection.json" aria-label="Load saved selection JSON"></button>
+<button id="save-defaults" disabled>Save defaults</button>
+<button id="save" disabled>Save SVG + selection</button>
+<button id="save-pdf" class="primary" disabled>Save PDF + selection</button>
+<span id="downloads" hidden><a id="paper-download" href="/download/figure.svg" download>Paper SVG</a> · <a id="review-download" href="/download/review.svg" download>Review SVG</a> · <a href="/download/selection.json" download>Selection JSON</a></span>
+</div>
+<div id="status" role="status" aria-live="polite">Loading recordings and score caches…</div>
+<section class="preview"><h2>Review preview</h2><p class="hint">SVG and PDF exports share this compact layout. Combined onset marks the exact mean recorded time for the selected camera; on raw-frame axes it marks the first frame at/after the mean.</p><img id="preview" alt="Four failure examples, with score curves and corresponding camera frames" hidden></section>
+<section id="cards" class="cards" aria-label="Panel selectors"></section>
+<p class="details">Opens with your saved episode and frame choices. Use Save defaults to keep new choices for the next launch. Selections use prepared episode IDs and zero-based raw frame indices.</p>
+</main>
+<script>
+'use strict';
+const $=id=>document.getElementById(id), ns='http://www.w3.org/2000/svg';
+let catalog, config, cards=[], previewURL=null, timer, revision=0, initializing=true;
+const settings=['view','time_axis','title_layout','show_ticks','show_legend','show_onset','onset_annotator','transparent','width','height'];
+function status(message,error=false){$('status').textContent=message;$('status').classList.toggle('error',error)}
+function setExportDisabled(disabled){$('save').disabled=disabled;$('save-pdf').disabled=disabled}
+async function request(path,body){const r=await fetch(path,body?{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}:{});if(!r.ok){let message;try{message=(await r.json()).error}catch{message=r.statusText}throw Error(message)}return r}
+function option(select,value,text){const o=document.createElement('option');o.value=value;o.textContent=text;select.append(o)}
+function readSettings(){for(const key of settings){const e=$(key);config[key]=e.type==='checkbox'?e.checked:e.type==='number'?Number(e.value):e.value}if(!config.onset_annotator)config.onset_annotator=null}
+function nearest(values,target){let best=0;for(let i=1;i<values.length;i++)if(Math.abs(values[i]-target)<Math.abs(values[best]-target))best=i;return best}
+function changed(){revision++;setExportDisabled(true);$('downloads').hidden=true;if(cards.some(c=>c.loading||!c.payload))$('save-defaults').disabled=true;if(initializing)return;clearTimeout(timer);timer=setTimeout(preview,450)}
+function snapshot(){readSettings();return JSON.parse(JSON.stringify(config))}
+async function preview(){const version=revision;try{if(cards.some(c=>!c.payload||c.loading))return;status('Rendering paper preview…');const response=await request('/api/preview',snapshot());const blob=await response.blob();if(version!==revision)return;if(previewURL)URL.revokeObjectURL(previewURL);previewURL=URL.createObjectURL(blob);$('preview').src=previewURL;$('preview').hidden=false;setExportDisabled(false);$('save-defaults').disabled=false;status('Preview ready. Adjust episodes and marked frames below, then save.')}catch(e){status(e.message,true)}}
+function makeCard(index){const el=document.createElement('article');el.className='card';el.innerHTML=`
+<h2>Panel ${index+1}</h2><div class="selectors">
+<label>Task<select class="task" aria-label="Panel ${index+1} task"></select></label>
+<label><span class="mode-heading">Failure mode<span class="badge"></span></span><select class="mode" aria-label="Panel ${index+1} failure mode"></select></label>
+<label>Episode<select class="episode" aria-label="Panel ${index+1} episode"></select></label></div>
+<svg class="chart" viewBox="0 0 320 140" role="img" aria-label="Calibration and selected failure score curves"></svg>
+<p class="hint">Activate a frame below, then click the curve or move its slider.</p>
+<div class="frames">${[0,1].map(j=>`<div class="frame"><label><input type="radio" name="mark${index}" value="${j}" ${j===1?'checked':''}>Frame (${String.fromCharCode(97+2*index+j)})</label><img alt="Selected camera frame ${j+1}"><input class="slider" type="range" min="0" step="1" aria-label="Panel ${index+1} frame ${j+1}"><input class="number" type="number" min="0" step="1" aria-label="Panel ${index+1} raw frame ${j+1}"><div class="time"></div></div>`).join('')}</div><p class="details"></p>`;
+$('cards').append(el);const c={el,index,task:el.querySelector('.task'),mode:el.querySelector('.mode'),ep:el.querySelector('.episode'),chart:el.querySelector('.chart'),frames:[...el.querySelectorAll('.frame')],payload:null,loading:false,version:0};
+for(const t of catalog.tasks)option(c.task,t.id,t.title);
+c.task.onchange=async()=>{config.panels[index]={task:c.task.value};fillModes(c);await chooseEpisode(c,false)};
+c.mode.onchange=async()=>{const p=config.panels[index];p.failure_mode=c.mode.value;delete p.episode;delete p.frames;fillEpisodes(c);await chooseEpisode(c,false)};
+c.ep.onchange=async()=>{config.panels[index].episode=Number(c.ep.value);await chooseEpisode(c,false)};
+for(let j=0;j<2;j++){const frame=c.frames[j];frame.querySelector('.slider').oninput=e=>{setMark(c,j,Number(e.target.value));frame.querySelector('input[type=radio]').checked=true};frame.querySelector('.number').onchange=e=>{if(!c.payload)return;setMark(c,j,nearest(c.payload.raw_frames,Number(e.target.value)))}}
+c.chart.onclick=e=>{if(!c.payload||c.loading)return;const rect=c.chart.getBoundingClientRect();const t=(e.clientX-rect.left)/rect.width*320;const values=config.time_axis==='seconds'?c.payload.times:c.payload.raw_frames;const target=Math.max(0,(t-25)/285)*c.xmax;const j=Number(el.querySelector('input[type=radio]:checked').value);setMark(c,j,nearest(values,target))};
+return c}
+function fillModes(c){const p=config.panels[c.index];const task=catalog.tasks.find(t=>t.id===p.task);if(!task)throw Error('Unknown task in selection');c.task.value=p.task;c.mode.replaceChildren();for(const g of task.groups)option(c.mode,g.mode,g.mode);if(!task.groups.some(g=>g.mode===p.failure_mode))p.failure_mode=task.groups[0].mode;c.mode.value=p.failure_mode;fillEpisodes(c)}
+function fillEpisodes(c){const p=config.panels[c.index],g=catalog.tasks.find(t=>t.id===p.task).groups.find(g=>g.mode===p.failure_mode);c.ep.replaceChildren();for(const ep of g.episodes)option(c.ep,ep,`Episode ${ep}`);if(!g.episodes.includes(p.episode))p.episode=g.episodes[0];p.category=g.category;c.ep.value=p.episode;c.el.querySelector('.badge').textContent=`Category ${g.category}`}
+async function chooseEpisode(c,preserve){const version=++c.version;c.loading=true;c.payload=null;$('save').disabled=true;changed();const p=config.panels[c.index];c.chart.replaceChildren();for(const f of c.frames){f.querySelector('img').removeAttribute('src');f.querySelector('.slider').disabled=true;f.querySelector('.number').disabled=true}status(`Loading ${c.task.selectedOptions[0].textContent}, episode ${p.episode}…`);try{const q=new URLSearchParams({task:p.task,episode:p.episode,view:config.view});const payload=await(await request('/api/episode?'+q)).json();if(version!==c.version)return;c.payload=payload;const raw=payload.raw_frames;let peak=payload.scores.indexOf(Math.max(...payload.scores));if(!peak)peak=raw.length-1;if(!preserve||!p.frames)p.frames=[raw[0],raw[peak]];else{p.frames=p.frames.map(f=>raw[nearest(raw,f)]).sort((a,b)=>a-b);if(p.frames[0]===p.frames[1])p.frames=[raw[0],raw[raw.length-1]]}for(const f of c.frames){f.querySelector('.slider').disabled=false;f.querySelector('.slider').max=raw.length-1;f.querySelector('.number').disabled=false;f.querySelector('.number').min=raw[0];f.querySelector('.number').max=raw[raw.length-1]}c.el.querySelector('.details').textContent=`${payload.raw_file} · threshold ${payload.threshold.toPrecision(5)} · ${payload.n_calibration} calibration rollouts`;updateMarks(c);c.loading=false;changed()}catch(e){if(version===c.version){c.loading=false;status(e.message,true)}}}
+function setMark(c,j,index){if(!c.payload||c.loading)return;const raw=c.payload.raw_frames,p=config.panels[c.index];const other=raw.indexOf(p.frames[1-j]);index=j===0?Math.min(index,other-1):Math.max(index,other+1);index=Math.max(0,Math.min(raw.length-1,index));p.frames[j]=raw[index];updateMarks(c);changed()}
+function updateMarks(c){const p=config.panels[c.index],payload=c.payload;for(let j=0;j<2;j++){const raw=p.frames[j],i=payload.raw_frames.indexOf(raw),f=c.frames[j];f.querySelector('.slider').value=i;f.querySelector('.number').value=raw;f.querySelector('.time').textContent=`${payload.times[i].toFixed(2)} s · raw frame ${raw}`;const url='/api/frame?'+new URLSearchParams({task:p.task,episode:p.episode,frame:raw,view:config.view});const img=f.querySelector('img');if(img.getAttribute('src')!==url)img.src=url}drawChart(c)}
+function svg(tag,attrs,parent){const e=document.createElementNS(ns,tag);for(const[k,v]of Object.entries(attrs))e.setAttribute(k,v);parent.append(e);return e}
+function drawChart(c){const s=c.payload;if(!s)return;const chart=c.chart;chart.replaceChildren();const key=config.time_axis==='seconds'?'times':'frames',x=config.time_axis==='seconds'?s.times:s.raw_frames;
+const onset=config.show_onset?s.onsets[config.onset_annotator]:null;
+let ymax=Math.max(s.threshold,...s.scores),ymin=Math.min(s.threshold,...s.scores),xmax=x[x.length-1];
+for(const cal of s.calibration){ymax=Math.max(ymax,...cal.scores);ymin=Math.min(ymin,...cal.scores);xmax=Math.max(xmax,cal[key][cal[key].length-1])}
+if(onset)xmax=Math.max(xmax,config.time_axis==='seconds'?onset.time:onset.raw_frame);
+ymax+=(ymax-ymin||1)*.15;ymin-=(ymax-ymin||1)*.06;c.xmax=xmax;
+const sx=v=>25+v/(xmax||1)*285,sy=v=>102-(v-ymin)/(ymax-ymin)*90;
+svg('path',{d:'M25 10V102H312',fill:'none',stroke:'#bdc9ce','stroke-width':1},chart);
+for(const cal of s.calibration)svg('polyline',{points:cal[key].map((v,i)=>`${sx(v)},${sy(cal.scores[i])}`).join(' '),fill:'none',stroke:'#1f77b4','stroke-width':.8,'stroke-dasharray':'4 2.2',opacity:.4},chart);
+if(onset){const ox=sx(config.time_axis==='seconds'?onset.time:onset.raw_frame);svg('line',{class:'onset-line',x1:ox,x2:ox,y1:10,y2:102,stroke:'#737373','stroke-width':.8,'stroke-dasharray':'3 3',opacity:.5},chart)}
+svg('line',{x1:25,x2:312,y1:sy(s.threshold),y2:sy(s.threshold),stroke:'#404040','stroke-dasharray':'6 2 1 2'},chart);
+svg('polyline',{points:x.map((v,i)=>`${sx(v)},${sy(s.scores[i])}`).join(' '),fill:'none',stroke:'#d62728','stroke-width':1},chart);
+const indices=config.panels[c.index].frames.map(f=>s.raw_frames.indexOf(f));
+for(let j=0;j<2;j++){const i=indices[j],cx=sx(x[i]),cy=sy(s.scores[i]),left=cx>285,below=cy<30;svg('circle',{cx,cy,r:3.3,fill:'#8b0000',stroke:'white','stroke-width':1},chart);svg('text',{class:'frame-marker-label',x:cx+(left?-6:6),y:cy+(below?15:-7),'text-anchor':left?'end':'start',fill:'#8b0000','font-size':9.5,stroke:'white','stroke-width':2.5,'paint-order':'stroke','stroke-linejoin':'round'},chart).textContent=`(${String.fromCharCode(97+2*c.index+j)})`}
+svg('text',{x:167.5,y:119,'text-anchor':'middle',fill:'#182c35','font-size':10},chart).textContent='time';
+svg('text',{x:10,y:57,transform:'rotate(-90 10 57)','text-anchor':'middle',fill:'#182c35','font-size':10},chart).textContent='score';
+svg('text',{x:310,y:135,'text-anchor':'end',fill:'#62747c','font-size':9},chart).textContent=config.time_axis==='seconds'?`${xmax.toFixed(1)} s`:`${xmax} frames`;
+const name=catalog.annotators.find(a=>a.id===config.onset_annotator)?.name||'selected annotator';
+const onsetNote=onset?(onset.derived?`${name}: ${onset.time.toFixed(3)} s · first raw frame at/after mean: ${onset.raw_frame}`:`${name} onset: raw frame ${onset.raw_frame} (${onset.time.toFixed(2)} s)`):(s.onset_errors?.[config.onset_annotator]||`No ${config.view} onset label from ${name}`);
+c.el.querySelector('.details').textContent=`${s.raw_file} · threshold ${s.threshold.toPrecision(5)} · ${s.n_calibration} calibration rollouts`+(config.show_onset?` · ${onsetNote}`:'')}
+async function applyState(selection){
+initializing=true;clearTimeout(timer);revision++;config={...catalog.initial,...JSON.parse(JSON.stringify(selection))};
+if(config.schema_version!==1||!Array.isArray(config.panels)||config.panels.length!==4)throw Error('Choose a selection with four panels and schema_version 1.');
+if(config.report&&config.report!=='main'&&config.report!==catalog.report)throw Error('This selection uses a different report. Restart with --config pointing to that selection.');
+config.report=catalog.report;
+if(config.onset_annotator==null&&catalog.annotators.length)config.onset_annotator=catalog.annotators[0].id;
+for(const k of settings){const e=$(k);if(e.type==='checkbox')e.checked=config[k];else e.value=config[k]??''}
+$('cards').replaceChildren();cards=[];for(let i=0;i<4;i++){const c=makeCard(i);cards.push(c);fillModes(c)}
+for(const c of cards)await chooseEpisode(c,true);initializing=false;await preview()}
+for(const key of settings)$(key).onchange=async()=>{readSettings();$('save').disabled=true;if(key==='view'){for(const c of cards)await chooseEpisode(c,true)}else for(const c of cards)if(c.payload)drawChart(c);changed()};
+$('reset').onclick=()=>applyState(catalog.initial).catch(e=>{initializing=false;status(e.message,true)});
+$('load').onchange=async e=>{try{const file=e.target.files[0];if(file)await applyState(JSON.parse(await file.text()))}catch(e){initializing=false;status(e.message,true)}};
+$('save-defaults').onclick=async()=>{$('save-defaults').disabled=true;status('Saving default episode and frame choices…');try{const result=await(await request('/api/defaults',snapshot())).json();catalog.initial=result.initial;status('Defaults saved. These choices will load the next time you open the selector.')}catch(e){status(e.message,true)}finally{$('save-defaults').disabled=false}};
+async function saveFigure(fmt){const version=revision;setExportDisabled(true);$('downloads').hidden=true;status(`Saving paper ${fmt.toUpperCase()}, review copy, and selection…`);try{const result=await(await request(fmt==='pdf'?'/api/export-pdf':'/api/export',snapshot())).json();if(version===revision){$('paper-download').href=`/download/figure.${fmt}`;$('paper-download').textContent=`Paper ${fmt.toUpperCase()}`;$('review-download').href=`/download/review.${fmt}`;$('review-download').textContent=`Review ${fmt.toUpperCase()}`;$('downloads').hidden=false;status(`Saved ${result[fmt]}. Review copy: ${result['review_'+fmt]}`)}}catch(e){status(e.message,true)}finally{if(version===revision)setExportDisabled(false)}}
+$('save').onclick=()=>saveFigure('svg');
+$('save-pdf').onclick=()=>saveFigure('pdf');
+(async()=>{try{catalog=await(await request('/api/catalog')).json();for(const a of catalog.annotators)option($('onset_annotator'),a.id,a.name);await applyState(catalog.initial)}catch(e){initializing=false;status(e.message,true)}})();
+</script>
+</body></html>

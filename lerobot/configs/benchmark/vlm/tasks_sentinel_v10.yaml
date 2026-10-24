@@ -1,0 +1,32 @@
+# Edit task_description and time_limit_seconds for each task here.
+# Describe the objects, intended actions, and completion condition in your own words.
+# Use the same description and deadline for both views and all episodes of a task.
+# Do not add episode outcomes, onset annotations, or a particular test episode's events.
+# The 30-second allowance was chosen by the user; it is not a measured episode duration.
+# All times are recorded wall-clock seconds, including simulation.
+# Changing this file requires a new frozen plan and development check before a full run.
+schema_version: 1
+tasks:
+  needle_pickup:
+    task_description: |-
+      Use the robotic gripper to approach, grasp, and lift a surgical needle from the work surface. The task is completed when the needle has been lifted and is securely held by the gripper.
+    time_limit_seconds: 30
+    prepared_dataset: fomofd/tasks/needle_pickup/prl_data/processed_le_v21_vfmf_vae_fix_wrist
+
+  ring_over_post:
+    task_description: |-
+       Use the robotic gripper to grasp and lift a ring, align its opening with the target post, and lower it over the post. The task is completed when the ring passes cleanly over the post and slides down to its intended position without getting caught or hanging on the post.
+    time_limit_seconds: 30
+    prepared_dataset: fomofd/tasks/ring_over_post/prl_data/processed_le_v21_vfmf_vae_fix_wrist
+
+  tissue_retraction:
+    task_description: |-
+      Use the robotic tool to grasp and retract the tissue. The task is completed when the tissue has been retracted to the intended position while remaining securely grasped.
+    time_limit_seconds: 30
+    prepared_dataset: fomofd/tasks/tissue_retraction/prl_data/processed_le_v21_vfmf_vae_fix_wrist
+
+  shunt_insertion:
+    task_description: |-
+      Use the robotic gripper to hold and position a shunt, align it with the glass tube opening, and insert it. The task is completed when the shunt has been successfully inserted.
+    time_limit_seconds: 30
+    prepared_dataset: fomofd/tasks/shunt_insertion/prl_data/processed_le_v21_vfmf_vae_fix_wrist

@@ -1,0 +1,15 @@
+fm_wm:
+  data:
+    dataset_repo_id: local/tissue_retraction_vfmf_vae_fix_wrist
+    dataset_root: ../fomofd/tasks/tissue_retraction/prl_data/processed_le_v21_vfmf_vae_fix_wrist # Use prl data for scoring
+    proactive_action_key: observation.policy_action_chunk
+    proactive_action_batch_key: observation.policy_action_chunk_batch
+
+  fm_head:
+    score_kind: squared_norm
+    score_transport_mode: ode
+
+    proactive_score_mode: policy_fm_wm_entropy  # fm_wm_entropy | ace | policy_fm_wm_entropy
+    per_chunk_wm_samples: 1                     # number of wm samples per action chunk for "policy_fm_wm_entropy" and "fm_wm_entropy"
+    proactive_num_action_chunks: 4              # number of action chunks for "policy_fm_wm_entropy" and "ace"
+    ace_cov_eps: 1.0e-6

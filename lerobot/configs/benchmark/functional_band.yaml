@@ -1,0 +1,14 @@
+# Expert-template adaptation of FAIL-Detect, not an exact reproduction.
+schema_version: 1
+catalog: lerobot/configs/benchmark/results_catalog.yaml
+labels: lerobot/configs/benchmark/prl_episode_labels.yaml
+alpha: 0.05
+protocols: [episode, wall_time_bin, functional_band]
+template:
+  grid_seconds: 1.0
+  modulation: constant
+  # Optional robust_mad uses ONLY expert-validation trajectories.
+  scale_floor: 1.0e-6
+wall_time_bin:
+  bin_seconds: 1.0
+deadline_seconds: [1.0, 2.0, 5.0, 10.0]

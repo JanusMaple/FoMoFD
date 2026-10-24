@@ -1,0 +1,4 @@
+fiper_rnd:
+  data:
+    dataset_repo_id: local/ring_over_post_vfmf_vae_fix_wrist
+    dataset_root: ../fomofd/tasks/ring_over_post/prl_data/processed_le_v21_vfmf_vae_fix_wrist

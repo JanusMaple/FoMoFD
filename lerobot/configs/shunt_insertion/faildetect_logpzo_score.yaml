@@ -1,0 +1,8 @@
+faildetect_logpzo:
+  data:
+    dataset_repo_id: local/shunt_insertion_vfmf_vae_fix_wrist
+    dataset_root: ../fomofd/tasks/shunt_insertion/prl_data/processed_le_v21_vfmf_vae_fix_wrist
+
+  fm_head:
+    score_kind: base_logp
+    score_transport_mode: ode

@@ -1,0 +1,8 @@
+# Cached continuous scores only. No model/score/template generation.
+schema_version: 1
+source: fomofd/tasks/benchmark_results/functional/2026-10-08/all_available
+seed: 20261008
+n_splits: 200
+alpha: 0.05
+# User-supplied historical paper table, distinct from current cached results.
+historical_shunt_fixed_wm_nc_far: 0.30

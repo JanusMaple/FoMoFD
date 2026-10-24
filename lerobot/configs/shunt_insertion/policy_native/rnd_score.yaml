@@ -1,0 +1,5 @@
+# Scoring override for either camera; load the corresponding native-feature checkpoint.
+fiper_rnd:
+  data:
+    dataset_repo_id: local/shunt_insertion_tokens
+    dataset_root: ../fomofd/tasks/shunt_insertion/prl_data/processed_le_v21_tokens

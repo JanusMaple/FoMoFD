@@ -1,0 +1,33 @@
+# Default selection for Failure Example Plot Selector.
+# Run: python lerobot/utils/failure_example_plot_selector.py
+# Episodes use prepared IDs; frames are zero-based raw recording indices.
+# consensus_mean uses the current protocol's three annotators, per camera.
+schema_version: 1
+view: wrist
+time_axis: seconds
+title_layout: one_line
+show_ticks: false
+show_legend: true
+show_onset: true
+onset_annotator: consensus_mean
+transparent: false
+width: 7.16
+height: 2.05
+report: main
+panels:
+- task: needle_pickup
+  failure_mode: Blood Occlusion
+  episode: 79
+  frames: [18, 32]
+- task: ring_over_post
+  failure_mode: Insecure Grasp
+  episode: 59
+  frames: [69, 83]
+- task: tissue_retraction
+  failure_mode: Needle Intrusion
+  episode: 78
+  frames: [11, 45]
+- task: shunt_insertion
+  failure_mode: Insertion Misalignment
+  episode: 43
+  frames: [69, 148]

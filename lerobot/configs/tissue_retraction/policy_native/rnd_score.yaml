@@ -1,0 +1,5 @@
+# Scoring override for either camera; load the corresponding native-feature checkpoint.
+fiper_rnd:
+  data:
+    dataset_repo_id: local/tissue_retraction_tokens
+    dataset_root: ../fomofd/tasks/tissue_retraction/prl_data/processed_le_v21_tokens

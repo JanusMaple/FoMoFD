@@ -1,0 +1,223 @@
+# Paths are relative to the repo root; model scorer YAMLs use lerobot/ as before.
+# Draft inference adapters: run --dry-run first. Model loading requires --allow-inference.
+# Native checkpoints must have completed training; pending entries are shown in dry-run.
+# Both protocols use RAW scores (window=1), without temporal smoothing.
+# Both metric and latency protocols retain every valid scored endpoint.
+# Historical reports retain their recorded replay_legacy configuration.
+# WM-PU = mean coordinate SD over FM-WM endpoint samples, conditioned on executed
+# actions and therefore timestamped at the endpoint. Ward-inspired, not their model.
+# ACE = joint XYZ histogram entropy summed across the ACT chunk, z ~ N(0,I),
+# both policy cameras. Default deployed ACT uses z=0: this is a sampling adaptation.
+# Histograms use accumulated fixed-frame delta translations, expert workspace widths,
+# and a full ACT horizon (null). Sample settings are explicit pilot choices, not tuned.
+# time_varying = separate CP thresholds per elapsed-wall-time bin. This comparison
+# does NOT control full-episode FAR at alpha. Fewer than 19 calibration episodes
+# in a bin at alpha=.05 => +inf threshold. Never pad or normalize by final duration.
+# Simple AND/OR uses component thresholds, same raw frame, sign-preserving margins.
+# OR can increase FAR (up to 2*alpha by union bound under valid component coverage).
+# Calibration success IDs and current onsets are read only from labels below.
+schema_version: 1
+evaluation_protocol: lerobot/configs/benchmark/evaluation_protocol.yaml
+labels: lerobot/configs/benchmark/prl_episode_labels.yaml
+alpha: 0.05
+score_seed: 0
+score_batch_size: 1
+# Offline throughput settings profiled on RTX 5090, K=4/L=4. Not online batching.
+# CLI --batch-size overrides these; tasks may also define score_batch_sizes.
+# RND stays at 1: BF16 residual scores were sensitive to batch-dependent kernels.
+score_batch_sizes:
+  wm_nc: 8
+  wm_pe: 8
+  wm_pu: 8
+  logpzo: 128
+  logpzo_native: 128
+  rnd: 1
+  rnd_native: 1
+  ace: 32
+paper_protocol:
+  smoothing: trailing
+  window: 1
+  wm_frame_policy: all_endpoints
+  frame_limits:
+    - {task: needle_pickup, episode_index: 5, raw_frame_stop: 122}
+latency_protocol:
+  smoothing: trailing
+  window: 1
+  wm_frame_policy: all_endpoints
+  frame_limits:
+    - {task: needle_pickup, episode_index: 5, raw_frame_stop: 122}
+tasks:
+  needle_pickup:
+    title: Needle Pickup (Sim.)
+    wm:
+      score_config: lerobot/configs/needle_pickup/flow_matching_wm_score.yaml
+      checkpoint: fomofd/tasks/needle_pickup/model/fm_wm/fm_wm_vfmfvae_z8_both_state_off_k4_l4_action_both_data100_seed0/checkpoints/best.pt
+    logpzo:
+      score_config: lerobot/configs/needle_pickup/faildetect_logpzo_score.yaml
+      checkpoints:
+        fix: fomofd/tasks/needle_pickup/model/faildetect_logpzo/logpzo_vfmfvae_z8_fix_state_on_data100_seed0/checkpoints/best.pt
+        wrist: fomofd/tasks/needle_pickup/model/faildetect_logpzo/logpzo_vfmfvae_z8_wrist_state_on_data100_seed0/checkpoints/best.pt
+    rnd:
+      score_config: lerobot/configs/needle_pickup/fiper_rnd_score.yaml
+      checkpoints:
+        fix: fomofd/tasks/needle_pickup/model/fiper_rnd/rnd_vfmfvae_z8_fix_state_off_data100_seed0/checkpoints/best.pt
+        wrist: fomofd/tasks/needle_pickup/model/fiper_rnd/rnd_vfmfvae_z8_wrist_state_off_data100_seed0/checkpoints/best.pt
+    logpzo_native:
+      score_config: lerobot/configs/needle_pickup/policy_native/logpzo_score.yaml
+      train_configs:
+        fix: lerobot/configs/needle_pickup/policy_native/logpzo_fix.yaml
+        wrist: lerobot/configs/needle_pickup/policy_native/logpzo_wrist.yaml
+      checkpoints:
+        fix: fomofd/tasks/needle_pickup/model/faildetect_logpzo/logpzo_act_tokens_q16_d768_fix_state_on_data100_seed0/checkpoints/best.pt
+        wrist: fomofd/tasks/needle_pickup/model/faildetect_logpzo/logpzo_act_tokens_q16_d768_wrist_state_on_data100_seed0/checkpoints/best.pt
+    rnd_native:
+      score_config: lerobot/configs/needle_pickup/policy_native/rnd_score.yaml
+      train_configs:
+        fix: lerobot/configs/needle_pickup/policy_native/rnd_fix.yaml
+        wrist: lerobot/configs/needle_pickup/policy_native/rnd_wrist.yaml
+      checkpoints:
+        fix: fomofd/tasks/needle_pickup/model/fiper_rnd/rnd_act_tokens_q16_d768_fix_state_off_data100_seed0/checkpoints/best.pt
+        wrist: fomofd/tasks/needle_pickup/model/fiper_rnd/rnd_act_tokens_q16_d768_wrist_state_off_data100_seed0/checkpoints/best.pt
+    ace:
+      checkpoint: fomofd/tasks/needle_pickup/model/act_dinov2/checkpoints/200000/pretrained_model/model.safetensors
+      dataset: fomofd/tasks/needle_pickup/prl_data/processed_le_v21_tokens
+      expert_stats: fomofd/tasks/needle_pickup/data/processed_le_v21_tokens/meta/stats.json
+  ring_over_post:
+    title: Ring Over Post (Sim.)
+    wm:
+      score_config: lerobot/configs/ring_over_post/flow_matching_wm_score.yaml
+      checkpoint: fomofd/tasks/ring_over_post/model/fm_wm/fm_wm_vfmfvae_z8_both_state_off_k4_l4_action_both_data100_seed0/checkpoints/best.pt
+    logpzo:
+      score_config: lerobot/configs/ring_over_post/faildetect_logpzo_score.yaml
+      checkpoints:
+        fix: fomofd/tasks/ring_over_post/model/faildetect_logpzo/logpzo_vfmfvae_z8_fix_state_on_data100_seed0/checkpoints/best.pt
+        wrist: fomofd/tasks/ring_over_post/model/faildetect_logpzo/logpzo_vfmfvae_z8_wrist_state_on_data100_seed0/checkpoints/best.pt
+    rnd:
+      score_config: lerobot/configs/ring_over_post/fiper_rnd_score.yaml
+      checkpoints:
+        fix: fomofd/tasks/ring_over_post/model/fiper_rnd/rnd_vfmfvae_z8_fix_state_off_data100_seed0/checkpoints/best.pt
+        wrist: fomofd/tasks/ring_over_post/model/fiper_rnd/rnd_vfmfvae_z8_wrist_state_off_data100_seed0/checkpoints/best.pt
+    logpzo_native:
+      score_config: lerobot/configs/ring_over_post/policy_native/logpzo_score.yaml
+      train_configs:
+        fix: lerobot/configs/ring_over_post/policy_native/logpzo_fix.yaml
+        wrist: lerobot/configs/ring_over_post/policy_native/logpzo_wrist.yaml
+      checkpoints:
+        fix: fomofd/tasks/ring_over_post/model/faildetect_logpzo/logpzo_act_tokens_q16_d768_fix_state_on_data100_seed0/checkpoints/best.pt
+        wrist: fomofd/tasks/ring_over_post/model/faildetect_logpzo/logpzo_act_tokens_q16_d768_wrist_state_on_data100_seed0/checkpoints/best.pt
+    rnd_native:
+      score_config: lerobot/configs/ring_over_post/policy_native/rnd_score.yaml
+      train_configs:
+        fix: lerobot/configs/ring_over_post/policy_native/rnd_fix.yaml
+        wrist: lerobot/configs/ring_over_post/policy_native/rnd_wrist.yaml
+      checkpoints:
+        fix: fomofd/tasks/ring_over_post/model/fiper_rnd/rnd_act_tokens_q16_d768_fix_state_off_data100_seed0/checkpoints/best.pt
+        wrist: fomofd/tasks/ring_over_post/model/fiper_rnd/rnd_act_tokens_q16_d768_wrist_state_off_data100_seed0/checkpoints/best.pt
+    ace:
+      checkpoint: fomofd/tasks/ring_over_post/model/act_dinov2/checkpoints/200000/pretrained_model/model.safetensors
+      dataset: fomofd/tasks/ring_over_post/prl_data/processed_le_v21_tokens
+      expert_stats: fomofd/tasks/ring_over_post/data/processed_le_v21_tokens/meta/stats.json
+  tissue_retraction:
+    title: Tissue Retraction (Real)
+    wm:
+      score_config: lerobot/configs/tissue_retraction/flow_matching_wm_score.yaml
+      checkpoint: fomofd/tasks/tissue_retraction/model/fm_wm/fm_wm_vfmfvae_z8_both_state_off_k4_l4_action_both_data100_seed0/checkpoints/best.pt
+    logpzo:
+      score_config: lerobot/configs/tissue_retraction/faildetect_logpzo_score.yaml
+      checkpoints:
+        fix: fomofd/tasks/tissue_retraction/model/faildetect_logpzo/logpzo_vfmfvae_z8_fix_state_on_data100_seed0/checkpoints/best.pt
+        wrist: fomofd/tasks/tissue_retraction/model/faildetect_logpzo/logpzo_vfmfvae_z8_wrist_state_on_data100_seed0/checkpoints/best.pt
+    rnd:
+      score_config: lerobot/configs/tissue_retraction/fiper_rnd_score.yaml
+      checkpoints:
+        fix: fomofd/tasks/tissue_retraction/model/fiper_rnd/rnd_vfmfvae_z8_fix_state_off_data100_seed0/checkpoints/best.pt
+        wrist: fomofd/tasks/tissue_retraction/model/fiper_rnd/rnd_vfmfvae_z8_wrist_state_off_data100_seed0/checkpoints/best.pt
+    logpzo_native:
+      score_config: lerobot/configs/tissue_retraction/policy_native/logpzo_score.yaml
+      train_configs:
+        fix: lerobot/configs/tissue_retraction/policy_native/logpzo_fix.yaml
+        wrist: lerobot/configs/tissue_retraction/policy_native/logpzo_wrist.yaml
+      checkpoints:
+        fix: fomofd/tasks/tissue_retraction/model/faildetect_logpzo/logpzo_act_tokens_q16_d768_fix_state_on_data100_seed0/checkpoints/best.pt
+        wrist: fomofd/tasks/tissue_retraction/model/faildetect_logpzo/logpzo_act_tokens_q16_d768_wrist_state_on_data100_seed0/checkpoints/best.pt
+    rnd_native:
+      score_config: lerobot/configs/tissue_retraction/policy_native/rnd_score.yaml
+      train_configs:
+        fix: lerobot/configs/tissue_retraction/policy_native/rnd_fix.yaml
+        wrist: lerobot/configs/tissue_retraction/policy_native/rnd_wrist.yaml
+      checkpoints:
+        fix: fomofd/tasks/tissue_retraction/model/fiper_rnd/rnd_act_tokens_q16_d768_fix_state_off_data100_seed0/checkpoints/best.pt
+        wrist: fomofd/tasks/tissue_retraction/model/fiper_rnd/rnd_act_tokens_q16_d768_wrist_state_off_data100_seed0/checkpoints/best.pt
+    ace:
+      checkpoint: fomofd/tasks/tissue_retraction/model/act_dinov2/checkpoints/200000/pretrained_model/model.safetensors
+      dataset: fomofd/tasks/tissue_retraction/prl_data/processed_le_v21_tokens
+      expert_stats: fomofd/tasks/tissue_retraction/data/processed_le_v21_tokens/meta/stats.json
+  shunt_insertion:
+    title: Shunt Insertion (Real)
+    wm:
+      score_config: lerobot/configs/shunt_insertion/flow_matching_wm_score.yaml
+      checkpoint: fomofd/tasks/shunt_insertion/model/fm_wm/fm_wm_vfmfvae_z8_both_state_off_k4_l4_action_both_data100_seed0/checkpoints/best.pt
+    logpzo:
+      score_config: lerobot/configs/shunt_insertion/faildetect_logpzo_score.yaml
+      checkpoints:
+        fix: fomofd/tasks/shunt_insertion/model/faildetect_logpzo/logpzo_vfmfvae_z8_fix_state_on_data100_seed0/checkpoints/best.pt
+        wrist: fomofd/tasks/shunt_insertion/model/faildetect_logpzo/logpzo_vfmfvae_z8_wrist_state_on_data100_seed0/checkpoints/best.pt
+    rnd:
+      score_config: lerobot/configs/shunt_insertion/fiper_rnd_score.yaml
+      checkpoints:
+        fix: fomofd/tasks/shunt_insertion/model/fiper_rnd/rnd_vfmfvae_z8_fix_state_off_data100_seed0/checkpoints/best.pt
+        wrist: fomofd/tasks/shunt_insertion/model/fiper_rnd/rnd_vfmfvae_z8_wrist_state_off_data100_seed0/checkpoints/best.pt
+    logpzo_native:
+      score_config: lerobot/configs/shunt_insertion/policy_native/logpzo_score.yaml
+      train_configs:
+        fix: lerobot/configs/shunt_insertion/policy_native/logpzo_fix.yaml
+        wrist: lerobot/configs/shunt_insertion/policy_native/logpzo_wrist.yaml
+      checkpoints:
+        fix: fomofd/tasks/shunt_insertion/model/faildetect_logpzo/logpzo_act_tokens_q16_d768_fix_state_on_data100_seed0/checkpoints/best.pt
+        wrist: fomofd/tasks/shunt_insertion/model/faildetect_logpzo/logpzo_act_tokens_q16_d768_wrist_state_on_data100_seed0/checkpoints/best.pt
+    rnd_native:
+      score_config: lerobot/configs/shunt_insertion/policy_native/rnd_score.yaml
+      train_configs:
+        fix: lerobot/configs/shunt_insertion/policy_native/rnd_fix.yaml
+        wrist: lerobot/configs/shunt_insertion/policy_native/rnd_wrist.yaml
+      checkpoints:
+        fix: fomofd/tasks/shunt_insertion/model/fiper_rnd/rnd_act_tokens_q16_d768_fix_state_off_data100_seed0/checkpoints/best.pt
+        wrist: fomofd/tasks/shunt_insertion/model/fiper_rnd/rnd_act_tokens_q16_d768_wrist_state_off_data100_seed0/checkpoints/best.pt
+    ace:
+      checkpoint: fomofd/tasks/shunt_insertion/model/act_dinov2/checkpoints/200000/pretrained_model/model.safetensors
+      dataset: fomofd/tasks/shunt_insertion/prl_data/processed_le_v21_tokens
+      expert_stats: fomofd/tasks/shunt_insertion/data/processed_le_v21_tokens/meta/stats.json
+methods:
+- wm_nc
+- wm_pe
+- wm_pu
+- logpzo
+- rnd
+- logpzo_native
+- rnd_native
+- ace
+calibrations:
+- episode
+- wall_time_bin
+wall_time_bin:
+  bin_seconds: 1.0
+fusion:
+  wm_views: true
+  conditional_marginal: true
+  operations:
+  - and
+  - or
+wm_pu:
+  num_samples: 16
+  sample_batch_size: 1
+  precision: float32
+  # TF32-enabled float32 matmuls: ~3x faster with <0.04% probe score deviation.
+  # Use highest to reproduce full-precision matmuls. Stored in cache/report identity.
+  matmul_precision: high
+ace:
+  num_samples: 32
+  sample_batch_size: 4
+  horizon: null
+  cell_size_factor: 0.05
+  min_cell_width: 1.0e-06
+  action_coordinates: cumulative_delta_xyz

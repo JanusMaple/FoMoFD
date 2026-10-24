@@ -1,0 +1,25 @@
+# Separate descriptive experiment. Reuses frozen scores; no training/inference.
+schema_version: 1
+source: fomofd/tasks/benchmark_results/functional/2026-10-08/all_available
+variant: main
+method: wm_nc
+tasks: [needle_pickup, ring_over_post, tissue_retraction, shunt_insertion]
+views: [fix, wrist]
+dataset_validity: lerobot/configs/benchmark/dataset_corrections.yaml
+episode_quantile_method: linear  # NumPy quantiles; IQR = Q3 - Q1.
+expected_expert_validation_episodes:
+  needle_pickup: 25
+  ring_over_post: 25
+  tissue_retraction: 10
+  shunt_insertion: 10
+expected_policy_success_episodes:
+  calibration: 19
+  test: 20
+window_protocol:
+  smoothing: trailing
+  window: 1
+  wm_frame_policy: all_endpoints
+# Use the same raw score and eligible endpoints for both populations.
+# Every window contributes to the pooled distribution. The additional
+# episode-balanced distribution gives each episode equal total weight.
+# Episode maxima use all eligible windows, with equal weight per episode.

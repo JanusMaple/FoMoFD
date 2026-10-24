@@ -1,0 +1,69 @@
+vae:
+  experiment_name: dino_vfmf_vae_wrist_L8_3072
+  seed: 0
+
+  data:
+    dataset_repo_id: local/tissue_retraction_latents_L_wrist
+    dataset_root: ../fomofd/tasks/tissue_retraction/data/processed_le_v21_latents_L_wrist
+    output_dir: ../fomofd/tasks/tissue_retraction/model/vfmf_vae
+
+    val_ratio: 0.1
+    split_seed: 0
+
+    fix_key: observation.latents.fix_camera
+    wrist_key: observation.latents.wrist_camera
+
+    use_fix_camera: false
+    use_wrist_camera: true
+
+    patch_grid_height: 16
+    patch_grid_width: 16
+
+  runtime:
+    batch_size: 32
+    val_batch_size: 32
+
+    max_steps: 40000
+    log_freq: 200
+    val_freq: 1000
+    save_freq: 1000
+
+    num_workers: 8
+    persistent_workers: false
+    pin_memory: true
+
+    device: cuda
+    use_amp: true
+    amp_dtype: bfloat16
+
+    max_val_batches: 4
+
+  optim:
+    lr: 1.0e-4
+    min_lr: 1.0e-6
+    weight_decay: 1.0e-5
+    grad_clip_norm: 1.0
+
+    scheduler: cosine
+    plateau_factor: 0.5
+    plateau_patience: 3
+
+  feature:
+    input_dim: 3072
+    feature_stats: null
+
+  vae_model:
+    depth: 18
+    dim: 384
+    drop_path_rate: 0.0
+    layer_scale_init_value: 1.0e-6
+
+    latent_channels: 8
+    shape: [16, 16]
+    beta: 0.01
+    latent_channel_dropout_p: 0.0
+    latent_channel_utilization_weight: 0.5
+    latent_channel_utilization_min_frac: 0.5
+
+  loss:
+    objective: VAE

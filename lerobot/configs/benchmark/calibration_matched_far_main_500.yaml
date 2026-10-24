@@ -1,0 +1,11 @@
+schema_version: 1
+experiment_id: main_wm_nc_matched_far_split_sensitivity_500
+source_report: fomofd/tasks/benchmark_results/offline_protocols/2026-10-20_mean_onset_v3/visual_corrected/offline/main
+split_manifest: fomofd/tasks/benchmark_results/offline_protocols/2026-10-20_mean_onset_v3/visual_corrected/studies/main_calibration_sensitivity_500/splits.json
+evaluation_protocol: lerobot/configs/benchmark/evaluation_protocol_v3.yaml
+method: wm_nc
+views: [fix, wrist]
+calibrations: [episode, functional_band]
+n_splits: 500
+target_far: 0.05
+output: fomofd/tasks/benchmark_results/analyses/2026-10-21/calibration_matched_far_main_500

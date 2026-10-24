@@ -1,0 +1,8 @@
+# Scoring override for either camera; load the corresponding native-feature checkpoint.
+faildetect_logpzo:
+  data:
+    dataset_repo_id: local/ring_over_post_tokens
+    dataset_root: ../fomofd/tasks/ring_over_post/prl_data/processed_le_v21_tokens
+  fm_head:
+    score_kind: base_logp
+    score_transport_mode: ode

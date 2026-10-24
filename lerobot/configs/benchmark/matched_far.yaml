@@ -1,0 +1,13 @@
+# Empirical TEST-set ROC analysis; these are not deployment-calibrated thresholds.
+# Recompute from saved reports (choose a new output directory for each run):
+# python3 lerobot/utils/benchmark_roc.py --output fomofd/tasks/benchmark_results/analyses/YYYY-MM-DD/matched_far_all
+# Rebuild the interactive explorer afterwards:
+# python3 lerobot/utils/results_inspector.py --figures
+schema_version: 1
+catalog: lerobot/configs/benchmark/results_catalog.yaml
+calibrations: [episode, wall_time_bin, functional_band]
+far_targets: [0.0, 0.05, 0.10, 0.20]
+failure_subsets: [all, natural, induced, per_failure]
+# Full-episode margins have the same ranking as raw maxima for single scorers.
+# Time-varying scores are maxima of standardized bin-threshold exceedances.
+# Fusion definitions and all original score/calibration settings stay fixed.

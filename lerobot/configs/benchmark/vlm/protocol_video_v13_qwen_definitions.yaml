@@ -1,0 +1,260 @@
+schema_version: 2
+protocol_id: vlm_qwen_v13_definitions_20261020
+status: development_validation_required
+execution_enabled: true
+implementation_status: vlm_online_benchmark.py
+description: 'Development-only factorial comparison to v9: 1 Hz, full task failure
+  definitions=True. No other inference or scheduler changes.'
+reproduction_boundary: Sentinel-inspired Qwen video QA adaptation, not a full reproduction.
+  Full observed history, separate camera runs, latest-eligible scheduler. Qwen Instruct,
+  greedy BF16/SDPA with 256-token ceiling.
+environment: fomofd-vlm
+environment_spec: lerobot/environments/fomofd-vlm.yml
+prompt_file: lerobot/configs/benchmark/vlm/prompt_video_v13_full_definitions.txt
+task_definitions: lerobot/configs/benchmark/vlm/tasks_video_v6.yaml
+labels_for_selection_and_reporting_only: lerobot/configs/benchmark/prl_episode_labels.yaml
+main_wm_reference: lerobot/configs/benchmark/unified_benchmark.yaml
+models:
+  qwen3_vl_8b_instruct:
+    repo_id: Qwen/Qwen3-VL-8B-Instruct
+    revision: 0c351dd01ed87e9c1b53cbc748cba10e6187ff3b
+    path: fomofd/model/vlm/Qwen/Qwen3-VL-8B-Instruct
+    max_new_tokens: 256
+    require_think: false
+    system_message: null
+    response_instructions: Give a brief evidence-based assessment in at most two sentences,
+      then put the final decision on its own line. The final line must be exactly
+      <answer>FAIL</answer> or <answer>NORMAL</answer>. Use answer tags only for that
+      final decision. Do not include anything after it.
+    video_fps: 1.0
+    history_seconds: null
+inputs:
+  K: 4
+  L: 4
+  index_space: raw_recorded_wall_time
+  first_eligible_endpoint: 7
+  map_to_raw_with: observation.raw_frame_index
+  timestamp_column: observation.wall_timestamp
+  raw_timestamp_key: timestamps
+  timestamp_origin: first_raw_recording_wall_timestamp
+  timestamp_display_decimals: 3
+  retain_full_precision_timestamps_in_trace: true
+  gap: recorded_video_timestamps
+  input_modality: per_model_history_video
+  views:
+  - fix
+  - wrist
+  view_policy: separate_replay_per_view
+  raw_image_keys:
+    fix: images_fix
+    wrist: images_wrist
+  action_inputs: false
+  state_inputs: false
+  use_vae_or_dinov2_features: false
+  access_to_other_view: false
+  pad_missing_history: false
+  uniform_fps_video_conversion: false
+  sampling: full_history_zero_anchored_or_bounded_endpoint_anchored
+  temporal_padding: native_processor_repeats_last_frame_for_pair_only
+  scheduler_start_alignment: keep_original_K4L4_first_eligible_endpoint_7
+  history_source: models.<model>.history_seconds; null means full observed history
+prompt_assembly:
+  chat_template: pinned_local_processor
+  system_message: per_model
+  add_generation_prompt: true
+  history_across_requests: false
+  user_content_order: prompt_text_then_native_video
+  task_specific_definitions: shared_visual_rules_then_all_task_failure_definitions
+  same_task_text_for_both_models_and_both_views: true
+  include_episode_ids_or_filenames: false
+  include_episode_outcome_or_failure_group: false
+  include_onset_or_failure_origin: false
+  include_nominal_or_final_episode_duration: false
+preprocessing:
+  helper: vlm_video.prepare_video_inputs
+  image_patch_size: 16
+  min_pixels_per_image: 4096
+  max_pixels_per_image: 262144
+  preserve_aspect_ratio: true
+  crop: false
+  stitch_views_or_frames: false
+  timestamp_overlay_on_pixels: false
+  processor_do_resize: false
+  record_original_and_processed_shapes: true
+  record_image_grid_and_visual_token_counts: true
+  video_sampling_in_processor: false
+  video_timestamp_metadata: integer_microsecond_ticks_over_1e6_timebase_not_camera_fps
+  native_video_temporal_patch_size: 2
+  record_video_grid_and_visual_token_counts: true
+inference:
+  device: cuda:0
+  dtype: bfloat16
+  attention: sdpa
+  eval_mode: true
+  inference_mode: true
+  local_files_only: true
+  cpu_offload: false
+  quantization: null
+  compile: false
+  window_batch_size: 1
+  concurrent_requests: 1
+  resident_models: 1
+  seed: 0
+  matmul_precision: highest
+  tf32: false
+  cache_visual_embeddings_between_requests: false
+  cache_kv_between_requests: false
+generation:
+  do_sample: false
+  num_beams: 1
+  use_cache: true
+  temperature: null
+  top_p: null
+  top_k: null
+  repetition_penalty: 1.0
+  output_scores: false
+  max_new_tokens_source: models.<model>.max_new_tokens
+  min_new_tokens: 0
+  label_constraint: null
+  stop_on: complete_valid_final_answer_or_eos_or_budget_or_timeout
+  decision_timeout_s: 300.0
+  timeout_semantics: cooperative between generation steps, measured from preprocessing
+    start; not a hard GPU interrupt
+  invalid_output_policy: record_indeterminate_episode_and_continue; stop_run_on_OOM_or_runtime_error
+  retry_invalid_outputs_inside_timed_stream: false
+streaming:
+  clock: recorded_wall_time
+  replay_speed: 1.0
+  scheduling: latest_available_eligible_endpoint
+  snapshot_endpoint_before_processing: true
+  pending_window_queue: false
+  process_same_endpoint_twice: false
+  processing_includes:
+  - prompt_render_and_image_selection
+  - resize_and_processor
+  - host_to_device
+  - vision_encoding_and_language_prefill
+  - all_generated_assessment_and_final_answer
+  - gpu_synchronization_and_final_answer_parsing
+  - alarm_dispatch
+  outside_timer:
+  - model_loading
+  - warmup
+  - raw_episode_decode_to_cpu_ram
+  - disk_writes
+  precompute_future_image_features: false
+  warmup_source: calibration_success_only
+  warmup_windows: 3
+  reset_request_and_episode_state: true
+  stop_at_first_FAIL: false
+  continue_NORMAL_until_source_exhausted: true
+  drain_last_available_endpoint: true
+  report_alarm_completions_after_source_end_separately: true
+evaluation:
+  selection: all_test_episodes
+  skip_based_on_wm_or_other_detector_results: false
+  test_success_range_inclusive:
+  - 19
+  - 38
+  excluded_calibration_range_inclusive:
+  - 0
+  - 18
+  expected_counts_per_model_view:
+    needle_pickup:
+      success: 20
+      failure: 120
+    ring_over_post:
+      success: 20
+      failure: 120
+    tissue_retraction:
+      success: 20
+      failure: 40
+    shunt_insertion:
+      success: 20
+      failure: 40
+  expected_replays_all_models_views_tasks: 800
+  decision: post_onset_FAIL_with_frozen_persistence_latency
+  smoothing: none
+  consecutive_FAILs_required: 1
+  calibration_protocol: none_generated_label
+  matched_far: false
+  continuous_score: null
+  episode_auroc: null
+  primary_annotator_id: consensus_mean
+  onset_view: same_as_detector_view
+  deadline_seconds:
+  - 1
+  - 2
+  - 5
+  - 10
+  report:
+  - FAR
+  - FDR_any_alarm
+  - pre_onset_alarms
+  - pre_onset_evidence
+  - post_onset_detections
+  - misses
+  - deadline_rates
+  - conditional_delay
+  - errors
+  - invalid_outputs
+  - processed_and_skipped_endpoints
+  - source_age
+  - late_decisions
+  - late_alarms
+  - on_time_FDR
+  - unknown_episode_bounds
+  shared_episode_latency: intersect_post_onset_detections_with_same_onset_reference
+  never_impute_unmeasured_wm_online_results: true
+outputs:
+  per_task_root: fomofd/tasks/{task}/prl_data/score_result/vlm_online/{protocol_id}/{run_id}
+  report_root: fomofd/tasks/benchmark_results/vlm_online/{run_id}
+  console_logs: logs/benchmarks/{date}/vlm_online/{run_id}
+  preserve_existing_results: true
+  immutable_run_identity:
+  - model_revision_and_weight_checksums
+  - prompt_and_task_definition_hashes
+  - full_resolved_protocol_and_environment
+  - dataset_mapping_and_timestamp_provenance
+  - report_label_and_onset_snapshot_hash
+  retain_per_request:
+  - prepared_and_raw_frame_indices
+  - full_precision_timestamps
+  - rendered_prompt
+  - generated_token_ids
+  - raw_response
+  - parsed_label
+  - image_shapes_and_grids
+  - stage_times
+  - peak_gpu_memory
+  - endpoint_source_time
+  - processing_start_time
+  - alarm_ready_time
+development:
+  episode_index: 0
+  split: calibration
+  endpoints:
+  - 7
+  - last
+  all_tasks_and_views: true
+  require_all_outputs_valid: true
+  freeze_before_test: true
+  stream_all_tasks_views: true
+  endpoint_rule: early_and_last_prepared_endpoint
+  additional_last_endpoints:
+    qwen3_vl_8b_instruct:
+      needle_pickup:
+      - 12
+      ring_over_post:
+      - 15
+      tissue_retraction:
+      - 6
+      shunt_insertion:
+      - 4
+sources:
+- https://huggingface.co/Qwen/Qwen3-VL-8B-Instruct
+- https://github.com/QwenLM/Qwen3-VL
+- https://huggingface.co/nvidia/Cosmos-Reason2-8B
+- https://github.com/nvidia-cosmos/cosmos-reason2
+- https://arxiv.org/html/2410.04640v2#A2
+evaluation_protocol: lerobot/configs/benchmark/evaluation_protocol_v3.yaml

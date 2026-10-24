@@ -1,0 +1,58 @@
+# ACT checkpoint-native camera tokens, [16,768], flattened without extra normalization.
+# The 1x16 layout is a sequence adapter for the existing loader, not a spatial grid.
+# Expert training only; same episode split, model, optimizer, and budget as reference.
+# Reference: fomofd/tasks/shunt_insertion/model/fiper_rnd/rnd_vfmfvae_z8_fix_state_off_data100_seed0/config.json
+fiper_rnd:
+  data:
+    dataset_repo_id: local/shunt_insertion_tokens
+    dataset_root: ../fomofd/tasks/shunt_insertion/data/processed_le_v21_tokens
+    output_dir: ../fomofd/tasks/shunt_insertion/model/fiper_rnd
+    val_ratio: 0.1
+    split_seed: 0
+    fix_key: observation.tokens.fix_camera
+    wrist_key: observation.tokens.wrist_camera
+    state_key: observation.state
+    use_fix_camera: true
+    use_wrist_camera: false
+    use_state: false
+    latent_grid_height: 1
+    latent_grid_width: 16
+    latent_channels: 768
+    normalize_vfmf_vae_latents: false
+    vfmf_vae_latent_stats_path: null
+    vfmf_vae_latent_std_floor: 0.02
+    state_dim: 10
+    obs_pool: flatten
+  runtime:
+    batch_size: 128
+    val_batch_size: 256
+    max_steps: 80000
+    log_freq: 400
+    val_freq: 2000
+    save_freq: 10000
+    num_workers: 8
+    persistent_workers: true
+    pin_memory: true
+    device: cuda
+    use_amp: true
+    amp_dtype: bfloat16
+    max_val_batches: null
+  optim:
+    lr: 0.0001
+    min_lr: 1.0e-06
+    weight_decay: 1.0e-05
+    grad_clip_norm: 1.0
+    scheduler: cosine
+    plateau_factor: 0.5
+    plateau_patience: 3
+  model:
+    rnd_loss: mse
+    predictor_hidden_dim_1: 2048
+    predictor_hidden_dim_2: 1024
+    output_dim: 256
+    use_layernorm: false
+    dropout: 0.0
+  score:
+    score_reduction: mean
+  experiment_name: rnd_act_tokens_q16_d768_fix_state_off_data100_seed0
+  seed: 0

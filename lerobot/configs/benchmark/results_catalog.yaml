@@ -1,0 +1,199 @@
+schema_version: 1
+offline_endpoint_options: true
+evaluation_protocol: lerobot/configs/benchmark/evaluation_protocol_v3.yaml
+supplementary_methods:
+- act_ensemble_rot
+policy_success_rates: policy_success_rates.yaml
+training_setup:
+  verified_date: '2026-10-18'
+  scope: Original ACT policies at checkpoint 200000, their fixed/wrist visual feature
+    VAEs, and full-data main FM-WM splits.
+  demonstration_operators:
+    total_distinct_people: 1
+    same_person_across_tasks: true
+  tasks:
+  - task: needle_pickup
+    label: Needle Pickup
+    expert_episodes: 250
+    operators: 1
+    act_train_episodes: 250
+    act_val_episodes: 0
+    visual_vae_train_episodes: 225
+    visual_vae_val_episodes: 25
+    wm_train_episodes: 225
+    wm_val_episodes: 25
+  - task: ring_over_post
+    label: Ring Over Post
+    expert_episodes: 250
+    operators: 1
+    act_train_episodes: 250
+    act_val_episodes: 0
+    visual_vae_train_episodes: 225
+    visual_vae_val_episodes: 25
+    wm_train_episodes: 225
+    wm_val_episodes: 25
+  - task: tissue_retraction
+    label: Tissue Retraction
+    expert_episodes: 100
+    operators: 1
+    act_train_episodes: 100
+    act_val_episodes: 0
+    visual_vae_train_episodes: 90
+    visual_vae_val_episodes: 10
+    wm_train_episodes: 90
+    wm_val_episodes: 10
+  - task: shunt_insertion
+    label: Shunt Insertion
+    expert_episodes: 100
+    operators: 1
+    act_train_episodes: 100
+    act_val_episodes: 0
+    visual_vae_train_episodes: 90
+    visual_vae_val_episodes: 10
+    wm_train_episodes: 90
+    wm_val_episodes: 10
+  act:
+    dinov2_model_name: dinov2_vitb14_reg
+    backbone: DINOv2 ViT-B/14 with registers
+    backbone_frozen: true
+    patch_tokens_per_view:
+    - 256
+    - 768
+    compressed_tokens_per_view:
+    - 16
+    - 768
+    summary: ACT used all expert episodes with no held-out expert validation split.
+      Its jointly trained action VAE used the same full population. The DINOv2 ViT-B/14-with-registers
+      backbone (dinov2_vitb14_reg) was frozen, not fine-tuned; final-layer normalized
+      patch features (256 x 768 per view at 224 x 224 input) fed trainable camera
+      token compressors (16 x 768 per view) and the trainable ACT policy.
+  visual_vae:
+    split_unit: episode
+    val_ratio: 0.1
+    split_seed: 0
+    identical_to_main_wm_episode_ids: true
+    summary: The separate fixed/wrist visual feature VAEs used disjoint 90/10 episode
+      splits, with split seed 0. Both cameras and the main FM-WM used identical train/validation
+      episode IDs within each task. These VAEs are distinct from ACT's action VAE.
+  interpretation: One person collected all four expert datasets; the quantity ablation
+    does not test operator diversity. Validation is stage-specific, since ACT was
+    trained on all expert episodes, including those held out for visual-VAE/FM-WM
+    validation.
+summary_sources:
+  ace: ace_normal_bins
+  act_ensemble_pos: act_ensemble
+  act_ensemble_rot: act_ensemble
+offline:
+- id: wm_k4_l4_seed2_local_20261018
+  title: K4 L4 · seed 2
+  family: seed_repeat
+  source: fomofd/tasks/benchmark_results/ablations/2026-10-21_local_seed23/offline/wm_k4_l4_seed2_local_20261018
+- id: wm_k4_l4_seed3_local_20261018
+  title: K4 L4 · seed 3
+  family: seed_repeat
+  source: fomofd/tasks/benchmark_results/ablations/2026-10-21_local_seed23/offline/wm_k4_l4_seed3_local_20261018
+- id: main
+  title: Main · K4 L4
+  family: main
+  source: logs/benchmarks/2026-10-07/batched_unified_run/results/all_tasks_complete
+- id: wm_nc_k1_l4
+  title: K1 L4
+  family: K
+  source: logs/benchmarks/2026-10-07/k_ablation_wm_nc/k1_l4
+- id: wm_nc_k2_l4
+  title: K2 L4
+  family: K
+  source: logs/benchmarks/2026-10-07/k_ablation_wm_nc/k2_l4
+- id: wm_nc_k3_l4
+  title: K3 L4
+  family: K
+  source: logs/benchmarks/2026-10-07/k_ablation_wm_nc/k3_l4
+- id: wm_nc_k6_l4
+  title: K6 L4
+  family: K
+  source: logs/benchmarks/2026-10-07/k_ablation_wm_nc/k6_l4
+- id: wm_nc_k4_l1
+  title: K4 L1
+  family: L
+  source: logs/benchmarks/2026-10-07/l1_l2_all_tasks/results/all_tasks_l1
+- id: wm_nc_k4_l2
+  title: K4 L2
+  family: L
+  source: logs/benchmarks/2026-10-07/l1_l2_all_tasks/results/all_tasks_l2
+- id: wm_nc_k4_l6
+  title: K4 L6
+  family: L
+  source: fomofd/tasks/benchmark_results/ablations/2026-10-09_imported/offline/wm_nc_k4_l6
+- id: wm_nc_k4_l8
+  title: K4 L8
+  family: L
+  source: fomofd/tasks/benchmark_results/ablations/2026-10-09_imported/offline/wm_nc_k4_l8
+- id: wm_nc_k8_l4
+  title: K8 L4
+  family: K
+  source: fomofd/tasks/benchmark_results/ablations/2026-10-09_imported/offline/wm_nc_k8_l4
+- id: wm_k4_l4_seed1
+  title: K4 L4 · seed 1
+  family: seed
+  source: fomofd/tasks/benchmark_results/ablations/2026-10-13_seed1_desktop_ws05d/offline/wm_k4_l4_seed1_desktop_ws05d
+  source_variant: wm_k4_l4_seed1_desktop_ws05d
+- id: wm_k4_l4_data33
+  title: K4 L4 · one-third data
+  family: data_size
+  source: fomofd/tasks/benchmark_results/ablations/2026-10-09_imported/offline/wm_k4_l4_data33
+- id: wm_k4_l4_data66
+  title: K4 L4 · two-thirds data
+  family: data_size
+  source: fomofd/tasks/benchmark_results/ablations/2026-10-09_imported/offline/wm_k4_l4_data66
+- id: ace_normal_bins
+  title: ACE
+  family: sampling
+  source: fomofd/tasks/benchmark_results/analyses/2026-10-10/ace_histogram_revision/offline
+- id: fused_view_joint_k4_l4
+  title: Fused-view WM · joint score · K4 L4
+  family: view_fusion
+  source: fomofd/tasks/benchmark_results/ablations/2026-10-11_fused_joint/offline/fused_view_joint_k4_l4
+- id: wm_k4_l4_action_none
+  title: No action · K4 L4
+  family: action
+  action_mode: none
+  source: fomofd/tasks/benchmark_results/ablations/2026-10-14_action_k4_l4/offline/wm_k4_l4_action_none
+  sha256: 941d131556248fdabef706da477c2371899aa27d0e22ad1348d78296590cdcde
+- id: act_ensemble
+  title: AEU · 3 ACT policies
+  family: main
+  source: fomofd/tasks/benchmark_results/experiments/2026-10-15_ensemble_frozen_replay/offline_act_ensemble_verified
+online:
+- source: fomofd/tasks/benchmark_results/experiments/2026-10-15_ensemble_frozen_replay/online_existing
+  title: Corrected main methods · full selected traces
+- source: fomofd/tasks/benchmark_results/experiments/2026-10-15_ensemble_frozen_replay/online_act_ensemble
+  title: AEU / AEU-Rot · full selected traces
+- source: fomofd/tasks/benchmark_results/experiments/2026-10-22_kl_frozen_v3/online
+  title: K/L WM-NC · frozen-v3 full selected traces
+  sha256: 17b9d0048e8e45473c8e28fc300559a0641da1a1da50fd4ddd293fb32eb51029
+functional_band_runs:
+- path: functional/2026-10-20/noact_aeu
+- path: functional/2026-10-08/all_available
+studies:
+- id: expert_policy_score_distributions
+  title: Expert vs policy episode-max scores · median and IQR
+  kind: score_distributions
+  date: '2026-10-20'
+  path: analyses/2026-10-20/expert_policy_score_distributions
+- id: main_calibration_sensitivity_500
+  title: Main WM-NC calibration sensitivity · 500 splits
+  kind: calibration_sensitivity
+  date: '2026-10-13'
+  path: analyses/2026-10-13/main_calibration_sensitivity_500
+model_selection_notes:
+- The reported seed-1 run was selected after benchmark comparison. The four-seed study
+  uses main seed 0, that seed-1 run, and the recorded seed-2/3 repeats.
+vlm_online:
+- id: qwen_v9
+  title: Qwen v9 · full test replay · corrected onset protocol
+  path: experiments/2026-10-15_ensemble_frozen_replay/qwen_v9_frozen
+  sha256:
+    report.json: 9abe8a4b3f20871521f04aac3af36f0eb37d6c3a68a86579f0d8d87e2c276e85
+    plan.json: b3db54b84140286e05ade49d3d42e72a381555d724010aff6f14c15de643cdc5
+    summary.csv: bda4fb80987634af569a213835a40d53bc1ad06279d40241c6e05c6da98ec25f
+offline_output: offline_protocols/2026-10-20_mean_onset_v3

@@ -1,0 +1,142 @@
+# Draft visual descriptions for review; failure-mode NAMES match the label file.
+# Definitions below are proposed interpretations, not new ground-truth labels.
+# Every request gets ALL definitions for its TASK, including success episodes.
+# Never select a definition using the episode's annotated failure group.
+schema_version: 1
+status: draft_for_task_owner_review
+shared_visual_rules: >-
+  Judge only the camera view provided. A small or absent visible change, a pause,
+  an occlusion by the robot itself, or an object leaving this camera's view does
+  not by itself prove failure. Identify a monitored event only when supported
+  by visible evidence. Do not infer commanded actions, hidden contact forces,
+  another camera's observations, or membership in a training distribution.
+
+tasks:
+  needle_pickup:
+    normal_task_stages: >-
+      Approach and align the gripper with the needle; close the gripper to capture the needle; lift and retain the needle under control.
+    prepared_dataset: fomofd/tasks/needle_pickup/prl_data/processed_le_v21_vfmf_vae_fix_wrist
+    task_description: >-
+      Use the robotic gripper to grasp and lift a surgical needle from the work
+      surface while retaining control of the needle.
+    success_criteria: >-
+      The needle is visibly secured by the gripper and lifted from the surface
+      without being dropped or slipping free. Approaching the needle and an
+      incomplete lift are ordinary intermediate stages.
+    failure_definitions:
+      Needle Drop: >-
+        The needle visibly falls or is released unintentionally after having
+        been held, rather than remaining secured during the pickup.
+      Insecure Grasp: >-
+        A visible failed grasp: the jaws close without capturing the needle,
+        or the tool attempts to lift while the needle remains unsecured.
+      Blood Occlusion: >-
+        Blood-like material visibly obscures the camera's view of the tool or
+        needle and interferes with observing the task.
+      OOD Initial Condition: >-
+        A visibly abnormal starting arrangement prevents a feasible needle
+        pickup. Novel appearance alone is insufficient evidence.
+      Execution Mismatch: >-
+        Clearly abnormal tool motion, such as an unintended-looking deviation
+        that visibly disrupts pickup. Images alone cannot establish a mismatch
+        between a hidden command and executed motion; do not assume one.
+      Needle Slippage: >-
+        The needle visibly slides or shifts out of its stable placement or
+        grasp, disrupting the attempted pickup or retention.
+    review_notes:
+      - Confirm intended lift/retention goal; no numerical target pose is assumed.
+      - OOD Initial Condition needs an explicit allowed starting region/reference if distribution membership itself is to be judged.
+      - Execution Mismatch is only observable through its visual consequences with this input protocol.
+
+  ring_over_post:
+    normal_task_stages: >-
+      Approach and align with the ring; grasp and lift the ring; transport it toward the post; align the ring opening with the post; lower and place the ring over the post.
+    prepared_dataset: fomofd/tasks/ring_over_post/prl_data/processed_le_v21_vfmf_vae_fix_wrist
+    task_description: >-
+      Grasp and lift the ring, align its opening with the target post, and place
+      the ring over the post.
+    success_criteria: >-
+      The ring is placed around the target post after a controlled grasp and
+      transfer. Lifting, transporting, or aligning an unplaced ring is an
+      ordinary intermediate stage.
+    failure_definitions:
+      Post Misalignment: >-
+        The ring visibly fails to engage the post during a placement attempt,
+        such as striking the side while its opening misses the post. An offset
+        during an ordinary approach is not sufficient evidence.
+      Insecure Grasp: >-
+        A visible failed grasp: the jaws close without securely capturing the
+        ring, or the tool attempts to lift without retaining it.
+      Ring Drop: >-
+        The ring visibly falls or is released unintentionally before placement
+        over the post.
+      Blood Occlusion: >-
+        Blood-like material visibly obscures the camera's view of the ring,
+        tool, or post and interferes with observing the task.
+      Lateral Grasp Drift: >-
+        The grasp or held ring visibly drifts sideways out of its stable grasp
+        or placement alignment. Ordinary transport toward the post is not drift.
+      Ring Slippage: >-
+        The ring visibly slides or shifts unexpectedly relative to its support
+        or grasp, disrupting pickup or controlled placement.
+    review_notes:
+      - Confirm whether final release is required for task success; the draft does not require it.
+
+  tissue_retraction:
+    normal_task_stages: >-
+      Approach and align the tool with the tissue; establish a grasp; pull to retract the tissue while retaining it and controlling its displacement.
+    prepared_dataset: fomofd/tasks/tissue_retraction/prl_data/processed_le_v21_vfmf_vae_fix_wrist
+    task_description: >-
+      Grasp the tissue with the robotic tool and retract it while maintaining
+      a stable grasp and controlled tissue displacement.
+    success_criteria: >-
+      The tool retains the tissue and visibly displaces it for retraction.
+      Approaching, grasping, and an incomplete retraction are ordinary
+      intermediate stages.
+    failure_definitions:
+      Tissue Grasp Loss: >-
+        Tissue that was held visibly slips free or loses contact with the
+        gripper during attempted retraction.
+      Fixed Tissue Target: >-
+        The tissue appears anchored during a visible pulling attempt, with
+        tool motion or tension but no corresponding intended retraction.
+        Still images without evidence of pulling do not establish this event.
+      Tissue Disturbance: >-
+        The tissue is visibly displaced or deformed by a disturbance that
+        disrupts the controlled retraction. Expected deformation from normal
+        retraction is not sufficient evidence.
+      Needle Intrusion: >-
+        An extraneous needle visibly enters this camera's tissue-retraction
+        workspace. Judge its first visibility in this view, not another view.
+    review_notes:
+      - Confirm retraction direction or target if these should be specified.
+      - Fixed Tissue Target may be visually ambiguous without force or action inputs.
+
+  shunt_insertion:
+    normal_task_stages: >-
+      Hold and position the shunt; approach the target opening; adjust alignment; advance the shunt into the opening under controlled contact.
+    prepared_dataset: fomofd/tasks/shunt_insertion/prl_data/processed_le_v21_vfmf_vae_fix_wrist
+    task_description: >-
+      Hold and position the shunt, align it with the target opening, and insert
+      it while maintaining controlled contact and alignment.
+    success_criteria: >-
+      The shunt enters the intended opening with stable alignment. Approaching
+      the opening and an incomplete insertion are ordinary intermediate stages.
+    failure_definitions:
+      Insertion Misalignment: >-
+        During an insertion attempt the shunt visibly misses the opening or
+        presses against its edge rather than entering. An offset while still
+        approaching is not sufficient evidence.
+      Shunt Disturbance: >-
+        The shunt is visibly displaced or disturbed in a way that disrupts
+        the controlled insertion.
+      Lateral Grasp Drift: >-
+        The grasp or held shunt visibly shifts sideways out of stable insertion
+        alignment. Ordinary positioning motion is not sufficient evidence.
+      Camera Freeze: >-
+        Visual evidence indicates a frozen camera feed despite evidence that
+        the observed scene should be changing. Repeated or nearly identical
+        images, or the deliberately omitted interval, are not sufficient alone.
+    review_notes:
+      - Confirm the intended insertion depth or terminal configuration if required.
+      - A truly static scene and a frozen feed can be indistinguishable in five images; no pixel-equality heuristic is added.

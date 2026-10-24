@@ -1,0 +1,39 @@
+schema_version: 1
+classification_id: failure_categories_2026_10_15_v1
+labels: lerobot/configs/benchmark/prl_episode_labels.yaml
+expected_failure_episodes: 320
+notes:
+  - Categories describe failure type; natural/induced origin remains in the episode labels.
+  - Intervention mechanisms remain in PROTOCOL.md and raw recording metadata.
+  - Both lateral-grasp-drift modes belong to sensing/actuation: RP uses a translation-command bias; SI uses repeated tool-frame position biases.
+  - This author-confirmed reporting taxonomy does not change scores, thresholds, onsets, or episode membership.
+categories:
+  grasp:
+    title: Grasp acquisition and retention failures
+    expected_failure_episodes: 90
+    modes:
+      needle_pickup: [Needle Drop, Insecure Grasp]
+      ring_over_post: [Insecure Grasp, Ring Drop]
+      tissue_retraction: [Tissue Grasp Loss]
+  spatial:
+    title: Spatial-configuration errors
+    expected_failure_episodes: 50
+    modes:
+      needle_pickup: [OOD Initial Condition]
+      ring_over_post: [Post Misalignment]
+      shunt_insertion: [Insertion Misalignment]
+  scene:
+    title: Scene disturbances
+    expected_failure_episodes: 80
+    modes:
+      needle_pickup: [Needle Slippage]
+      ring_over_post: [Ring Slippage]
+      tissue_retraction: [Fixed Tissue Target, Tissue Disturbance, Needle Intrusion]
+      shunt_insertion: [Shunt Disturbance]
+  sensing_actuation:
+    title: Sensing and actuation anomalies
+    expected_failure_episodes: 100
+    modes:
+      needle_pickup: [Blood Occlusion, Execution Mismatch]
+      ring_over_post: [Blood Occlusion, Lateral Grasp Drift]
+      shunt_insertion: [Lateral Grasp Drift, Camera Freeze]

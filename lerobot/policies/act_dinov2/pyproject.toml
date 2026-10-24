@@ -1,0 +1,13 @@
+[project]
+authors = [{name = "anonymous Huang", email = "maintainer@example.invalid"}]
+dependencies = ["lerobot"]
+name = "lerobot_policy_act_dinov2"
+requires-python = ">=3.10"
+version = "0.1.0"
+
+[build-system]
+build-backend = "hatchling.build"
+requires = ["hatchling"]
+
+[project.entry-points."lerobot.policies"]
+act_dinov2 = "lerobot_policy_act_dinov2"

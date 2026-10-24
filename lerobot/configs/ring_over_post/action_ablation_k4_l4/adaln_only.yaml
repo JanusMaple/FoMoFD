@@ -1,0 +1,105 @@
+fm_wm:
+  data:
+    dataset_repo_id: local/ring_over_post_vfmf_vae_fix_wrist
+    dataset_root: ../fomofd/tasks/ring_over_post/data/processed_le_v21_vfmf_vae_fix_wrist
+    output_dir: ../fomofd/tasks/ring_over_post/model/fm_wm
+    val_ratio: 0.1
+    split_seed: 0
+    fix_key: observation.latents.fix_camera
+    wrist_key: observation.latents.wrist_camera
+    state_key: observation.state
+    action_key: action
+    proactive_action_key: null
+    proactive_action_batch_key: null
+    use_fix_camera: true
+    use_wrist_camera: true
+    num_cameras: 2
+    history_len: 4
+    action_chunk_len: 4
+    pred_horizon: 4
+    latent_grid_height: 16
+    latent_grid_width: 16
+    latent_channels: 8
+    normalize_vfmf_vae_latents: true
+    latent_normalization_mode: channel
+    vfmf_vae_latent_stats_path: ../fomofd/tasks/ring_over_post/data/processed_le_v21_vfmf_vae_fix_wrist/meta/latent_stats.npz
+    vfmf_vae_latent_std_floor: 0.02
+    normalize_actions: true
+    action_normalization_mode: dp_gripper_zscore_rot_identity
+    action_stats_path: ../fomofd/tasks/ring_over_post/data/processed_le_v21_vfmf_vae_fix_wrist/meta/latent_stats.npz
+    action_std_floor: 1.0e-06
+    use_state: false
+    state_dim: 10
+    train_episode_fraction: 1.0
+    train_subset_seed: 0
+  runtime:
+    batch_size: 8
+    val_batch_size: 8
+    max_steps: 80000
+    log_freq: 100
+    val_freq: 1000
+    save_freq: 1000
+    num_workers: 8
+    persistent_workers: false
+    pin_memory: true
+    device: cuda
+    use_amp: true
+    amp_dtype: bfloat16
+    max_val_batches: 50
+  optim:
+    lr: 0.0001
+    min_lr: 1.0e-06
+    weight_decay: 1.0e-05
+    grad_clip_norm: 1.0
+    scheduler: cosine
+    plateau_factor: 0.5
+    plateau_patience: 3
+  state_conditioner:
+    use_state_tokens: true
+    token_dim: 504
+    hidden_dim: 512
+    num_layers: 2
+    num_heads: 8
+    dropout: 0.1
+  action_conditioner:
+    action_dim: 10
+    token_dim: 504
+    hidden_dim: 512
+    num_layers: 2
+    num_heads: 8
+    dropout: 0.1
+    use_cross_attention: false
+    use_action_adaln: true
+    global_pool_mode: mean_pool_tokens
+    global_cond_dim: 504
+    global_hidden_dim: 512
+  backbone:
+    hidden_dim: 504
+    depth: 10
+    heads: 8
+    mlp_dim: 2048
+    dropout: 0.1
+    separable_attention: true
+    separable_window_size: 1
+  fm_head:
+    path_kind: linear
+    time_sampling: uniform
+    min_time: 0.0
+    max_time: 1.0
+    base_std: 1.0
+    ode_solver: rk4
+    ode_rtol: 0.0001
+    ode_atol: 1.0e-05
+    score_kind: squared_norm
+    score_transport_mode: ode
+    proactive_score_mode: fm_wm_entropy
+    per_chunk_wm_samples: 1
+    proactive_num_action_chunks: null
+    ace_cov_eps: 1.0e-06
+  aux_head:
+    use_one_step_aux_head: true
+    one_step_loss_weight: 0.5
+  loss:
+    flow_weight: 1.0
+  experiment_name: fm_wm_vfmfvae_z8_both_state_off_k4_l4_action_adaln_data100_seed0
+  seed: 0

@@ -1,0 +1,81 @@
+faildetect_logpzo:
+  data:
+    dataset_repo_id: local/ring_over_post_vfmf_vae_fix_wrist
+    dataset_root: ../fomofd/tasks/ring_over_post/data/processed_le_v21_vfmf_vae_fix_wrist
+    output_dir: ../fomofd/tasks/ring_over_post/model/faildetect_logpzo
+
+    val_ratio: 0.1
+    split_seed: 0
+
+    fix_key: observation.latents.fix_camera
+    wrist_key: observation.latents.wrist_camera
+    state_key: observation.state
+
+    use_fix_camera: true
+    use_wrist_camera: false
+    use_state: true
+
+    latent_grid_height: 16
+    latent_grid_width: 16
+    latent_channels: 8
+    normalize_vfmf_vae_latents: true
+    vfmf_vae_latent_stats_path: ../fomofd/tasks/ring_over_post/data/processed_le_v21_vfmf_vae_fix_wrist/meta/latent_stats.npz
+    vfmf_vae_latent_std_floor: 0.02
+    state_dim: 10
+
+  runtime:
+    batch_size: 128
+    val_batch_size: 256
+
+    max_steps: 200000
+    log_freq: 200
+    val_freq: 2000
+    save_freq: 2000
+
+    num_workers: 8
+    persistent_workers: true
+    pin_memory: true
+
+    device: cuda
+    use_amp: true
+    amp_dtype: bfloat16
+
+    max_val_batches: null
+
+  optim:
+    lr: 1.0e-4
+    min_lr: 1.0e-6
+    weight_decay: 1.0e-5
+    grad_clip_norm: 1.0
+
+    scheduler: cosine
+    plateau_factor: 0.5
+    plateau_patience: 3
+
+  model:
+    hidden_dim: 504
+    depth: 8
+    heads: 8
+    mlp_dim: 2048
+    dropout: 0.1
+
+  fm_head:
+    path_kind: linear
+    time_sampling: uniform
+
+    min_time: 0.0
+    max_time: 1.0
+    base_std: 1.0
+
+    ode_solver: dopri5
+    ode_rtol: 1.0e-4
+    ode_atol: 1.0e-5
+
+    score_kind: base_logp
+    score_transport_mode: ode
+
+  loss:
+    flow_weight: 1.0
+
+  experiment_name: logpzo_vfmfvae_z8_fix_state_on_data100_seed0
+  seed: 0

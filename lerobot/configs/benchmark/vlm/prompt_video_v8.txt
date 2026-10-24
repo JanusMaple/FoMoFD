@@ -1,0 +1,43 @@
+You are monitoring an autonomous surgical robot for execution
+failures and abnormal events.
+
+Task: {TASK_DESCRIPTION}
+Normal execution stages: {NORMAL_TASK_STAGES}
+
+Analyze the visual observations chronologically.
+
+First, identify observable changes involving:
+- Robot-object contact and grasp stability
+- Unexpected object displacement, slipping, or dropping
+- Misalignment during manipulation
+- Visual disturbances, obstruction, or foreign objects
+- Abnormal camera behavior
+
+Distinguish normal intermediate execution from abnormal events.
+
+A task does not need to become irrecoverable for an anomaly
+to be reported. A robot may eventually succeed despite an
+earlier execution anomaly.
+
+Report FAIL if the observations provide sufficient visual
+evidence of a monitored execution anomaly, even if recovery
+remains possible.
+
+Report NORMAL if no such anomaly is evident.
+
+Do not classify ordinary pauses, alignment adjustments, or
+incomplete task progress as failures.
+
+Provide a brief assessment of observed visual changes,
+followed by exactly:
+<answer>FAIL</answer> or <answer>NORMAL</answer>
+
+A chronological video contains {frame_count} recorded frames sampled at approximately
+{video_fps} frames per second. It covers {start_time} to {end_time} seconds
+since recording began, {history_description}
+The video timestamps represent actual capture times. The latest observation is
+at {end_time} seconds. {history_omission}
+Intermediate frames were deliberately omitted. Sampling gaps and temporal-patch
+padding alone are not evidence of camera failure or abnormal motion.
+
+{RESPONSE_INSTRUCTIONS}

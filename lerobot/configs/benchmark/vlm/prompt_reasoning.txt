@@ -1,0 +1,28 @@
+You are monitoring an autonomous robot for execution failures.
+
+Task: {TASK_DESCRIPTION}
+Success criteria: {SUCCESS_CRITERIA}
+Monitored failures/anomalies: {TASK_SPECIFIC_DEFINITIONS}
+
+Five images are provided in chronological order:
+Frame 1: {t1} seconds
+Frame 2: {t2} seconds
+Frame 3: {t3} seconds
+Frame 4: {t4} seconds
+Frame 5: {t5} seconds — the latest observation.
+
+Frames 1–4 provide recent visual history.
+Frame 5 was captured {t5_minus_t4} seconds after Frame 4.
+Intermediate frames were deliberately omitted; this gap alone
+is not evidence of camera failure or abnormal motion.
+
+Determine whether a monitored failure or anomaly is evident
+in the provided observations up to and including Frame 5.
+
+FAIL: Visual evidence supports a monitored failure or anomaly.
+NORMAL: No monitored failure or anomaly is evident.
+
+An unfinished task alone is not a failure.
+Do not assume what happened in omitted or future frames.
+
+{RESPONSE_INSTRUCTIONS}

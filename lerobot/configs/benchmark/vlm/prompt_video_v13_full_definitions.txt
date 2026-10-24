@@ -1,0 +1,55 @@
+You are monitoring an autonomous surgical robot for execution
+failures and abnormal events.
+
+Task: {TASK_DESCRIPTION}
+Normal execution stages: {NORMAL_TASK_STAGES}
+
+Monitored failure definitions for this task:
+{TASK_SPECIFIC_DEFINITIONS}
+
+These are possible failure modes, not events known to have occurred.
+Apply the same visual evidence requirements below to every definition.
+
+Evaluate the observations in chronological order.
+
+First, identify the current task stage.
+
+Then determine whether a specific abnormal event is visible:
+
+- An object is dropped after being held.
+- A previously established grasp is lost.
+- A grasp attempt visibly fails.
+- An insertion attempt produces clear abnormal contact
+  or persistent misalignment.
+- An unexpected object or visual obstruction appears.
+- Camera observations exhibit an identifiable malfunction.
+
+A task stage that has not yet been completed is not a failure.
+
+Normal approach, alignment, pauses, and temporary adjustments
+are acceptable.
+
+Distinguish:
+1. A task stage that has not happened yet.
+2. An attempted action that visibly went wrong.
+
+Report FAIL for the second case, or for another identifiable
+execution or environmental anomaly.
+
+Do not require the entire task to become irrecoverable.
+
+If no abnormal event is established, report NORMAL.
+
+Briefly identify the observed event and visual evidence.
+Then output exactly:
+<answer>FAIL</answer> or <answer>NORMAL</answer>
+
+A chronological video contains {frame_count} recorded frames sampled at approximately
+{video_fps} frames per second. It covers {start_time} to {end_time} seconds
+since recording began, {history_description}
+The video timestamps represent actual capture times. The latest observation is
+at {end_time} seconds. {history_omission}
+Intermediate frames were deliberately omitted. Sampling gaps and temporal-patch
+padding alone are not evidence of camera failure or abnormal motion.
+
+{RESPONSE_INSTRUCTIONS}

@@ -1,0 +1,86 @@
+FM-WM experiment configuration conventions
+=========================================
+
+Each task has independent configuration groups:
+  k_ablation_l4/             k1.yaml, k2.yaml, k3.yaml, k4.yaml, k6.yaml, k8.yaml
+  l_ablation_k4/             l1.yaml, l2.yaml, l4.yaml, l6.yaml, l8.yaml
+  action_ablation_k4_l4/     no_action.yaml, adaln_only.yaml,
+                            cross_attention_only.yaml,
+                            cross_attention_and_adaln.yaml
+  data_size_ablation_k4_l4/  data33.yaml, data66.yaml, data100.yaml
+
+K means prediction horizon, L means observation history, and z8 means eight
+feature-VAE latent channels. Model-family and representation names are distinct
+from evaluation names: WM_NC and WM_PE are scoring modes of an FM-WM model.
+NoACT removes both action-conditioning paths. The full model uses
+cross-attention and AdaLN.
+
+The K=6 extension keeps L=4 and uses action_chunk_len=6, pred_horizon=6. It
+uses full expert training data and the same task-specific training budget as
+the K=4 reference. Horizon values are recorded steps, not seconds. K=6 training
+and reactive/predictive scoring reuse the per-frame feature caches; sampled
+proactive scoring additionally requires stored policy action chunks of length
+at least six. Historical H4 would mean K=4 with L=4; name new K=6 runs k6_l4.
+
+All runs for a task share one checkpoint parent:
+  fomofd/tasks/TASK/model/fm_wm/
+
+Run names describe model settings rather than the experiment that uses them:
+  fm_wm_vfmfvae_z8_both_state_off_k4_l4_action_both_data100_seed0
+
+Here "both" selects both cameras; "action_both" selects both action-conditioning
+mechanisms. A changed representation, camera selection, state inclusion, K, L,
+action conditioning, dataset fraction or training seed needs a distinct run name.
+If other settings (architecture, normalization, optimizer, split, subset seed,
+training budget) change, use a distinct versioned run name as well. The frozen
+run config.json, splits.json and checkpoint metadata preserve complete settings.
+
+The root flow_matching_wm.yaml and these four full configurations are identical
+and deliberately have the same output directory and experiment_name:
+  k_ablation_l4/k4.yaml
+  l_ablation_k4/l4.yaml
+  action_ablation_k4_l4/cross_attention_and_adaln.yaml
+  data_size_ablation_k4_l4/data100.yaml
+
+They describe ONE reusable model. Do not train the shared full configuration
+four times. Existing reference weights now use the canonical directory
+fm_wm_vfmfvae_z8_both_state_off_k4_l4_action_both_data100_seed0/checkpoints/best.pt
+under each task's model/fm_wm directory (see model_organization.md). This layout
+does not implement automatic checkpoint discovery or skip-existing training.
+Generic checkpoint filenames remain best.pt and last.pt.
+
+Every group holds all other settings fixed within a task. The reference model
+uses K=4, L=4, both cameras, both action-conditioning mechanisms, full expert
+training data and seed 0. Architecture, optimizer and training budget come from
+the saved main checkpoint for that task: 120000 steps for needle pickup, 80000
+for ring over post and tissue retraction, and 100000 for shunt insertion.
+The historical active YAMLs were editable ablation templates; the new root
+flow_matching_wm.yaml consistently describes the full reference model.
+
+Dataset-size ablation changes FM-WM training episodes only. First split expert
+episodes into train/validation with val_ratio=0.1 and split_seed=0. Then select
+floor(N_train * train_episode_fraction), with at least one episode, using a
+deterministically shuffled ordering controlled by train_subset_seed=0. Fractions
+are nested, validation IDs remain fixed, and unused training IDs are recorded
+in splits.json. Frozen feature VAEs and normalization are held fixed across
+these fractions; this is not an ablation of end-to-end representation training.
+Fractions of 25/50/75/100 percent select 56/112/168/225 simulation training
+episodes and 22/45/67/90 real-task training episodes.
+
+Expert data is the training/validation source. PRL successes are used for
+calibration, and held-out PRL episodes for benchmarking. The root score YAML
+selects the PRL dataset; use --split all to score all rollouts. To inspect expert
+validation scores, point a score config at the expert dataset and use --split val.
+The scorer reads the effective config.json next to the checkpoint, falling back
+to legacy flow_matching_wm.yaml when config.json is absent. Source filenames can
+therefore follow the experiment layout without breaking checkpoint loading.
+
+Legacy H1/H2/H3 run names mean K=1/2/3 with L=4. Keep their historical names and
+metadata for provenance; use the K/L convention for new runs. Renaming a folder
+does not change the trained horizon. Historical ring NA/AM/AT are K=3; current
+shunt NA/AM/AT checkpoints are K=4. Do not delete a shunt H3 horizon checkpoint
+under the assumption that it is a K=3 action-ablation run.
+
+Local audits, archived experiment notes, and draft preparation tools live under
+ignored logs/. No raw data, checkpoints or simulation assets are added by these
+configuration changes, and no new training has been launched.

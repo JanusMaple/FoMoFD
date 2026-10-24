@@ -1,0 +1,33 @@
+# Fixed before inspecting revised failure scores. No test-based score reversal.
+schema_version: 1
+benchmark_config: lerobot/configs/benchmark/unified_benchmark.yaml
+selection_seed: 20261009
+ace:
+  frames_per_episode: 5
+  fit_fraction: 0.6
+  num_samples: 32
+  min_width_m: 1.0e-8
+  width_multipliers: [8.0, 4.0, 2.0, 1.0, 0.5, 0.25, 0.125]
+  criteria:
+    max_zero_fraction: 0.25
+    max_saturated_fraction: 0.10
+    median_entropy_min: 0.5
+    median_entropy_max: 4.0
+    min_unique_scores: 10
+wm_pu:
+  normal_episodes: 3
+  phase_fractions: [0.1, 0.5, 0.9]
+  num_samples: 16
+  sample_batch_size: 4
+  step_grid: [1, 2, 4, 8, 16, 32, 64]
+  # Both views must pass two successive refinements on identical random inputs.
+  criteria:
+    score_relative_median: 0.01
+    score_relative_p95: 0.05
+    endpoint_relative_p95: 0.05
+rescore:
+  methods: [ace, wm_pu]
+  alpha: 0.05
+  calibrations: [episode, functional_band]
+  # Refit functional expert templates after the score changes; old ones are invalid.
+  preserve_primary_results: true

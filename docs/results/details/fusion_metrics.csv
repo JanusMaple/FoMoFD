@@ -1,0 +1,409 @@
+method,view,level,task,label,subset,failure_mode,success_n,false_alarm_n,failure_n,detected_n,unknown_n,FAR,FDR,episode_AUROC
+wm_nc_and,both,endpoint,needle_pickup,Fixed AND wrist,all,All failures,20,0,120,46,0,0.0,0.38333333333333336,0.9504166666666668
+wm_nc_and,both,endpoint,needle_pickup,Fixed AND wrist,natural,Natural,20,0,40,11,0,0.0,0.275,0.905
+wm_nc_and,both,endpoint,needle_pickup,Fixed AND wrist,induced,Induced,20,0,80,35,0,0.0,0.4375,0.973125
+wm_nc_and,both,endpoint,needle_pickup,Fixed AND wrist,failure_mode,Blood Occlusion,20,0,20,20,0,0.0,1.0,1.0
+wm_nc_and,both,endpoint,needle_pickup,Fixed AND wrist,failure_mode,Execution Mismatch,20,0,20,2,0,0.0,0.1,0.94
+wm_nc_and,both,endpoint,needle_pickup,Fixed AND wrist,failure_mode,Insecure Grasp,20,0,20,0,0,0.0,0.0,0.81
+wm_nc_and,both,endpoint,needle_pickup,Fixed AND wrist,failure_mode,Needle Drop,20,0,20,11,0,0.0,0.55,1.0
+wm_nc_and,both,endpoint,needle_pickup,Fixed AND wrist,failure_mode,Needle Slippage,20,0,20,12,0,0.0,0.6,1.0
+wm_nc_and,both,endpoint,needle_pickup,Fixed AND wrist,failure_mode,OOD Initial Condition,20,0,20,1,0,0.0,0.05,0.9524999999999999
+wm_nc_and,both,endpoint,ring_over_post,Fixed AND wrist,all,All failures,20,0,120,29,0,0.0,0.24166666666666667,0.7716666666666665
+wm_nc_and,both,endpoint,ring_over_post,Fixed AND wrist,natural,Natural,20,0,40,0,0,0.0,0.0,0.505
+wm_nc_and,both,endpoint,ring_over_post,Fixed AND wrist,induced,Induced,20,0,80,29,0,0.0,0.3625,0.9050000000000002
+wm_nc_and,both,endpoint,ring_over_post,Fixed AND wrist,failure_mode,Blood Occlusion,20,0,20,20,0,0.0,1.0,1.0
+wm_nc_and,both,endpoint,ring_over_post,Fixed AND wrist,failure_mode,Insecure Grasp,20,0,20,0,0,0.0,0.0,0.355
+wm_nc_and,both,endpoint,ring_over_post,Fixed AND wrist,failure_mode,Lateral Grasp Drift,20,0,20,1,0,0.0,0.05,0.9525
+wm_nc_and,both,endpoint,ring_over_post,Fixed AND wrist,failure_mode,Post Misalignment,20,0,20,0,0,0.0,0.0,0.655
+wm_nc_and,both,endpoint,ring_over_post,Fixed AND wrist,failure_mode,Ring Drop,20,0,20,0,0,0.0,0.0,0.67
+wm_nc_and,both,endpoint,ring_over_post,Fixed AND wrist,failure_mode,Ring Slippage,20,0,20,8,0,0.0,0.4,0.9975
+wm_nc_and,both,endpoint,shunt_insertion,Fixed AND wrist,all,All failures,20,0,40,19,0,0.0,0.475,0.98
+wm_nc_and,both,endpoint,shunt_insertion,Fixed AND wrist,natural,Natural,20,0,10,5,0,0.0,0.5,0.98
+wm_nc_and,both,endpoint,shunt_insertion,Fixed AND wrist,induced,Induced,20,0,30,14,0,0.0,0.4666666666666667,0.98
+wm_nc_and,both,endpoint,shunt_insertion,Fixed AND wrist,failure_mode,Camera Freeze,20,0,10,9,0,0.0,0.9,1.0
+wm_nc_and,both,endpoint,shunt_insertion,Fixed AND wrist,failure_mode,Insertion Misalignment,20,0,10,5,0,0.0,0.5,0.98
+wm_nc_and,both,endpoint,shunt_insertion,Fixed AND wrist,failure_mode,Lateral Grasp Drift,20,0,10,2,0,0.0,0.2,0.9650000000000001
+wm_nc_and,both,endpoint,shunt_insertion,Fixed AND wrist,failure_mode,Shunt Disturbance,20,0,10,3,0,0.0,0.3,0.9750000000000001
+wm_nc_and,both,endpoint,tissue_retraction,Fixed AND wrist,all,All failures,20,0,40,38,0,0.0,0.95,1.0
+wm_nc_and,both,endpoint,tissue_retraction,Fixed AND wrist,induced,Induced,20,0,40,38,0,0.0,0.95,1.0
+wm_nc_and,both,endpoint,tissue_retraction,Fixed AND wrist,failure_mode,Fixed Tissue Target,20,0,10,10,0,0.0,1.0,1.0
+wm_nc_and,both,endpoint,tissue_retraction,Fixed AND wrist,failure_mode,Needle Intrusion,20,0,10,10,0,0.0,1.0,1.0
+wm_nc_and,both,endpoint,tissue_retraction,Fixed AND wrist,failure_mode,Tissue Disturbance,20,0,10,8,0,0.0,0.8,1.0
+wm_nc_and,both,endpoint,tissue_retraction,Fixed AND wrist,failure_mode,Tissue Grasp Loss,20,0,10,10,0,0.0,1.0,1.0
+wm_nc_and,both,episode,needle_pickup,Fixed AND wrist,all,All failures,20,0,120,52,0,0.0,0.43333333333333335,0.8141666666666666
+wm_nc_and,both,episode,needle_pickup,Fixed AND wrist,natural,Natural,20,0,40,12,0,0.0,0.3,0.8425000000000001
+wm_nc_and,both,episode,needle_pickup,Fixed AND wrist,induced,Induced,20,0,80,40,0,0.0,0.5,0.8
+wm_nc_and,both,episode,needle_pickup,Fixed AND wrist,failure_mode,Blood Occlusion,20,0,20,20,0,0.0,1.0,1.0
+wm_nc_and,both,episode,needle_pickup,Fixed AND wrist,failure_mode,Execution Mismatch,20,0,20,2,0,0.0,0.1,0.6399999999999999
+wm_nc_and,both,episode,needle_pickup,Fixed AND wrist,failure_mode,Insecure Grasp,20,0,20,0,0,0.0,0.0,0.7275
+wm_nc_and,both,episode,needle_pickup,Fixed AND wrist,failure_mode,Needle Drop,20,0,20,12,0,0.0,0.6,0.9575
+wm_nc_and,both,episode,needle_pickup,Fixed AND wrist,failure_mode,Needle Slippage,20,0,20,15,0,0.0,0.75,0.995
+wm_nc_and,both,episode,needle_pickup,Fixed AND wrist,failure_mode,OOD Initial Condition,20,0,20,3,0,0.0,0.15,0.565
+wm_nc_and,both,episode,ring_over_post,Fixed AND wrist,all,All failures,20,0,120,33,0,0.0,0.275,0.6666666666666666
+wm_nc_and,both,episode,ring_over_post,Fixed AND wrist,natural,Natural,20,0,40,0,0,0.0,0.0,0.43124999999999997
+wm_nc_and,both,episode,ring_over_post,Fixed AND wrist,induced,Induced,20,0,80,33,0,0.0,0.4125,0.7843750000000002
+wm_nc_and,both,episode,ring_over_post,Fixed AND wrist,failure_mode,Blood Occlusion,20,0,20,20,0,0.0,1.0,1.0
+wm_nc_and,both,episode,ring_over_post,Fixed AND wrist,failure_mode,Insecure Grasp,20,0,20,0,0,0.0,0.0,0.31500000000000006
+wm_nc_and,both,episode,ring_over_post,Fixed AND wrist,failure_mode,Lateral Grasp Drift,20,0,20,1,0,0.0,0.05,0.7224999999999999
+wm_nc_and,both,episode,ring_over_post,Fixed AND wrist,failure_mode,Post Misalignment,20,0,20,0,0,0.0,0.0,0.5475
+wm_nc_and,both,episode,ring_over_post,Fixed AND wrist,failure_mode,Ring Drop,20,0,20,0,0,0.0,0.0,0.4725
+wm_nc_and,both,episode,ring_over_post,Fixed AND wrist,failure_mode,Ring Slippage,20,0,20,12,0,0.0,0.6,0.9425
+wm_nc_and,both,episode,shunt_insertion,Fixed AND wrist,all,All failures,20,0,40,22,0,0.0,0.55,0.8750000000000001
+wm_nc_and,both,episode,shunt_insertion,Fixed AND wrist,natural,Natural,20,0,10,6,0,0.0,0.6,0.8799999999999999
+wm_nc_and,both,episode,shunt_insertion,Fixed AND wrist,induced,Induced,20,0,30,16,0,0.0,0.5333333333333333,0.8733333333333334
+wm_nc_and,both,episode,shunt_insertion,Fixed AND wrist,failure_mode,Camera Freeze,20,0,10,9,0,0.0,0.9,1.0
+wm_nc_and,both,episode,shunt_insertion,Fixed AND wrist,failure_mode,Insertion Misalignment,20,0,10,6,0,0.0,0.6,0.8799999999999999
+wm_nc_and,both,episode,shunt_insertion,Fixed AND wrist,failure_mode,Lateral Grasp Drift,20,0,10,2,0,0.0,0.2,0.7
+wm_nc_and,both,episode,shunt_insertion,Fixed AND wrist,failure_mode,Shunt Disturbance,20,0,10,5,0,0.0,0.5,0.92
+wm_nc_and,both,episode,tissue_retraction,Fixed AND wrist,all,All failures,20,0,40,39,0,0.0,0.975,1.0
+wm_nc_and,both,episode,tissue_retraction,Fixed AND wrist,induced,Induced,20,0,40,39,0,0.0,0.975,1.0
+wm_nc_and,both,episode,tissue_retraction,Fixed AND wrist,failure_mode,Fixed Tissue Target,20,0,10,10,0,0.0,1.0,1.0
+wm_nc_and,both,episode,tissue_retraction,Fixed AND wrist,failure_mode,Needle Intrusion,20,0,10,10,0,0.0,1.0,1.0
+wm_nc_and,both,episode,tissue_retraction,Fixed AND wrist,failure_mode,Tissue Disturbance,20,0,10,9,0,0.0,0.9,1.0
+wm_nc_and,both,episode,tissue_retraction,Fixed AND wrist,failure_mode,Tissue Grasp Loss,20,0,10,10,0,0.0,1.0,1.0
+wm_nc_logpzo_native_and,fix,endpoint,needle_pickup,WM-NC AND native logpZO,all,All failures,20,0,120,30,0,0.0,0.25,0.7975
+wm_nc_logpzo_native_and,fix,endpoint,needle_pickup,WM-NC AND native logpZO,natural,Natural,20,0,40,9,0,0.0,0.225,0.76875
+wm_nc_logpzo_native_and,fix,endpoint,needle_pickup,WM-NC AND native logpZO,induced,Induced,20,0,80,21,0,0.0,0.2625,0.811875
+wm_nc_logpzo_native_and,fix,endpoint,needle_pickup,WM-NC AND native logpZO,failure_mode,Blood Occlusion,20,0,20,20,0,0.0,1.0,1.0
+wm_nc_logpzo_native_and,fix,endpoint,needle_pickup,WM-NC AND native logpZO,failure_mode,Execution Mismatch,20,0,20,0,0,0.0,0.0,0.605
+wm_nc_logpzo_native_and,fix,endpoint,needle_pickup,WM-NC AND native logpZO,failure_mode,Insecure Grasp,20,0,20,0,0,0.0,0.0,0.6475
+wm_nc_logpzo_native_and,fix,endpoint,needle_pickup,WM-NC AND native logpZO,failure_mode,Needle Drop,20,0,20,9,0,0.0,0.45,0.89
+wm_nc_logpzo_native_and,fix,endpoint,needle_pickup,WM-NC AND native logpZO,failure_mode,Needle Slippage,20,0,20,1,0,0.0,0.05,0.9724999999999999
+wm_nc_logpzo_native_and,fix,endpoint,needle_pickup,WM-NC AND native logpZO,failure_mode,OOD Initial Condition,20,0,20,0,0,0.0,0.0,0.6699999999999999
+wm_nc_logpzo_native_and,fix,endpoint,ring_over_post,WM-NC AND native logpZO,all,All failures,20,0,120,20,0,0.0,0.16666666666666666,0.7937500000000001
+wm_nc_logpzo_native_and,fix,endpoint,ring_over_post,WM-NC AND native logpZO,natural,Natural,20,0,40,0,0,0.0,0.0,0.63875
+wm_nc_logpzo_native_and,fix,endpoint,ring_over_post,WM-NC AND native logpZO,induced,Induced,20,0,80,20,0,0.0,0.25,0.8712500000000002
+wm_nc_logpzo_native_and,fix,endpoint,ring_over_post,WM-NC AND native logpZO,failure_mode,Blood Occlusion,20,0,20,20,0,0.0,1.0,1.0
+wm_nc_logpzo_native_and,fix,endpoint,ring_over_post,WM-NC AND native logpZO,failure_mode,Insecure Grasp,20,0,20,0,0,0.0,0.0,0.5325
+wm_nc_logpzo_native_and,fix,endpoint,ring_over_post,WM-NC AND native logpZO,failure_mode,Lateral Grasp Drift,20,0,20,0,0,0.0,0.0,0.8550000000000001
+wm_nc_logpzo_native_and,fix,endpoint,ring_over_post,WM-NC AND native logpZO,failure_mode,Post Misalignment,20,0,20,0,0,0.0,0.0,0.745
+wm_nc_logpzo_native_and,fix,endpoint,ring_over_post,WM-NC AND native logpZO,failure_mode,Ring Drop,20,0,20,0,0,0.0,0.0,0.675
+wm_nc_logpzo_native_and,fix,endpoint,ring_over_post,WM-NC AND native logpZO,failure_mode,Ring Slippage,20,0,20,0,0,0.0,0.0,0.9550000000000001
+wm_nc_logpzo_native_and,fix,endpoint,shunt_insertion,WM-NC AND native logpZO,all,All failures,20,0,40,7,0,0.0,0.175,0.90125
+wm_nc_logpzo_native_and,fix,endpoint,shunt_insertion,WM-NC AND native logpZO,natural,Natural,20,0,10,4,0,0.0,0.4,1.0
+wm_nc_logpzo_native_and,fix,endpoint,shunt_insertion,WM-NC AND native logpZO,induced,Induced,20,0,30,3,0,0.0,0.1,0.8683333333333334
+wm_nc_logpzo_native_and,fix,endpoint,shunt_insertion,WM-NC AND native logpZO,failure_mode,Camera Freeze,20,0,10,0,0,0.0,0.0,0.605
+wm_nc_logpzo_native_and,fix,endpoint,shunt_insertion,WM-NC AND native logpZO,failure_mode,Insertion Misalignment,20,0,10,4,0,0.0,0.4,1.0
+wm_nc_logpzo_native_and,fix,endpoint,shunt_insertion,WM-NC AND native logpZO,failure_mode,Lateral Grasp Drift,20,0,10,0,0,0.0,0.0,1.0
+wm_nc_logpzo_native_and,fix,endpoint,shunt_insertion,WM-NC AND native logpZO,failure_mode,Shunt Disturbance,20,0,10,3,0,0.0,0.3,1.0
+wm_nc_logpzo_native_and,fix,endpoint,tissue_retraction,WM-NC AND native logpZO,all,All failures,20,0,40,17,0,0.0,0.425,0.9924999999999999
+wm_nc_logpzo_native_and,fix,endpoint,tissue_retraction,WM-NC AND native logpZO,induced,Induced,20,0,40,17,0,0.0,0.425,0.9924999999999999
+wm_nc_logpzo_native_and,fix,endpoint,tissue_retraction,WM-NC AND native logpZO,failure_mode,Fixed Tissue Target,20,0,10,4,0,0.0,0.4,1.0
+wm_nc_logpzo_native_and,fix,endpoint,tissue_retraction,WM-NC AND native logpZO,failure_mode,Needle Intrusion,20,0,10,10,0,0.0,1.0,1.0
+wm_nc_logpzo_native_and,fix,endpoint,tissue_retraction,WM-NC AND native logpZO,failure_mode,Tissue Disturbance,20,0,10,2,0,0.0,0.2,1.0
+wm_nc_logpzo_native_and,fix,endpoint,tissue_retraction,WM-NC AND native logpZO,failure_mode,Tissue Grasp Loss,20,0,10,1,0,0.0,0.1,0.97
+wm_nc_logpzo_native_and,fix,episode,needle_pickup,WM-NC AND native logpZO,all,All failures,20,0,120,38,0,0.0,0.31666666666666665,0.7354166666666667
+wm_nc_logpzo_native_and,fix,episode,needle_pickup,WM-NC AND native logpZO,natural,Natural,20,0,40,10,0,0.0,0.25,0.78125
+wm_nc_logpzo_native_and,fix,episode,needle_pickup,WM-NC AND native logpZO,induced,Induced,20,0,80,28,0,0.0,0.35,0.7125
+wm_nc_logpzo_native_and,fix,episode,needle_pickup,WM-NC AND native logpZO,failure_mode,Blood Occlusion,20,0,20,20,0,0.0,1.0,1.0
+wm_nc_logpzo_native_and,fix,episode,needle_pickup,WM-NC AND native logpZO,failure_mode,Execution Mismatch,20,0,20,1,0,0.0,0.05,0.46749999999999997
+wm_nc_logpzo_native_and,fix,episode,needle_pickup,WM-NC AND native logpZO,failure_mode,Insecure Grasp,20,0,20,0,0,0.0,0.0,0.64
+wm_nc_logpzo_native_and,fix,episode,needle_pickup,WM-NC AND native logpZO,failure_mode,Needle Drop,20,0,20,10,0,0.0,0.5,0.9225
+wm_nc_logpzo_native_and,fix,episode,needle_pickup,WM-NC AND native logpZO,failure_mode,Needle Slippage,20,0,20,4,0,0.0,0.2,0.9375
+wm_nc_logpzo_native_and,fix,episode,needle_pickup,WM-NC AND native logpZO,failure_mode,OOD Initial Condition,20,0,20,3,0,0.0,0.15,0.445
+wm_nc_logpzo_native_and,fix,episode,ring_over_post,WM-NC AND native logpZO,all,All failures,20,0,120,20,0,0.0,0.16666666666666666,0.6920833333333333
+wm_nc_logpzo_native_and,fix,episode,ring_over_post,WM-NC AND native logpZO,natural,Natural,20,0,40,0,0,0.0,0.0,0.47125
+wm_nc_logpzo_native_and,fix,episode,ring_over_post,WM-NC AND native logpZO,induced,Induced,20,0,80,20,0,0.0,0.25,0.8025000000000001
+wm_nc_logpzo_native_and,fix,episode,ring_over_post,WM-NC AND native logpZO,failure_mode,Blood Occlusion,20,0,20,20,0,0.0,1.0,1.0
+wm_nc_logpzo_native_and,fix,episode,ring_over_post,WM-NC AND native logpZO,failure_mode,Insecure Grasp,20,0,20,0,0,0.0,0.0,0.3375
+wm_nc_logpzo_native_and,fix,episode,ring_over_post,WM-NC AND native logpZO,failure_mode,Lateral Grasp Drift,20,0,20,0,0,0.0,0.0,0.725
+wm_nc_logpzo_native_and,fix,episode,ring_over_post,WM-NC AND native logpZO,failure_mode,Post Misalignment,20,0,20,0,0,0.0,0.0,0.605
+wm_nc_logpzo_native_and,fix,episode,ring_over_post,WM-NC AND native logpZO,failure_mode,Ring Drop,20,0,20,0,0,0.0,0.0,0.5249999999999999
+wm_nc_logpzo_native_and,fix,episode,ring_over_post,WM-NC AND native logpZO,failure_mode,Ring Slippage,20,0,20,0,0,0.0,0.0,0.96
+wm_nc_logpzo_native_and,fix,episode,shunt_insertion,WM-NC AND native logpZO,all,All failures,20,0,40,10,0,0.0,0.25,0.8712500000000001
+wm_nc_logpzo_native_and,fix,episode,shunt_insertion,WM-NC AND native logpZO,natural,Natural,20,0,10,6,0,0.0,0.6,0.99
+wm_nc_logpzo_native_and,fix,episode,shunt_insertion,WM-NC AND native logpZO,induced,Induced,20,0,30,4,0,0.0,0.13333333333333333,0.8316666666666669
+wm_nc_logpzo_native_and,fix,episode,shunt_insertion,WM-NC AND native logpZO,failure_mode,Camera Freeze,20,0,10,0,0,0.0,0.0,0.5599999999999999
+wm_nc_logpzo_native_and,fix,episode,shunt_insertion,WM-NC AND native logpZO,failure_mode,Insertion Misalignment,20,0,10,6,0,0.0,0.6,0.99
+wm_nc_logpzo_native_and,fix,episode,shunt_insertion,WM-NC AND native logpZO,failure_mode,Lateral Grasp Drift,20,0,10,1,0,0.0,0.1,0.945
+wm_nc_logpzo_native_and,fix,episode,shunt_insertion,WM-NC AND native logpZO,failure_mode,Shunt Disturbance,20,0,10,3,0,0.0,0.3,0.99
+wm_nc_logpzo_native_and,fix,episode,tissue_retraction,WM-NC AND native logpZO,all,All failures,20,0,40,26,0,0.0,0.65,0.995
+wm_nc_logpzo_native_and,fix,episode,tissue_retraction,WM-NC AND native logpZO,induced,Induced,20,0,40,26,0,0.0,0.65,0.995
+wm_nc_logpzo_native_and,fix,episode,tissue_retraction,WM-NC AND native logpZO,failure_mode,Fixed Tissue Target,20,0,10,7,0,0.0,0.7,0.995
+wm_nc_logpzo_native_and,fix,episode,tissue_retraction,WM-NC AND native logpZO,failure_mode,Needle Intrusion,20,0,10,10,0,0.0,1.0,1.0
+wm_nc_logpzo_native_and,fix,episode,tissue_retraction,WM-NC AND native logpZO,failure_mode,Tissue Disturbance,20,0,10,4,0,0.0,0.4,0.99
+wm_nc_logpzo_native_and,fix,episode,tissue_retraction,WM-NC AND native logpZO,failure_mode,Tissue Grasp Loss,20,0,10,5,0,0.0,0.5,0.995
+wm_nc_logpzo_native_and,wrist,endpoint,needle_pickup,WM-NC AND native logpZO,all,All failures,20,0,120,61,0,0.0,0.5083333333333333,1.0
+wm_nc_logpzo_native_and,wrist,endpoint,needle_pickup,WM-NC AND native logpZO,natural,Natural,20,0,40,16,0,0.0,0.4,1.0
+wm_nc_logpzo_native_and,wrist,endpoint,needle_pickup,WM-NC AND native logpZO,induced,Induced,20,0,80,45,0,0.0,0.5625,1.0
+wm_nc_logpzo_native_and,wrist,endpoint,needle_pickup,WM-NC AND native logpZO,failure_mode,Blood Occlusion,20,0,20,19,0,0.0,0.95,1.0
+wm_nc_logpzo_native_and,wrist,endpoint,needle_pickup,WM-NC AND native logpZO,failure_mode,Execution Mismatch,20,0,20,4,0,0.0,0.2,1.0
+wm_nc_logpzo_native_and,wrist,endpoint,needle_pickup,WM-NC AND native logpZO,failure_mode,Insecure Grasp,20,0,20,5,0,0.0,0.25,1.0
+wm_nc_logpzo_native_and,wrist,endpoint,needle_pickup,WM-NC AND native logpZO,failure_mode,Needle Drop,20,0,20,11,0,0.0,0.55,1.0
+wm_nc_logpzo_native_and,wrist,endpoint,needle_pickup,WM-NC AND native logpZO,failure_mode,Needle Slippage,20,0,20,2,0,0.0,0.1,1.0
+wm_nc_logpzo_native_and,wrist,endpoint,needle_pickup,WM-NC AND native logpZO,failure_mode,OOD Initial Condition,20,0,20,20,0,0.0,1.0,1.0
+wm_nc_logpzo_native_and,wrist,endpoint,ring_over_post,WM-NC AND native logpZO,all,All failures,20,0,120,38,0,0.0,0.31666666666666665,0.9829166666666667
+wm_nc_logpzo_native_and,wrist,endpoint,ring_over_post,WM-NC AND native logpZO,natural,Natural,20,0,40,11,0,0.0,0.275,1.0
+wm_nc_logpzo_native_and,wrist,endpoint,ring_over_post,WM-NC AND native logpZO,induced,Induced,20,0,80,27,0,0.0,0.3375,0.974375
+wm_nc_logpzo_native_and,wrist,endpoint,ring_over_post,WM-NC AND native logpZO,failure_mode,Blood Occlusion,20,0,20,20,0,0.0,1.0,1.0
+wm_nc_logpzo_native_and,wrist,endpoint,ring_over_post,WM-NC AND native logpZO,failure_mode,Insecure Grasp,20,0,20,8,0,0.0,0.4,1.0
+wm_nc_logpzo_native_and,wrist,endpoint,ring_over_post,WM-NC AND native logpZO,failure_mode,Lateral Grasp Drift,20,0,20,0,0,0.0,0.0,0.92
+wm_nc_logpzo_native_and,wrist,endpoint,ring_over_post,WM-NC AND native logpZO,failure_mode,Post Misalignment,20,0,20,3,0,0.0,0.15,1.0
+wm_nc_logpzo_native_and,wrist,endpoint,ring_over_post,WM-NC AND native logpZO,failure_mode,Ring Drop,20,0,20,6,0,0.0,0.3,1.0
+wm_nc_logpzo_native_and,wrist,endpoint,ring_over_post,WM-NC AND native logpZO,failure_mode,Ring Slippage,20,0,20,1,0,0.0,0.05,0.9775
+wm_nc_logpzo_native_and,wrist,endpoint,shunt_insertion,WM-NC AND native logpZO,all,All failures,20,0,40,28,0,0.0,0.7,0.965
+wm_nc_logpzo_native_and,wrist,endpoint,shunt_insertion,WM-NC AND native logpZO,natural,Natural,20,0,10,8,0,0.0,0.8,1.0
+wm_nc_logpzo_native_and,wrist,endpoint,shunt_insertion,WM-NC AND native logpZO,induced,Induced,20,0,30,20,0,0.0,0.6666666666666666,0.9533333333333334
+wm_nc_logpzo_native_and,wrist,endpoint,shunt_insertion,WM-NC AND native logpZO,failure_mode,Camera Freeze,20,0,10,1,0,0.0,0.1,0.86
+wm_nc_logpzo_native_and,wrist,endpoint,shunt_insertion,WM-NC AND native logpZO,failure_mode,Insertion Misalignment,20,0,10,8,0,0.0,0.8,1.0
+wm_nc_logpzo_native_and,wrist,endpoint,shunt_insertion,WM-NC AND native logpZO,failure_mode,Lateral Grasp Drift,20,0,10,10,0,0.0,1.0,1.0
+wm_nc_logpzo_native_and,wrist,endpoint,shunt_insertion,WM-NC AND native logpZO,failure_mode,Shunt Disturbance,20,0,10,9,0,0.0,0.9,1.0
+wm_nc_logpzo_native_and,wrist,endpoint,tissue_retraction,WM-NC AND native logpZO,all,All failures,20,0,40,33,0,0.0,0.825,1.0
+wm_nc_logpzo_native_and,wrist,endpoint,tissue_retraction,WM-NC AND native logpZO,induced,Induced,20,0,40,33,0,0.0,0.825,1.0
+wm_nc_logpzo_native_and,wrist,endpoint,tissue_retraction,WM-NC AND native logpZO,failure_mode,Fixed Tissue Target,20,0,10,10,0,0.0,1.0,1.0
+wm_nc_logpzo_native_and,wrist,endpoint,tissue_retraction,WM-NC AND native logpZO,failure_mode,Needle Intrusion,20,0,10,10,0,0.0,1.0,1.0
+wm_nc_logpzo_native_and,wrist,endpoint,tissue_retraction,WM-NC AND native logpZO,failure_mode,Tissue Disturbance,20,0,10,4,0,0.0,0.4,1.0
+wm_nc_logpzo_native_and,wrist,endpoint,tissue_retraction,WM-NC AND native logpZO,failure_mode,Tissue Grasp Loss,20,0,10,9,0,0.0,0.9,1.0
+wm_nc_logpzo_native_and,wrist,episode,needle_pickup,WM-NC AND native logpZO,all,All failures,20,0,120,67,0,0.0,0.5583333333333333,0.9508333333333333
+wm_nc_logpzo_native_and,wrist,episode,needle_pickup,WM-NC AND native logpZO,natural,Natural,20,0,40,17,0,0.0,0.425,0.98875
+wm_nc_logpzo_native_and,wrist,episode,needle_pickup,WM-NC AND native logpZO,induced,Induced,20,0,80,50,0,0.0,0.625,0.9318750000000001
+wm_nc_logpzo_native_and,wrist,episode,needle_pickup,WM-NC AND native logpZO,failure_mode,Blood Occlusion,20,0,20,20,0,0.0,1.0,1.0
+wm_nc_logpzo_native_and,wrist,episode,needle_pickup,WM-NC AND native logpZO,failure_mode,Execution Mismatch,20,0,20,6,0,0.0,0.3,0.8825000000000001
+wm_nc_logpzo_native_and,wrist,episode,needle_pickup,WM-NC AND native logpZO,failure_mode,Insecure Grasp,20,0,20,5,0,0.0,0.25,0.985
+wm_nc_logpzo_native_and,wrist,episode,needle_pickup,WM-NC AND native logpZO,failure_mode,Needle Drop,20,0,20,12,0,0.0,0.6,0.9924999999999999
+wm_nc_logpzo_native_and,wrist,episode,needle_pickup,WM-NC AND native logpZO,failure_mode,Needle Slippage,20,0,20,4,0,0.0,0.2,0.8450000000000001
+wm_nc_logpzo_native_and,wrist,episode,needle_pickup,WM-NC AND native logpZO,failure_mode,OOD Initial Condition,20,0,20,20,0,0.0,1.0,1.0
+wm_nc_logpzo_native_and,wrist,episode,ring_over_post,WM-NC AND native logpZO,all,All failures,20,0,120,59,0,0.0,0.49166666666666664,0.8841666666666665
+wm_nc_logpzo_native_and,wrist,episode,ring_over_post,WM-NC AND native logpZO,natural,Natural,20,0,40,23,0,0.0,0.575,0.96375
+wm_nc_logpzo_native_and,wrist,episode,ring_over_post,WM-NC AND native logpZO,induced,Induced,20,0,80,36,0,0.0,0.45,0.8443750000000001
+wm_nc_logpzo_native_and,wrist,episode,ring_over_post,WM-NC AND native logpZO,failure_mode,Blood Occlusion,20,0,20,20,0,0.0,1.0,1.0
+wm_nc_logpzo_native_and,wrist,episode,ring_over_post,WM-NC AND native logpZO,failure_mode,Insecure Grasp,20,0,20,12,0,0.0,0.6,0.9400000000000001
+wm_nc_logpzo_native_and,wrist,episode,ring_over_post,WM-NC AND native logpZO,failure_mode,Lateral Grasp Drift,20,0,20,0,0,0.0,0.0,0.6375
+wm_nc_logpzo_native_and,wrist,episode,ring_over_post,WM-NC AND native logpZO,failure_mode,Post Misalignment,20,0,20,11,0,0.0,0.55,0.9875
+wm_nc_logpzo_native_and,wrist,episode,ring_over_post,WM-NC AND native logpZO,failure_mode,Ring Drop,20,0,20,14,0,0.0,0.7,0.97
+wm_nc_logpzo_native_and,wrist,episode,ring_over_post,WM-NC AND native logpZO,failure_mode,Ring Slippage,20,0,20,2,0,0.0,0.1,0.7699999999999999
+wm_nc_logpzo_native_and,wrist,episode,shunt_insertion,WM-NC AND native logpZO,all,All failures,20,0,40,29,0,0.0,0.725,0.9475000000000001
+wm_nc_logpzo_native_and,wrist,episode,shunt_insertion,WM-NC AND native logpZO,natural,Natural,20,0,10,8,0,0.0,0.8,1.0
+wm_nc_logpzo_native_and,wrist,episode,shunt_insertion,WM-NC AND native logpZO,induced,Induced,20,0,30,21,0,0.0,0.7,0.93
+wm_nc_logpzo_native_and,wrist,episode,shunt_insertion,WM-NC AND native logpZO,failure_mode,Camera Freeze,20,0,10,1,0,0.0,0.1,0.79
+wm_nc_logpzo_native_and,wrist,episode,shunt_insertion,WM-NC AND native logpZO,failure_mode,Insertion Misalignment,20,0,10,8,0,0.0,0.8,1.0
+wm_nc_logpzo_native_and,wrist,episode,shunt_insertion,WM-NC AND native logpZO,failure_mode,Lateral Grasp Drift,20,0,10,10,0,0.0,1.0,1.0
+wm_nc_logpzo_native_and,wrist,episode,shunt_insertion,WM-NC AND native logpZO,failure_mode,Shunt Disturbance,20,0,10,10,0,0.0,1.0,1.0
+wm_nc_logpzo_native_and,wrist,episode,tissue_retraction,WM-NC AND native logpZO,all,All failures,20,0,40,38,0,0.0,0.95,1.0
+wm_nc_logpzo_native_and,wrist,episode,tissue_retraction,WM-NC AND native logpZO,induced,Induced,20,0,40,38,0,0.0,0.95,1.0
+wm_nc_logpzo_native_and,wrist,episode,tissue_retraction,WM-NC AND native logpZO,failure_mode,Fixed Tissue Target,20,0,10,10,0,0.0,1.0,1.0
+wm_nc_logpzo_native_and,wrist,episode,tissue_retraction,WM-NC AND native logpZO,failure_mode,Needle Intrusion,20,0,10,10,0,0.0,1.0,1.0
+wm_nc_logpzo_native_and,wrist,episode,tissue_retraction,WM-NC AND native logpZO,failure_mode,Tissue Disturbance,20,0,10,8,0,0.0,0.8,1.0
+wm_nc_logpzo_native_and,wrist,episode,tissue_retraction,WM-NC AND native logpZO,failure_mode,Tissue Grasp Loss,20,0,10,10,0,0.0,1.0,1.0
+wm_nc_logpzo_native_or,fix,endpoint,needle_pickup,WM-NC OR native logpZO,all,All failures,20,0,120,92,0,0.0,0.7666666666666667,0.9458333333333333
+wm_nc_logpzo_native_or,fix,endpoint,needle_pickup,WM-NC OR native logpZO,natural,Natural,20,0,40,32,0,0.0,0.8,0.98
+wm_nc_logpzo_native_or,fix,endpoint,needle_pickup,WM-NC OR native logpZO,induced,Induced,20,0,80,60,0,0.0,0.75,0.9287500000000003
+wm_nc_logpzo_native_or,fix,endpoint,needle_pickup,WM-NC OR native logpZO,failure_mode,Blood Occlusion,20,0,20,20,0,0.0,1.0,1.0
+wm_nc_logpzo_native_or,fix,endpoint,needle_pickup,WM-NC OR native logpZO,failure_mode,Execution Mismatch,20,0,20,5,0,0.0,0.25,0.7449999999999999
+wm_nc_logpzo_native_or,fix,endpoint,needle_pickup,WM-NC OR native logpZO,failure_mode,Insecure Grasp,20,0,20,15,0,0.0,0.75,0.99
+wm_nc_logpzo_native_or,fix,endpoint,needle_pickup,WM-NC OR native logpZO,failure_mode,Needle Drop,20,0,20,17,0,0.0,0.85,0.97
+wm_nc_logpzo_native_or,fix,endpoint,needle_pickup,WM-NC OR native logpZO,failure_mode,Needle Slippage,20,0,20,16,0,0.0,0.8,0.98
+wm_nc_logpzo_native_or,fix,endpoint,needle_pickup,WM-NC OR native logpZO,failure_mode,OOD Initial Condition,20,0,20,19,0,0.0,0.95,0.99
+wm_nc_logpzo_native_or,fix,endpoint,ring_over_post,WM-NC OR native logpZO,all,All failures,20,0,120,35,0,0.0,0.2916666666666667,0.7654166666666667
+wm_nc_logpzo_native_or,fix,endpoint,ring_over_post,WM-NC OR native logpZO,natural,Natural,20,0,40,2,0,0.0,0.05,0.715
+wm_nc_logpzo_native_or,fix,endpoint,ring_over_post,WM-NC OR native logpZO,induced,Induced,20,0,80,33,0,0.0,0.4125,0.790625
+wm_nc_logpzo_native_or,fix,endpoint,ring_over_post,WM-NC OR native logpZO,failure_mode,Blood Occlusion,20,0,20,20,0,0.0,1.0,1.0
+wm_nc_logpzo_native_or,fix,endpoint,ring_over_post,WM-NC OR native logpZO,failure_mode,Insecure Grasp,20,0,20,1,0,0.0,0.05,0.765
+wm_nc_logpzo_native_or,fix,endpoint,ring_over_post,WM-NC OR native logpZO,failure_mode,Lateral Grasp Drift,20,0,20,1,0,0.0,0.05,0.7449999999999999
+wm_nc_logpzo_native_or,fix,endpoint,ring_over_post,WM-NC OR native logpZO,failure_mode,Post Misalignment,20,0,20,1,0,0.0,0.05,0.665
+wm_nc_logpzo_native_or,fix,endpoint,ring_over_post,WM-NC OR native logpZO,failure_mode,Ring Drop,20,0,20,0,0,0.0,0.0,0.47
+wm_nc_logpzo_native_or,fix,endpoint,ring_over_post,WM-NC OR native logpZO,failure_mode,Ring Slippage,20,0,20,12,0,0.0,0.6,0.9475
+wm_nc_logpzo_native_or,fix,endpoint,shunt_insertion,WM-NC OR native logpZO,all,All failures,20,0,40,38,0,0.0,0.95,0.9975
+wm_nc_logpzo_native_or,fix,endpoint,shunt_insertion,WM-NC OR native logpZO,natural,Natural,20,0,10,10,0,0.0,1.0,1.0
+wm_nc_logpzo_native_or,fix,endpoint,shunt_insertion,WM-NC OR native logpZO,induced,Induced,20,0,30,28,0,0.0,0.9333333333333333,0.9966666666666666
+wm_nc_logpzo_native_or,fix,endpoint,shunt_insertion,WM-NC OR native logpZO,failure_mode,Camera Freeze,20,0,10,10,0,0.0,1.0,1.0
+wm_nc_logpzo_native_or,fix,endpoint,shunt_insertion,WM-NC OR native logpZO,failure_mode,Insertion Misalignment,20,0,10,10,0,0.0,1.0,1.0
+wm_nc_logpzo_native_or,fix,endpoint,shunt_insertion,WM-NC OR native logpZO,failure_mode,Lateral Grasp Drift,20,0,10,9,0,0.0,0.9,0.995
+wm_nc_logpzo_native_or,fix,endpoint,shunt_insertion,WM-NC OR native logpZO,failure_mode,Shunt Disturbance,20,0,10,9,0,0.0,0.9,0.995
+wm_nc_logpzo_native_or,fix,endpoint,tissue_retraction,WM-NC OR native logpZO,all,All failures,20,0,40,40,0,0.0,1.0,1.0
+wm_nc_logpzo_native_or,fix,endpoint,tissue_retraction,WM-NC OR native logpZO,induced,Induced,20,0,40,40,0,0.0,1.0,1.0
+wm_nc_logpzo_native_or,fix,endpoint,tissue_retraction,WM-NC OR native logpZO,failure_mode,Fixed Tissue Target,20,0,10,10,0,0.0,1.0,1.0
+wm_nc_logpzo_native_or,fix,endpoint,tissue_retraction,WM-NC OR native logpZO,failure_mode,Needle Intrusion,20,0,10,10,0,0.0,1.0,1.0
+wm_nc_logpzo_native_or,fix,endpoint,tissue_retraction,WM-NC OR native logpZO,failure_mode,Tissue Disturbance,20,0,10,10,0,0.0,1.0,1.0
+wm_nc_logpzo_native_or,fix,endpoint,tissue_retraction,WM-NC OR native logpZO,failure_mode,Tissue Grasp Loss,20,0,10,10,0,0.0,1.0,1.0
+wm_nc_logpzo_native_or,fix,episode,needle_pickup,WM-NC OR native logpZO,all,All failures,20,0,120,92,0,0.0,0.7666666666666667,0.9458333333333333
+wm_nc_logpzo_native_or,fix,episode,needle_pickup,WM-NC OR native logpZO,natural,Natural,20,0,40,32,0,0.0,0.8,0.98
+wm_nc_logpzo_native_or,fix,episode,needle_pickup,WM-NC OR native logpZO,induced,Induced,20,0,80,60,0,0.0,0.75,0.9287500000000003
+wm_nc_logpzo_native_or,fix,episode,needle_pickup,WM-NC OR native logpZO,failure_mode,Blood Occlusion,20,0,20,20,0,0.0,1.0,1.0
+wm_nc_logpzo_native_or,fix,episode,needle_pickup,WM-NC OR native logpZO,failure_mode,Execution Mismatch,20,0,20,5,0,0.0,0.25,0.7449999999999999
+wm_nc_logpzo_native_or,fix,episode,needle_pickup,WM-NC OR native logpZO,failure_mode,Insecure Grasp,20,0,20,15,0,0.0,0.75,0.99
+wm_nc_logpzo_native_or,fix,episode,needle_pickup,WM-NC OR native logpZO,failure_mode,Needle Drop,20,0,20,17,0,0.0,0.85,0.97
+wm_nc_logpzo_native_or,fix,episode,needle_pickup,WM-NC OR native logpZO,failure_mode,Needle Slippage,20,0,20,16,0,0.0,0.8,0.98
+wm_nc_logpzo_native_or,fix,episode,needle_pickup,WM-NC OR native logpZO,failure_mode,OOD Initial Condition,20,0,20,19,0,0.0,0.95,0.99
+wm_nc_logpzo_native_or,fix,episode,ring_over_post,WM-NC OR native logpZO,all,All failures,20,0,120,35,0,0.0,0.2916666666666667,0.7654166666666667
+wm_nc_logpzo_native_or,fix,episode,ring_over_post,WM-NC OR native logpZO,natural,Natural,20,0,40,2,0,0.0,0.05,0.715
+wm_nc_logpzo_native_or,fix,episode,ring_over_post,WM-NC OR native logpZO,induced,Induced,20,0,80,33,0,0.0,0.4125,0.790625
+wm_nc_logpzo_native_or,fix,episode,ring_over_post,WM-NC OR native logpZO,failure_mode,Blood Occlusion,20,0,20,20,0,0.0,1.0,1.0
+wm_nc_logpzo_native_or,fix,episode,ring_over_post,WM-NC OR native logpZO,failure_mode,Insecure Grasp,20,0,20,1,0,0.0,0.05,0.765
+wm_nc_logpzo_native_or,fix,episode,ring_over_post,WM-NC OR native logpZO,failure_mode,Lateral Grasp Drift,20,0,20,1,0,0.0,0.05,0.7449999999999999
+wm_nc_logpzo_native_or,fix,episode,ring_over_post,WM-NC OR native logpZO,failure_mode,Post Misalignment,20,0,20,1,0,0.0,0.05,0.665
+wm_nc_logpzo_native_or,fix,episode,ring_over_post,WM-NC OR native logpZO,failure_mode,Ring Drop,20,0,20,0,0,0.0,0.0,0.47
+wm_nc_logpzo_native_or,fix,episode,ring_over_post,WM-NC OR native logpZO,failure_mode,Ring Slippage,20,0,20,12,0,0.0,0.6,0.9475
+wm_nc_logpzo_native_or,fix,episode,shunt_insertion,WM-NC OR native logpZO,all,All failures,20,0,40,38,0,0.0,0.95,0.9975
+wm_nc_logpzo_native_or,fix,episode,shunt_insertion,WM-NC OR native logpZO,natural,Natural,20,0,10,10,0,0.0,1.0,1.0
+wm_nc_logpzo_native_or,fix,episode,shunt_insertion,WM-NC OR native logpZO,induced,Induced,20,0,30,28,0,0.0,0.9333333333333333,0.9966666666666666
+wm_nc_logpzo_native_or,fix,episode,shunt_insertion,WM-NC OR native logpZO,failure_mode,Camera Freeze,20,0,10,10,0,0.0,1.0,1.0
+wm_nc_logpzo_native_or,fix,episode,shunt_insertion,WM-NC OR native logpZO,failure_mode,Insertion Misalignment,20,0,10,10,0,0.0,1.0,1.0
+wm_nc_logpzo_native_or,fix,episode,shunt_insertion,WM-NC OR native logpZO,failure_mode,Lateral Grasp Drift,20,0,10,9,0,0.0,0.9,0.995
+wm_nc_logpzo_native_or,fix,episode,shunt_insertion,WM-NC OR native logpZO,failure_mode,Shunt Disturbance,20,0,10,9,0,0.0,0.9,0.995
+wm_nc_logpzo_native_or,fix,episode,tissue_retraction,WM-NC OR native logpZO,all,All failures,20,0,40,40,0,0.0,1.0,1.0
+wm_nc_logpzo_native_or,fix,episode,tissue_retraction,WM-NC OR native logpZO,induced,Induced,20,0,40,40,0,0.0,1.0,1.0
+wm_nc_logpzo_native_or,fix,episode,tissue_retraction,WM-NC OR native logpZO,failure_mode,Fixed Tissue Target,20,0,10,10,0,0.0,1.0,1.0
+wm_nc_logpzo_native_or,fix,episode,tissue_retraction,WM-NC OR native logpZO,failure_mode,Needle Intrusion,20,0,10,10,0,0.0,1.0,1.0
+wm_nc_logpzo_native_or,fix,episode,tissue_retraction,WM-NC OR native logpZO,failure_mode,Tissue Disturbance,20,0,10,10,0,0.0,1.0,1.0
+wm_nc_logpzo_native_or,fix,episode,tissue_retraction,WM-NC OR native logpZO,failure_mode,Tissue Grasp Loss,20,0,10,10,0,0.0,1.0,1.0
+wm_nc_logpzo_native_or,wrist,endpoint,needle_pickup,WM-NC OR native logpZO,all,All failures,20,0,120,118,0,0.0,0.9833333333333333,0.9970833333333333
+wm_nc_logpzo_native_or,wrist,endpoint,needle_pickup,WM-NC OR native logpZO,natural,Natural,20,0,40,38,0,0.0,0.95,0.99125
+wm_nc_logpzo_native_or,wrist,endpoint,needle_pickup,WM-NC OR native logpZO,induced,Induced,20,0,80,80,0,0.0,1.0,1.0
+wm_nc_logpzo_native_or,wrist,endpoint,needle_pickup,WM-NC OR native logpZO,failure_mode,Blood Occlusion,20,0,20,20,0,0.0,1.0,1.0
+wm_nc_logpzo_native_or,wrist,endpoint,needle_pickup,WM-NC OR native logpZO,failure_mode,Execution Mismatch,20,0,20,20,0,0.0,1.0,1.0
+wm_nc_logpzo_native_or,wrist,endpoint,needle_pickup,WM-NC OR native logpZO,failure_mode,Insecure Grasp,20,0,20,18,0,0.0,0.9,0.9824999999999999
+wm_nc_logpzo_native_or,wrist,endpoint,needle_pickup,WM-NC OR native logpZO,failure_mode,Needle Drop,20,0,20,20,0,0.0,1.0,1.0
+wm_nc_logpzo_native_or,wrist,endpoint,needle_pickup,WM-NC OR native logpZO,failure_mode,Needle Slippage,20,0,20,20,0,0.0,1.0,1.0
+wm_nc_logpzo_native_or,wrist,endpoint,needle_pickup,WM-NC OR native logpZO,failure_mode,OOD Initial Condition,20,0,20,20,0,0.0,1.0,1.0
+wm_nc_logpzo_native_or,wrist,endpoint,ring_over_post,WM-NC OR native logpZO,all,All failures,20,2,120,114,0,0.1,0.95,0.9891666666666666
+wm_nc_logpzo_native_or,wrist,endpoint,ring_over_post,WM-NC OR native logpZO,natural,Natural,20,2,40,35,0,0.1,0.875,0.9762500000000001
+wm_nc_logpzo_native_or,wrist,endpoint,ring_over_post,WM-NC OR native logpZO,induced,Induced,20,2,80,79,0,0.1,0.9875,0.995625
+wm_nc_logpzo_native_or,wrist,endpoint,ring_over_post,WM-NC OR native logpZO,failure_mode,Blood Occlusion,20,2,20,20,0,0.1,1.0,1.0
+wm_nc_logpzo_native_or,wrist,endpoint,ring_over_post,WM-NC OR native logpZO,failure_mode,Insecure Grasp,20,2,20,20,0,0.1,1.0,0.995
+wm_nc_logpzo_native_or,wrist,endpoint,ring_over_post,WM-NC OR native logpZO,failure_mode,Lateral Grasp Drift,20,2,20,20,0,0.1,1.0,1.0
+wm_nc_logpzo_native_or,wrist,endpoint,ring_over_post,WM-NC OR native logpZO,failure_mode,Post Misalignment,20,2,20,15,0,0.1,0.75,0.9575
+wm_nc_logpzo_native_or,wrist,endpoint,ring_over_post,WM-NC OR native logpZO,failure_mode,Ring Drop,20,2,20,19,0,0.1,0.95,0.9850000000000001
+wm_nc_logpzo_native_or,wrist,endpoint,ring_over_post,WM-NC OR native logpZO,failure_mode,Ring Slippage,20,2,20,20,0,0.1,1.0,0.9975
+wm_nc_logpzo_native_or,wrist,endpoint,shunt_insertion,WM-NC OR native logpZO,all,All failures,20,1,40,39,0,0.05,0.975,0.9962500000000001
+wm_nc_logpzo_native_or,wrist,endpoint,shunt_insertion,WM-NC OR native logpZO,natural,Natural,20,1,10,10,0,0.05,1.0,1.0
+wm_nc_logpzo_native_or,wrist,endpoint,shunt_insertion,WM-NC OR native logpZO,induced,Induced,20,1,30,29,0,0.05,0.9666666666666667,0.995
+wm_nc_logpzo_native_or,wrist,endpoint,shunt_insertion,WM-NC OR native logpZO,failure_mode,Camera Freeze,20,1,10,9,0,0.05,0.9,0.985
+wm_nc_logpzo_native_or,wrist,endpoint,shunt_insertion,WM-NC OR native logpZO,failure_mode,Insertion Misalignment,20,1,10,10,0,0.05,1.0,1.0
+wm_nc_logpzo_native_or,wrist,endpoint,shunt_insertion,WM-NC OR native logpZO,failure_mode,Lateral Grasp Drift,20,1,10,10,0,0.05,1.0,1.0
+wm_nc_logpzo_native_or,wrist,endpoint,shunt_insertion,WM-NC OR native logpZO,failure_mode,Shunt Disturbance,20,1,10,10,0,0.05,1.0,1.0
+wm_nc_logpzo_native_or,wrist,endpoint,tissue_retraction,WM-NC OR native logpZO,all,All failures,20,0,40,40,0,0.0,1.0,1.0
+wm_nc_logpzo_native_or,wrist,endpoint,tissue_retraction,WM-NC OR native logpZO,induced,Induced,20,0,40,40,0,0.0,1.0,1.0
+wm_nc_logpzo_native_or,wrist,endpoint,tissue_retraction,WM-NC OR native logpZO,failure_mode,Fixed Tissue Target,20,0,10,10,0,0.0,1.0,1.0
+wm_nc_logpzo_native_or,wrist,endpoint,tissue_retraction,WM-NC OR native logpZO,failure_mode,Needle Intrusion,20,0,10,10,0,0.0,1.0,1.0
+wm_nc_logpzo_native_or,wrist,endpoint,tissue_retraction,WM-NC OR native logpZO,failure_mode,Tissue Disturbance,20,0,10,10,0,0.0,1.0,1.0
+wm_nc_logpzo_native_or,wrist,endpoint,tissue_retraction,WM-NC OR native logpZO,failure_mode,Tissue Grasp Loss,20,0,10,10,0,0.0,1.0,1.0
+wm_nc_logpzo_native_or,wrist,episode,needle_pickup,WM-NC OR native logpZO,all,All failures,20,0,120,118,0,0.0,0.9833333333333333,0.9970833333333333
+wm_nc_logpzo_native_or,wrist,episode,needle_pickup,WM-NC OR native logpZO,natural,Natural,20,0,40,38,0,0.0,0.95,0.99125
+wm_nc_logpzo_native_or,wrist,episode,needle_pickup,WM-NC OR native logpZO,induced,Induced,20,0,80,80,0,0.0,1.0,1.0
+wm_nc_logpzo_native_or,wrist,episode,needle_pickup,WM-NC OR native logpZO,failure_mode,Blood Occlusion,20,0,20,20,0,0.0,1.0,1.0
+wm_nc_logpzo_native_or,wrist,episode,needle_pickup,WM-NC OR native logpZO,failure_mode,Execution Mismatch,20,0,20,20,0,0.0,1.0,1.0
+wm_nc_logpzo_native_or,wrist,episode,needle_pickup,WM-NC OR native logpZO,failure_mode,Insecure Grasp,20,0,20,18,0,0.0,0.9,0.9824999999999999
+wm_nc_logpzo_native_or,wrist,episode,needle_pickup,WM-NC OR native logpZO,failure_mode,Needle Drop,20,0,20,20,0,0.0,1.0,1.0
+wm_nc_logpzo_native_or,wrist,episode,needle_pickup,WM-NC OR native logpZO,failure_mode,Needle Slippage,20,0,20,20,0,0.0,1.0,1.0
+wm_nc_logpzo_native_or,wrist,episode,needle_pickup,WM-NC OR native logpZO,failure_mode,OOD Initial Condition,20,0,20,20,0,0.0,1.0,1.0
+wm_nc_logpzo_native_or,wrist,episode,ring_over_post,WM-NC OR native logpZO,all,All failures,20,2,120,114,0,0.1,0.95,0.9891666666666666
+wm_nc_logpzo_native_or,wrist,episode,ring_over_post,WM-NC OR native logpZO,natural,Natural,20,2,40,35,0,0.1,0.875,0.9762500000000001
+wm_nc_logpzo_native_or,wrist,episode,ring_over_post,WM-NC OR native logpZO,induced,Induced,20,2,80,79,0,0.1,0.9875,0.995625
+wm_nc_logpzo_native_or,wrist,episode,ring_over_post,WM-NC OR native logpZO,failure_mode,Blood Occlusion,20,2,20,20,0,0.1,1.0,1.0
+wm_nc_logpzo_native_or,wrist,episode,ring_over_post,WM-NC OR native logpZO,failure_mode,Insecure Grasp,20,2,20,20,0,0.1,1.0,0.995
+wm_nc_logpzo_native_or,wrist,episode,ring_over_post,WM-NC OR native logpZO,failure_mode,Lateral Grasp Drift,20,2,20,20,0,0.1,1.0,1.0
+wm_nc_logpzo_native_or,wrist,episode,ring_over_post,WM-NC OR native logpZO,failure_mode,Post Misalignment,20,2,20,15,0,0.1,0.75,0.9575
+wm_nc_logpzo_native_or,wrist,episode,ring_over_post,WM-NC OR native logpZO,failure_mode,Ring Drop,20,2,20,19,0,0.1,0.95,0.9850000000000001
+wm_nc_logpzo_native_or,wrist,episode,ring_over_post,WM-NC OR native logpZO,failure_mode,Ring Slippage,20,2,20,20,0,0.1,1.0,0.9975
+wm_nc_logpzo_native_or,wrist,episode,shunt_insertion,WM-NC OR native logpZO,all,All failures,20,1,40,39,0,0.05,0.975,0.9962500000000001
+wm_nc_logpzo_native_or,wrist,episode,shunt_insertion,WM-NC OR native logpZO,natural,Natural,20,1,10,10,0,0.05,1.0,1.0
+wm_nc_logpzo_native_or,wrist,episode,shunt_insertion,WM-NC OR native logpZO,induced,Induced,20,1,30,29,0,0.05,0.9666666666666667,0.995
+wm_nc_logpzo_native_or,wrist,episode,shunt_insertion,WM-NC OR native logpZO,failure_mode,Camera Freeze,20,1,10,9,0,0.05,0.9,0.985
+wm_nc_logpzo_native_or,wrist,episode,shunt_insertion,WM-NC OR native logpZO,failure_mode,Insertion Misalignment,20,1,10,10,0,0.05,1.0,1.0
+wm_nc_logpzo_native_or,wrist,episode,shunt_insertion,WM-NC OR native logpZO,failure_mode,Lateral Grasp Drift,20,1,10,10,0,0.05,1.0,1.0
+wm_nc_logpzo_native_or,wrist,episode,shunt_insertion,WM-NC OR native logpZO,failure_mode,Shunt Disturbance,20,1,10,10,0,0.05,1.0,1.0
+wm_nc_logpzo_native_or,wrist,episode,tissue_retraction,WM-NC OR native logpZO,all,All failures,20,0,40,40,0,0.0,1.0,1.0
+wm_nc_logpzo_native_or,wrist,episode,tissue_retraction,WM-NC OR native logpZO,induced,Induced,20,0,40,40,0,0.0,1.0,1.0
+wm_nc_logpzo_native_or,wrist,episode,tissue_retraction,WM-NC OR native logpZO,failure_mode,Fixed Tissue Target,20,0,10,10,0,0.0,1.0,1.0
+wm_nc_logpzo_native_or,wrist,episode,tissue_retraction,WM-NC OR native logpZO,failure_mode,Needle Intrusion,20,0,10,10,0,0.0,1.0,1.0
+wm_nc_logpzo_native_or,wrist,episode,tissue_retraction,WM-NC OR native logpZO,failure_mode,Tissue Disturbance,20,0,10,10,0,0.0,1.0,1.0
+wm_nc_logpzo_native_or,wrist,episode,tissue_retraction,WM-NC OR native logpZO,failure_mode,Tissue Grasp Loss,20,0,10,10,0,0.0,1.0,1.0
+wm_nc_or,both,endpoint,needle_pickup,Fixed OR wrist,all,All failures,20,0,120,118,0,0.0,0.9833333333333333,0.9975
+wm_nc_or,both,endpoint,needle_pickup,Fixed OR wrist,natural,Natural,20,0,40,38,0,0.0,0.95,0.9924999999999999
+wm_nc_or,both,endpoint,needle_pickup,Fixed OR wrist,induced,Induced,20,0,80,80,0,0.0,1.0,1.0
+wm_nc_or,both,endpoint,needle_pickup,Fixed OR wrist,failure_mode,Blood Occlusion,20,0,20,20,0,0.0,1.0,1.0
+wm_nc_or,both,endpoint,needle_pickup,Fixed OR wrist,failure_mode,Execution Mismatch,20,0,20,20,0,0.0,1.0,1.0
+wm_nc_or,both,endpoint,needle_pickup,Fixed OR wrist,failure_mode,Insecure Grasp,20,0,20,18,0,0.0,0.9,0.985
+wm_nc_or,both,endpoint,needle_pickup,Fixed OR wrist,failure_mode,Needle Drop,20,0,20,20,0,0.0,1.0,1.0
+wm_nc_or,both,endpoint,needle_pickup,Fixed OR wrist,failure_mode,Needle Slippage,20,0,20,20,0,0.0,1.0,1.0
+wm_nc_or,both,endpoint,needle_pickup,Fixed OR wrist,failure_mode,OOD Initial Condition,20,0,20,20,0,0.0,1.0,1.0
+wm_nc_or,both,endpoint,ring_over_post,Fixed OR wrist,all,All failures,20,2,120,112,0,0.1,0.9333333333333333,0.98
+wm_nc_or,both,endpoint,ring_over_post,Fixed OR wrist,natural,Natural,20,2,40,33,0,0.1,0.825,0.95
+wm_nc_or,both,endpoint,ring_over_post,Fixed OR wrist,induced,Induced,20,2,80,79,0,0.1,0.9875,0.9950000000000001
+wm_nc_or,both,endpoint,ring_over_post,Fixed OR wrist,failure_mode,Blood Occlusion,20,2,20,20,0,0.1,1.0,1.0
+wm_nc_or,both,endpoint,ring_over_post,Fixed OR wrist,failure_mode,Insecure Grasp,20,2,20,20,0,0.1,1.0,0.995
+wm_nc_or,both,endpoint,ring_over_post,Fixed OR wrist,failure_mode,Lateral Grasp Drift,20,2,20,20,0,0.1,1.0,1.0
+wm_nc_or,both,endpoint,ring_over_post,Fixed OR wrist,failure_mode,Post Misalignment,20,2,20,13,0,0.1,0.65,0.9049999999999999
+wm_nc_or,both,endpoint,ring_over_post,Fixed OR wrist,failure_mode,Ring Drop,20,2,20,19,0,0.1,0.95,0.9824999999999999
+wm_nc_or,both,endpoint,ring_over_post,Fixed OR wrist,failure_mode,Ring Slippage,20,2,20,20,0,0.1,1.0,0.9975
+wm_nc_or,both,endpoint,shunt_insertion,Fixed OR wrist,all,All failures,20,0,40,38,0,0.0,0.95,1.0
+wm_nc_or,both,endpoint,shunt_insertion,Fixed OR wrist,natural,Natural,20,0,10,8,0,0.0,0.8,1.0
+wm_nc_or,both,endpoint,shunt_insertion,Fixed OR wrist,induced,Induced,20,0,30,30,0,0.0,1.0,1.0
+wm_nc_or,both,endpoint,shunt_insertion,Fixed OR wrist,failure_mode,Camera Freeze,20,0,10,10,0,0.0,1.0,1.0
+wm_nc_or,both,endpoint,shunt_insertion,Fixed OR wrist,failure_mode,Insertion Misalignment,20,0,10,8,0,0.0,0.8,1.0
+wm_nc_or,both,endpoint,shunt_insertion,Fixed OR wrist,failure_mode,Lateral Grasp Drift,20,0,10,10,0,0.0,1.0,1.0
+wm_nc_or,both,endpoint,shunt_insertion,Fixed OR wrist,failure_mode,Shunt Disturbance,20,0,10,10,0,0.0,1.0,1.0
+wm_nc_or,both,endpoint,tissue_retraction,Fixed OR wrist,all,All failures,20,0,40,40,0,0.0,1.0,1.0
+wm_nc_or,both,endpoint,tissue_retraction,Fixed OR wrist,induced,Induced,20,0,40,40,0,0.0,1.0,1.0
+wm_nc_or,both,endpoint,tissue_retraction,Fixed OR wrist,failure_mode,Fixed Tissue Target,20,0,10,10,0,0.0,1.0,1.0
+wm_nc_or,both,endpoint,tissue_retraction,Fixed OR wrist,failure_mode,Needle Intrusion,20,0,10,10,0,0.0,1.0,1.0
+wm_nc_or,both,endpoint,tissue_retraction,Fixed OR wrist,failure_mode,Tissue Disturbance,20,0,10,10,0,0.0,1.0,1.0
+wm_nc_or,both,endpoint,tissue_retraction,Fixed OR wrist,failure_mode,Tissue Grasp Loss,20,0,10,10,0,0.0,1.0,1.0
+wm_nc_or,both,episode,needle_pickup,Fixed OR wrist,all,All failures,20,0,120,118,0,0.0,0.9833333333333333,0.9975
+wm_nc_or,both,episode,needle_pickup,Fixed OR wrist,natural,Natural,20,0,40,38,0,0.0,0.95,0.9924999999999999
+wm_nc_or,both,episode,needle_pickup,Fixed OR wrist,induced,Induced,20,0,80,80,0,0.0,1.0,1.0
+wm_nc_or,both,episode,needle_pickup,Fixed OR wrist,failure_mode,Blood Occlusion,20,0,20,20,0,0.0,1.0,1.0
+wm_nc_or,both,episode,needle_pickup,Fixed OR wrist,failure_mode,Execution Mismatch,20,0,20,20,0,0.0,1.0,1.0
+wm_nc_or,both,episode,needle_pickup,Fixed OR wrist,failure_mode,Insecure Grasp,20,0,20,18,0,0.0,0.9,0.985
+wm_nc_or,both,episode,needle_pickup,Fixed OR wrist,failure_mode,Needle Drop,20,0,20,20,0,0.0,1.0,1.0
+wm_nc_or,both,episode,needle_pickup,Fixed OR wrist,failure_mode,Needle Slippage,20,0,20,20,0,0.0,1.0,1.0
+wm_nc_or,both,episode,needle_pickup,Fixed OR wrist,failure_mode,OOD Initial Condition,20,0,20,20,0,0.0,1.0,1.0
+wm_nc_or,both,episode,ring_over_post,Fixed OR wrist,all,All failures,20,2,120,112,0,0.1,0.9333333333333333,0.98
+wm_nc_or,both,episode,ring_over_post,Fixed OR wrist,natural,Natural,20,2,40,33,0,0.1,0.825,0.95
+wm_nc_or,both,episode,ring_over_post,Fixed OR wrist,induced,Induced,20,2,80,79,0,0.1,0.9875,0.9950000000000001
+wm_nc_or,both,episode,ring_over_post,Fixed OR wrist,failure_mode,Blood Occlusion,20,2,20,20,0,0.1,1.0,1.0
+wm_nc_or,both,episode,ring_over_post,Fixed OR wrist,failure_mode,Insecure Grasp,20,2,20,20,0,0.1,1.0,0.995
+wm_nc_or,both,episode,ring_over_post,Fixed OR wrist,failure_mode,Lateral Grasp Drift,20,2,20,20,0,0.1,1.0,1.0
+wm_nc_or,both,episode,ring_over_post,Fixed OR wrist,failure_mode,Post Misalignment,20,2,20,13,0,0.1,0.65,0.9049999999999999
+wm_nc_or,both,episode,ring_over_post,Fixed OR wrist,failure_mode,Ring Drop,20,2,20,19,0,0.1,0.95,0.9824999999999999
+wm_nc_or,both,episode,ring_over_post,Fixed OR wrist,failure_mode,Ring Slippage,20,2,20,20,0,0.1,1.0,0.9975
+wm_nc_or,both,episode,shunt_insertion,Fixed OR wrist,all,All failures,20,0,40,38,0,0.0,0.95,1.0
+wm_nc_or,both,episode,shunt_insertion,Fixed OR wrist,natural,Natural,20,0,10,8,0,0.0,0.8,1.0
+wm_nc_or,both,episode,shunt_insertion,Fixed OR wrist,induced,Induced,20,0,30,30,0,0.0,1.0,1.0
+wm_nc_or,both,episode,shunt_insertion,Fixed OR wrist,failure_mode,Camera Freeze,20,0,10,10,0,0.0,1.0,1.0
+wm_nc_or,both,episode,shunt_insertion,Fixed OR wrist,failure_mode,Insertion Misalignment,20,0,10,8,0,0.0,0.8,1.0
+wm_nc_or,both,episode,shunt_insertion,Fixed OR wrist,failure_mode,Lateral Grasp Drift,20,0,10,10,0,0.0,1.0,1.0
+wm_nc_or,both,episode,shunt_insertion,Fixed OR wrist,failure_mode,Shunt Disturbance,20,0,10,10,0,0.0,1.0,1.0
+wm_nc_or,both,episode,tissue_retraction,Fixed OR wrist,all,All failures,20,0,40,40,0,0.0,1.0,1.0
+wm_nc_or,both,episode,tissue_retraction,Fixed OR wrist,induced,Induced,20,0,40,40,0,0.0,1.0,1.0
+wm_nc_or,both,episode,tissue_retraction,Fixed OR wrist,failure_mode,Fixed Tissue Target,20,0,10,10,0,0.0,1.0,1.0
+wm_nc_or,both,episode,tissue_retraction,Fixed OR wrist,failure_mode,Needle Intrusion,20,0,10,10,0,0.0,1.0,1.0
+wm_nc_or,both,episode,tissue_retraction,Fixed OR wrist,failure_mode,Tissue Disturbance,20,0,10,10,0,0.0,1.0,1.0
+wm_nc_or,both,episode,tissue_retraction,Fixed OR wrist,failure_mode,Tissue Grasp Loss,20,0,10,10,0,0.0,1.0,1.0
+wm_nc_and,both,endpoint,Overall,Fixed AND wrist,all,All failures,80,0,320,132,0,0.0,0.4125,0.9255208333333333
+wm_nc_and,both,endpoint,Overall,Fixed AND wrist,natural,Natural,60,0,90,16,0,0.0,0.17777777777777778,0.7966666666666666
+wm_nc_and,both,endpoint,Overall,Fixed AND wrist,induced,Induced,80,0,230,116,0,0.0,0.5043478260869565,0.9645312500000001
+wm_nc_and,both,episode,Overall,Fixed AND wrist,all,All failures,80,0,320,146,0,0.0,0.45625,0.8389583333333334
+wm_nc_and,both,episode,Overall,Fixed AND wrist,natural,Natural,60,0,90,18,0,0.0,0.2,0.7179166666666666
+wm_nc_and,both,episode,Overall,Fixed AND wrist,induced,Induced,80,0,230,128,0,0.0,0.5565217391304348,0.8644270833333334
+wm_nc_logpzo_native_and,fix,endpoint,Overall,WM-NC AND native logpZO,all,All failures,80,0,320,74,0,0.0,0.23125,0.87125
+wm_nc_logpzo_native_and,fix,endpoint,Overall,WM-NC AND native logpZO,natural,Natural,60,0,90,13,0,0.0,0.14444444444444443,0.8025
+wm_nc_logpzo_native_and,fix,endpoint,Overall,WM-NC AND native logpZO,induced,Induced,80,0,230,61,0,0.0,0.26521739130434785,0.8859895833333333
+wm_nc_logpzo_native_and,fix,episode,Overall,WM-NC AND native logpZO,all,All failures,80,0,320,94,0,0.0,0.29375,0.8234375
+wm_nc_logpzo_native_and,fix,episode,Overall,WM-NC AND native logpZO,natural,Natural,60,0,90,16,0,0.0,0.17777777777777778,0.7475
+wm_nc_logpzo_native_and,fix,episode,Overall,WM-NC AND native logpZO,induced,Induced,80,0,230,78,0,0.0,0.3391304347826087,0.8354166666666667
+wm_nc_logpzo_native_and,wrist,endpoint,Overall,WM-NC AND native logpZO,all,All failures,80,0,320,160,0,0.0,0.5,0.9869791666666666
+wm_nc_logpzo_native_and,wrist,endpoint,Overall,WM-NC AND native logpZO,natural,Natural,60,0,90,35,0,0.0,0.3888888888888889,1.0
+wm_nc_logpzo_native_and,wrist,endpoint,Overall,WM-NC AND native logpZO,induced,Induced,80,0,230,125,0,0.0,0.5434782608695652,0.9819270833333333
+wm_nc_logpzo_native_and,wrist,episode,Overall,WM-NC AND native logpZO,all,All failures,80,0,320,193,0,0.0,0.603125,0.9456249999999999
+wm_nc_logpzo_native_and,wrist,episode,Overall,WM-NC AND native logpZO,natural,Natural,60,0,90,48,0,0.0,0.5333333333333333,0.9841666666666666
+wm_nc_logpzo_native_and,wrist,episode,Overall,WM-NC AND native logpZO,induced,Induced,80,0,230,145,0,0.0,0.6304347826086957,0.9265625000000001
+wm_nc_logpzo_native_or,fix,endpoint,Overall,WM-NC OR native logpZO,all,All failures,80,0,320,205,0,0.0,0.640625,0.9271875
+wm_nc_logpzo_native_or,fix,endpoint,Overall,WM-NC OR native logpZO,natural,Natural,60,0,90,44,0,0.0,0.4888888888888889,0.8983333333333333
+wm_nc_logpzo_native_or,fix,endpoint,Overall,WM-NC OR native logpZO,induced,Induced,80,0,230,161,0,0.0,0.7,0.9290104166666667
+wm_nc_logpzo_native_or,fix,episode,Overall,WM-NC OR native logpZO,all,All failures,80,0,320,205,0,0.0,0.640625,0.9271875
+wm_nc_logpzo_native_or,fix,episode,Overall,WM-NC OR native logpZO,natural,Natural,60,0,90,44,0,0.0,0.4888888888888889,0.8983333333333333
+wm_nc_logpzo_native_or,fix,episode,Overall,WM-NC OR native logpZO,induced,Induced,80,0,230,161,0,0.0,0.7,0.9290104166666667
+wm_nc_logpzo_native_or,wrist,endpoint,Overall,WM-NC OR native logpZO,all,All failures,80,3,320,311,0,0.0375,0.971875,0.995625
+wm_nc_logpzo_native_or,wrist,endpoint,Overall,WM-NC OR native logpZO,natural,Natural,60,3,90,83,0,0.05,0.9222222222222223,0.9891666666666666
+wm_nc_logpzo_native_or,wrist,endpoint,Overall,WM-NC OR native logpZO,induced,Induced,80,3,230,228,0,0.0375,0.991304347826087,0.99765625
+wm_nc_logpzo_native_or,wrist,episode,Overall,WM-NC OR native logpZO,all,All failures,80,3,320,311,0,0.0375,0.971875,0.995625
+wm_nc_logpzo_native_or,wrist,episode,Overall,WM-NC OR native logpZO,natural,Natural,60,3,90,83,0,0.05,0.9222222222222223,0.9891666666666666
+wm_nc_logpzo_native_or,wrist,episode,Overall,WM-NC OR native logpZO,induced,Induced,80,3,230,228,0,0.0375,0.991304347826087,0.99765625
+wm_nc_or,both,endpoint,Overall,Fixed OR wrist,all,All failures,80,2,320,308,0,0.025,0.9625,0.994375
+wm_nc_or,both,endpoint,Overall,Fixed OR wrist,natural,Natural,60,2,90,79,0,0.03333333333333333,0.8777777777777778,0.9808333333333333
+wm_nc_or,both,endpoint,Overall,Fixed OR wrist,induced,Induced,80,2,230,229,0,0.025,0.9956521739130435,0.99875
+wm_nc_or,both,episode,Overall,Fixed OR wrist,all,All failures,80,2,320,308,0,0.025,0.9625,0.994375
+wm_nc_or,both,episode,Overall,Fixed OR wrist,natural,Natural,60,2,90,79,0,0.03333333333333333,0.8777777777777778,0.9808333333333333
+wm_nc_or,both,episode,Overall,Fixed OR wrist,induced,Induced,80,2,230,229,0,0.025,0.9956521739130435,0.99875

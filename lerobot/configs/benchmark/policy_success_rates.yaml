@@ -1,0 +1,27 @@
+schema_version: 1
+study: Natural policy execution success rates
+reported_on: '2026-10-13'
+source: User-reported evaluation counts
+policy: ACT
+protocol: Natural execution, without deliberately induced failures
+notes: >-
+  Task-completion success rates, separate from detector FAR/FDR and from the
+  curated PRL calibration/test composition. Episode IDs, evaluation dates and
+  exact checkpoint identities were not supplied with these aggregate counts.
+tasks:
+  needle_pickup:
+    environment: simulation
+    successes: 10
+    trials: 20
+  ring_over_post:
+    environment: simulation
+    successes: 15
+    trials: 20
+  tissue_retraction:
+    environment: real
+    successes: 20
+    trials: 20
+  shunt_insertion:
+    environment: real
+    successes: 14
+    trials: 20

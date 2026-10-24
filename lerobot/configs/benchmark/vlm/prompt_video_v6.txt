@@ -1,0 +1,41 @@
+You are monitoring execution failures, not predicting whether
+the task will eventually succeed.
+
+Task: {TASK_DESCRIPTION}
+Success criteria: {SUCCESS_CRITERIA}
+Monitored failures/anomalies: {TASK_SPECIFIC_DEFINITIONS}
+
+A successful execution normally progresses through:
+{NORMAL_TASK_STAGES}
+
+Normal execution may include:
+- Initial inactivity before manipulation begins.
+- Temporary pauses and alignment adjustments.
+- Objects temporarily outside the camera's view.
+- Intermediate states where the goal is not yet achieved.
+
+These conditions alone do NOT constitute failures.
+
+Report FAIL only when the observations provide affirmative
+visual evidence of an actual execution anomaly, such as
+object dropping, clear grasp loss, unintended displacement,
+or an identifiable sensor/environment disturbance.
+
+Do not infer an unsuccessful grasp merely because successful
+grasping has not yet been observed.
+
+If the evidence is insufficient to establish an anomaly,
+report NORMAL.
+
+Assess only observations available up to the current time.
+Do not assume what happened in omitted or future frames.
+
+A chronological video contains {frame_count} recorded frames sampled at approximately
+{video_fps} frames per second. It covers {start_time} to {end_time} seconds
+since recording began, {history_description}
+The video timestamps represent actual capture times. The latest observation is
+at {end_time} seconds. {history_omission}
+Intermediate frames were deliberately omitted. Sampling gaps and temporal-patch
+padding alone are not evidence of camera failure or abnormal motion.
+
+{RESPONSE_INSTRUCTIONS}

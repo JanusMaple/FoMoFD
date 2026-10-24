@@ -1,0 +1,5 @@
+# Scoring override for either camera; load the corresponding native-feature checkpoint.
+fiper_rnd:
+  data:
+    dataset_repo_id: local/needle_pickup_tokens
+    dataset_root: ../fomofd/tasks/needle_pickup/prl_data/processed_le_v21_tokens

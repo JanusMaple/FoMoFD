@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="referrer" content="no-referrer">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; media-src 'self'; connect-src 'self'">
+  <title>Failure Detection for Surgical Robot Imitation Policies via Flow-Matching World Modeling</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="app.css">
+  <script src="data/report.js" defer></script>
+  <script src="data/chunk_offline_00.js" defer></script>
+<script src="data/chunk_online_00.js" defer></script>
+<script src="data/chunk_pairs_00.js" defer></script>
+<script src="data/chunk_auc_rows_00.js" defer></script>
+<script src="data/chunk_auc_rows_01.js" defer></script>
+<script src="data/chunk_auc_rows_02.js" defer></script>
+<script src="data/chunk_auc_rows_03.js" defer></script>
+<script src="data/chunk_auc_rows_04.js" defer></script>
+<script src="data/chunk_auc_rows_05.js" defer></script>
+<script src="data/chunk_auc_rows_06.js" defer></script>
+<script src="data/chunk_auc_rows_07.js" defer></script>
+<script src="data/chunk_auc_rows_08.js" defer></script>
+<script src="data/chunk_auc_rows_09.js" defer></script>
+<script src="data/chunk_auc_rows_10.js" defer></script>
+<script src="data/chunk_auc_rows_11.js" defer></script>
+  <script src="replay.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#content">Skip to content</a>
+<header class="topbar">
+  <a href="#content" class="brand">FoMo-FD<span class="brand-dot" aria-hidden="true">.</span></a>
+  <nav aria-label="Main navigation">
+    <a href="#replay">Examples</a><a href="#results">Results</a><a href="#ablations">Sensitivity &amp; Robustness</a><a href="#timing">Latency</a>
+  </nav>
+</header>
+<main id="content">
+  <section class="intro" aria-labelledby="paper-title">
+    <div class="project-links" aria-label="Project resources">
+      <a class="resource-link" href="#replay">Explore recordings <span aria-hidden="true">↗</span></a>
+      <a class="resource-link" href="#results">View results</a>
+      <a class="resource-link" href="downloads/all_results.csv" download>Results CSV <span aria-hidden="true">↓</span></a>
+    </div>
+    <h1 id="paper-title">Failure Detection for Surgical Robot Imitation Policies via Flow-Matching World Modeling</h1>
+    <p class="lede">FoMo-FD learns nominal visual dynamics from only successful demonstrations, using camera images and robot actions to detect execution failures.</p>
+  </section>
+
+  <section id="replay" class="section" aria-labelledby="replay-heading">
+    <div class="section-heading">
+      <div><h2 id="replay-heading">Recording replay</h2><p>Explore simulation and real tasks. Drag the score plot to seek.</p></div>
+    </div>
+    <div id="replay-grid" class="replay-grid" aria-label="Simulation and real recording replay"></div>
+  </section>
+
+  <section id="results" class="section" aria-labelledby="results-heading">
+    <div class="section-heading"><div><h2 id="results-heading">Detection results</h2><p>Compare monitors across four tasks and twenty failure modes.</p></div><a id="download-results" class="download" href="downloads/all_results.csv" download title="All tasks, methods, views and studies; unaffected by page filters">Download results <span aria-hidden="true">↓</span></a></div>
+    <details class="filter-details">
+      <summary><span>Filter results</span><span id="population-summary" class="small">All tasks</span></summary>
+      <div class="filters result-filters" aria-label="Result filters">
+        <div class="population-fields" role="radiogroup" aria-label="Browse results by">
+          <div class="population-field"><label class="population-choice"><input type="radio" name="population-kind" id="by-task" value="task" checked>Task</label><select id="task-filter" aria-label="Task"><option value="all">Full</option></select></div>
+          <div class="population-field"><label class="population-choice"><input type="radio" name="population-kind" id="by-category" value="category">Category</label><select id="category-filter" aria-label="Failure category" disabled><option value="all">Full</option></select></div>
+          <div class="population-field"><label class="population-choice"><input type="radio" name="population-kind" id="by-mode" value="mode">Failure mode</label><select id="mode-filter" aria-label="Specific failure mode" disabled><option value="all">Full</option></select></div>
+        </div>
+        <label>Failure origin<select id="origin-filter"><option value="all">Natural + induced</option><option value="natural">Natural only</option><option value="induced">Induced only</option></select></label>
+        <label>Calibration<select id="calibration-filter"><option value="episode">Episode maximum</option><option value="functional_band">Functional band</option></select></label>
+      </div>
+      <p id="population-note" class="note population-note" aria-live="polite"></p>
+    </details>
+    <div id="main-comparison" class="panel results-panel">
+      <div class="panel-heading"><h3 id="main-title">Failure detection &amp; false alarms</h3><span class="legend"><i></i> <strong class="ours-method">WM-NC (ours)</strong> reference</span></div>
+      <div class="comparison-toolbar">
+        <div class="view-toggle" role="radiogroup" aria-label="Camera view"><label><input type="radio" name="comparison-view" value="wrist" checked><span>Wrist</span></label><label><input type="radio" name="comparison-view" value="fix"><span>Fixed</span></label></div>
+        <label class="far-switch"><input id="match-far" type="checkbox" role="switch" aria-describedby="comparison-description"><span class="switch-track" aria-hidden="true"></span><span>5% FAR budget</span></label>
+        <div class="comparison-context" aria-live="polite"><strong id="comparison-mode">Calibrated thresholds</strong><p id="comparison-description"></p></div>
+      </div>
+      <div class="metric-cards" id="metrics"></div>
+      <div id="main-chart" class="bars" aria-label="Main single-view detection comparison"></div>
+      <details class="reading-notes"><summary>Baselines &amp; evaluation notes</summary>
+        <p>Detection requires a score crossing at or after the annotated onset.</p>
+        <p>For logpZO and RND, <strong>Policy</strong> denotes the ACT-native features used in the paper; <strong>VAE</strong> denotes additional variants using FoMo-FD's frozen visual latents. logpZO retains proprioception in both.</p>
+        <p id="main-note">Qwen has no conformal threshold or continuous-score AUROC; its displayed FDR includes late returned detections, whereas paired latency uses on-time detections only. NoACT removes action-conditioning paths from <strong class="ours-method">WM-NC (ours)</strong>.</p>
+      </details>
+    </div>
+  </section>
+
+  <section id="ablations" class="section supporting-section" aria-labelledby="ablations-heading">
+    <details class="section-disclosure">
+      <summary><h2 id="ablations-heading">Sensitivity &amp; Robustness</h2></summary>
+      <p class="section-description">Prediction horizon, history, training data, and variation across training seeds and calibration splits.</p>
+      <label class="far-switch sensitivity-operating-point"><input id="sensitivity-matched" type="checkbox" role="switch" checked><span class="switch-track" aria-hidden="true"></span><span>5% FAR budget</span></label>
+      <div class="ablation-grid">
+        <div class="panel"><h3>Prediction horizon K</h3><p class="note">History L = 4</p><div id="k-chart"></div></div>
+        <div class="panel"><h3>History length L</h3><p class="note">Horizon K = 4</p><div id="l-chart"></div></div>
+        <div class="panel"><h3>Training data</h3><p class="note">Horizon K = 4 · History L = 4</p><div id="data-chart"></div></div>
+      </div>
+      <details id="calibration-stability" class="panel detail-panel" open><summary>Calibration split sensitivity</summary>
+        <div class="panel-heading"><h3>500 calibration splits</h3></div>
+        <div id="sensitivity-chart"></div>
+      </details>
+      <div id="seed-robustness" class="panel robustness-panel">
+        <div class="panel-heading"><h3>Four training seeds</h3></div>
+        <p class="note">Seeds 0–3; seed 0 is the main <strong class="ours-method">WM-NC (ours)</strong> model. Same evaluation episodes, K = L = 4, and full training data.</p>
+        <div id="seed-summary"></div>
+      </div>
+    </details>
+  </section>
+
+  <section id="timing" class="section supporting-section" aria-labelledby="timing-heading">
+    <details class="section-disclosure">
+      <summary><h2 id="timing-heading">Detection latency</h2></summary>
+      <p class="section-description">Onset-relative delays on episodes detected by both monitors.</p>
+      <div id="latency-comparisons" class="panel detail-panel">
+        <div class="latency-toolbar">
+          <div class="latency-view-control"><span>Comparator view</span><div class="view-toggle" role="radiogroup" aria-label="Latency comparator view"><label><input type="radio" name="latency-view" value="wrist" checked><span>Wrist</span></label><label><input type="radio" name="latency-view" value="fix"><span>Fixed</span></label><label><input type="radio" name="latency-view" value="both"><span>Joint</span></label></div></div>
+          <label>Comparators<select id="latency-family"><option value="baseline">Main baselines</option><option value="K">Horizon K</option><option value="L">History L</option><option value="all">Baselines + K/L</option></select></label>
+          <label class="latency-minimum">Minimum shared<input id="shared-min" type="number" min="1" step="1" value="1"></label>
+        </div>
+        <div id="latency-chart" aria-live="polite"></div>
+        <p class="latency-note">Mean ± SD in seconds · n = shared on-time detections. Negative Δ means a shorter mean delay for <strong class="ours-method">WM-NC (ours)</strong>.</p>
+      </div>
+    </details>
+  </section>
+
+</main>
+</body>
+</html>

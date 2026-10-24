@@ -1,0 +1,68 @@
+schema_version: 1
+protocol_id: ral_revision_2026_10_15_v1
+status: frozen
+frozen_date: '2026-10-15'
+selection_timing: retrospective_protocol_revision_after_inspecting_existing_results
+score_support:
+  wm_frame_policy: all_endpoints
+  smoothing_window: 1
+  strict_crossing: score_greater_than_threshold
+  dataset_validity: lerobot/configs/benchmark/dataset_corrections.yaml
+calibration:
+  success_episodes: 19
+  success_test_episodes: 20
+  alpha: 0.05
+  episode_threshold: maximum_of_calibration_episode_maxima
+  functional_band: reuse_frozen_expert_template_without_refitting
+  failure_labels_used_for_calibration: false
+detection:
+  primary_annotator: annotator_ba960a25a7cc
+  FDR: any_observed_alarm_at_or_after_view_specific_onset
+  early_alarm: any_observed_alarm_before_view_specific_onset
+  early_only_complete_episode: missed_failure_false_negative_with_separate_early_alarm_flag
+  early_only_rationale: no_alarm_during_the_observed_annotated_failure_interval
+  combined_onset: earlier_of_fixed_and_wrist_both_required
+  FAR: any_alarm_on_successful_test_episode
+  episode_AUROC: whole_valid_episode_maximum_task_macro
+  matched_FAR_FDR: success_test_threshold_with_post_onset_failure_maximum
+latency:
+  units: recorded_wall_seconds
+  offline_clock: scored_endpoint_time_excludes_inference
+  online_clock: decision_completion_including_preprocessing_inference_and_parsing
+  persistence: consecutive_observed_positive_decisions_spanning_onset_without_negative_or_indeterminate_decision
+  negative_delay_allowed_except: simulated_induced_failures
+  negative_delay_requires: persistence_across_onset_and_decision_returned_before_onset
+  negative_delay_start: beginning_of_the_positive_run_spanning_onset
+  other_detection_start: first_positive_decision_with_source_endpoint_at_or_after_onset
+  isolated_early_alarm: report_separately_not_FDR_detection_or_confirmed_prediction
+  unobserved_after_early_stop: unknown_never_infer_from_offline_scores
+  late_online_decision: separate_from_on_time_latency
+  interpolation_between_processed_frames: false
+training_comparison:
+  match:
+  - expert_episodes
+  - episode_split
+  - preprocessing
+  - normalization
+  - K
+  - L
+  - seed
+  - optimizer
+  - step_cap
+  - early_stopping
+  - checkpoint_selection
+  vary_only: action_conditioning_architecture
+  active_seed1: desktop_rerun_WS05D
+  archived_seed1: PACE_runs_preserved_per_task
+  seed1_selection_timing: selected_after_benchmark_comparison_not_preregistered
+historical_online:
+  operating_point: uncorrected_all_endpoint_thresholds
+  primary_corrected_protocol_replay: not_yet_run
+  policy: preserve_and_label_as_historical_do_not_pair_with_new_offline_rates
+frozen_inputs:
+  onsets:
+    path: lerobot/configs/benchmark/prl_episode_labels.yaml
+    sha256: ecd6aef6608ed0ecd1d0397f5929485e46f6e589c2ebea5b14e4f11760b8b4d2
+  dataset_validity:
+    path: lerobot/configs/benchmark/dataset_corrections.yaml
+    sha256: 456be9fd54049124d740ffa6c594fc8c4a64ab941893ac27f409e74034ee1785
