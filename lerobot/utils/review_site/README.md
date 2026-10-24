@@ -8,9 +8,16 @@ detection results, sensitivity experiments, and latency comparisons.
 For a local preview, open the repository's `index.html` in a browser.
 
 The page works directly from disk. It starts with Needle Drop and Shunt
-Insertion Misalignment in wrist view, paused at 2x playback speed. Successful
-calibration curves are visible by default. Switch tasks or cameras using the
-panel controls, and drag a score curve or timeline to seek.
+Insertion Misalignment, paused at 2x playback speed. Fixed and wrist camera
+images play together, with separate score plots below. Successful calibration
+curves are visible by default. Switch tasks using the panel controls, and drag
+either score curve or the timeline to seek both camera views together.
+Click or focus a replay panel to use Left/Right for one frame, Shift+Left/Right
+for ten frames, Space for play/pause, and N/P for the next/previous episode.
+Dropdowns and radio toggles retain their standard keyboard controls.
+
+The detection-results view offers Wrist, Fixed, and All. All shows both cameras
+in separate groups plus the ACE and AEU action baselines.
 
 ## Website files
 

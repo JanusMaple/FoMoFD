@@ -19,7 +19,7 @@ figure scripts, and an interactive project website.
 
 [**Explore the interactive project website →**](https://anonymous.4open.science/w/FoMoFD/)
 
-Explore recordings, switch camera views, and drag the score curves to compare
+Explore episodes, compare both camera views, and drag the score curves to compare
 visual events with detection scores. The website also presents detection results,
 sensitivity experiments, and latency comparisons. No installation is required.
 

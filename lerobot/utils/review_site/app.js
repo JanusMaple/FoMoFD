@@ -37,7 +37,7 @@ function originMode(r){
 }
 function base(r,view=selectedView()){const t=selectedTask();return(t==='all'||r.task===t)&&(view==='all'||r.view===view||r.view==='both')&&(r.calibration===$('calibration-filter').value||r.method==='qwen_v9');}
 const isNoAct=r=>r.variant==='wm_k4_l4_action_none'&&r.method==='wm_nc';
-function methodName(r){return (isNoAct(r)?'NoACT':D.methods[r.method]||r.method_name||r.method)+' · '+viewName[r.view];}
+function methodName(r){return isNoAct(r)?'NoACT':D.methods[r.method]||r.method_name||r.method;}
 function aggregate(rows,view=selectedView()){
  const out=[];
  for(const [k,items] of group(rows.filter(r=>base(r,view)),key)){
@@ -59,11 +59,19 @@ function aggregate(rows,view=selectedView()){
  return out;
 }
 const allRows=[...D.offline,...D.online.filter(r=>r.method==='qwen_v9')];
-const mainRows=()=>aggregate(allRows.filter(r=>(r.main_comparison||isNoAct(r))&&!r.supplementary_method&&r.view===selectedView())).sort((a,b)=>{
+const mainRows=()=>aggregate(allRows.filter(r=>(r.main_comparison||isNoAct(r))&&!r.supplementary_method&&(selectedView()==='all'||r.view===selectedView()))).sort((a,b)=>{
  const order=Object.keys(D.methods);return order.indexOf(a.method)-order.indexOf(b.method)||Number(isNoAct(a))-Number(isNoAct(b))||a.view.localeCompare(b.view);
 });
-function barHTML(r,label){const unavailable=r.fdr==null||r.far==null;return `<div class="bar-row ${r.method==='wm_nc'&&r.variant==='main'?'reference':''}" data-method="${esc(r.method)}" data-view="${esc(r.view)}"><div class="bar-name"><strong>${oursHTML(label)}</strong><small>${unavailable?'Matched FAR unavailable':`${r.hits}/${r.n} detected${r.unknown?` · ${r.unknown} unknown`:''}${r.streaming?' · streaming':''}`}</small></div><div class="bar-cell"><div class="bar-track"><span class="bar-fill" style="width:${100*(r.fdr??0)}%"></span></div><span class="bar-value">${pct(r.fdr)}</span></div><div class="bar-cell far"><div class="bar-track"><span class="bar-fill" style="width:${100*(r.far??0)}%"></span></div><span class="bar-value">${pct(r.far)}</span></div>${r.main_comparison&&!r.streaming?`<button data-inspect="${esc(r.method)}" data-view="${esc(r.view)}">Replay ↗</button>`:'<span></span>'}</div>`;}
-function bars(id,rows,label=methodName){$(id).innerHTML=rows.length?`<div class="bar-header"><span>Monitor</span><span>Detection · FDR</span><span>False alarms · FAR</span><span></span></div>`+rows.map(r=>barHTML(r,label(r))).join(''):'<p class="empty">No recorded results for this selection.</p>';}
+function barHTML(r,label){const unavailable=r.fdr==null||r.far==null;return `<div class="bar-row ${r.method==='wm_nc'&&r.variant==='main'?'reference':''}" data-method="${esc(r.method)}" data-view="${esc(r.view)}" data-key="${esc(r.key)}"><div class="bar-name"><strong>${oursHTML(label)}</strong><small>${unavailable?'Matched FAR unavailable':`${r.hits}/${r.n} detected${r.unknown?` · ${r.unknown} unknown`:''}${r.streaming?' · streaming':''}`}</small></div><div class="bar-cell"><div class="bar-track"><span class="bar-fill" style="width:${100*(r.fdr??0)}%"></span></div><span class="bar-value">${pct(r.fdr)}</span></div><div class="bar-cell far"><div class="bar-track"><span class="bar-fill" style="width:${100*(r.far??0)}%"></span></div><span class="bar-value">${pct(r.far)}</span></div></div>`;}
+function bars(id,rows,label=methodName){
+ const render=items=>items.map(r=>barHTML(r,label(r))).join('');
+ const body=selectedView()==='all'?['wrist','fix','both'].map(view=>{
+  const items=rows.filter(r=>r.view===view);if(!items.length)return '';
+  const title=view==='both'?'Action baselines':`${viewName[view]} camera`;
+  return `<section class="bar-group" aria-label="${title}"><h4>${title}</h4>${render(items)}</section>`;
+ }).join(''):render(rows);
+ $(id).innerHTML=rows.length?'<div class="bar-header"><span>Monitor</span><span>Detection · FDR</span><span>False alarms · FAR</span></div>'+body:'<p class="empty">No recorded results for this selection.</p>';
+}
 function renderMain(){
  const matched=$('match-far').checked;
  const raw=mainRows(),rows=raw.map(r=>matched?{...r,hits:r.matched_hits,fa:r.matched_fa,fdr:r.matched_fdr,far:r.matched_far,unknown:0}:r);
@@ -72,6 +80,7 @@ function renderMain(){
  $('comparison-description').textContent=matched?'Selected on successful test episodes; achieved FAR is shown.':'19 calibration successes and 20 held-out successes per task.';
  $('main-title').textContent=matched?'Failure detection at a 5% FAR budget':'Failure detection & false alarms';
  const ref=rows.find(r=>r.variant==='main'&&r.method==='wm_nc'&&r.view===selectedView());
+ $('metrics').hidden=selectedView()==='all';
  $('metrics').innerHTML=[['WM-NC detection',pct(ref?.fdr),ref?`${ref.hits} / ${ref.n} failures · ${viewName[ref.view]}`:'No reference for this selection'],['WM-NC false alarms',pct(ref?.far),ref?`${ref.fa} / ${ref.sn} successful test episodes`:'—'],['WM-NC episode AUROC',num(ref?.auc,3),'Whole-episode maximum · task macro mean']].map(([label,v,sub])=>`<div class="metric-card"><span>${oursHTML(label)}</span><strong>${esc(v)}</strong><span>${esc(sub)}</span></div>`).join('');
 }
 function lineChart(id,family,param){
@@ -158,15 +167,6 @@ function syncPopulation(){
  $('population-note').textContent=mode?`${shortTask(mode.task)} · ${mode.failure_mode}.`:populationKind==='category'&&$('category-filter').value!=='all'?`${$('category-filter').value} · pooled across tasks.`:selectedTask()!=='all'?`${shortTask(selectedTask())} · all failure modes.`:'All four tasks and all failure modes.';
 }
 function renderResults(){renderMain();renderAblations();renderSensitivity();const mode=selectedFailure(),population=mode?`${shortTask(mode.task)} / ${mode.failure_mode}`:populationKind==='category'&&$('category-filter').value!=='all'?$('category-filter').value:selectedTask()==='all'?'All tasks':shortTask(selectedTask());$('population-summary').textContent=population+($('origin-filter').value==='all'?'':` · ${$('origin-filter').selectedOptions[0].textContent}`)+($('calibration-filter').value==='functional_band'?' · time-varying bands':'');}
-function inspect(method,view){
- const matching=g=>g.outcome==='failure'&&originMode(g);
- const task=D.catalog.find(t=>(selectedTask()==='all'||t.id===selectedTask())&&t.groups.some(g=>matching({...g,task:t.id})));
- if(!task)return;
- const replay=replays.get(task.id),index=task.groups.findIndex(g=>matching({...g,task:task.id}));
- replayPanels.get(task.id).selectTask(task.id,{load:false});
- replay.preferredMethod=method;replay.selectGroup(index);replay.selectView(view);replay.activate();
- replay.root.closest('.replay-panel').scrollIntoView({block:'start'});replay.root.focus({preventScroll:true});
-}
 function revealSection(hash){
  const section=document.getElementById(hash.slice(1)),disclosure=section?.querySelector(':scope > .section-disclosure');
  if(!disclosure)return null;
@@ -185,16 +185,10 @@ function init(){
  renderResults();renderSeedRobustness();renderTiming();
  initReplays();
  document.addEventListener('click',e=>{
-  const a=e.target.closest('[data-inspect]');if(a)inspect(a.dataset.inspect,a.dataset.view);
   const link=e.target.closest('a[href^="#"]');if(link)revealSection(link.hash);
  });
  window.addEventListener('hashchange',()=>revealSection(location.hash)?.scrollIntoView({block:'start'}));
  revealSection(location.hash)?.scrollIntoView({block:'start'});
- document.addEventListener('keydown',e=>{
-  if(e.target.matches('button,select,textarea,input:not([type=range]),summary,a')||e.target.isContentEditable||!activeReplay)return;
-  const rect=activeReplay.root.getBoundingClientRect();if(rect.bottom<0||rect.top>innerHeight)return;
-  let handled=true;switch(e.code){case 'Space':activeReplay.togglePlay();break;case 'ArrowLeft':activeReplay.seekFrame(activeReplay.frameAt(activeReplay.video.currentTime)-(e.shiftKey?10:1));break;case 'ArrowRight':activeReplay.seekFrame(activeReplay.frameAt(activeReplay.video.currentTime)+(e.shiftKey?10:1));break;case 'KeyN':activeReplay.moveEpisode(1);break;case 'KeyP':activeReplay.moveEpisode(-1);break;default:handled=false;}if(handled)e.preventDefault();
- });
  if('IntersectionObserver'in window){const observer=new IntersectionObserver(entries=>{for(const e of entries)if(e.isIntersecting){document.querySelectorAll('.topbar nav a').forEach(a=>a.classList.toggle('active',a.hash==='#'+e.target.id));}},{rootMargin:'-20% 0px -60% 0px'});document.querySelectorAll('section.section').forEach(s=>observer.observe(s));}
  document.documentElement.dataset.ready='true';
 }

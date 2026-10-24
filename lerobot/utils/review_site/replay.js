@@ -22,7 +22,7 @@ function loadScript(src) {
     const script = document.createElement('script');
     script.src = new URL(src, replayAssetBase).href;
     script.onload = () => { script.remove(); resolve(); };
-    script.onerror = () => { script.remove(); reject(Error('Recording data could not be loaded.')); };
+    script.onerror = () => { script.remove(); reject(Error('Episode data could not be loaded.')); };
     document.head.append(script);
   }).finally(() => replayScripts.delete(src));
   replayScripts.set(src, pending);
@@ -33,7 +33,7 @@ async function readReplayEpisode(task, id) {
   const key = `${task}/${String(id).padStart(6, '0')}`;
   if (!window.REVIEW_EPISODES[key]) await loadScript(`data/episodes/${key}.js`);
   const recording = window.REVIEW_EPISODES[key];
-  if (!recording) throw Error('Recording data is unavailable.');
+  if (!recording) throw Error('Episode data is unavailable.');
   return recording;
 }
 
@@ -56,7 +56,7 @@ class TaskReplay {
     this.selection = 0;
     this.calibrationSelection = 0;
     this.preferredMethod = 'wm_nc';
-    this.view = 'wrist';
+    this.playbackRate = 2;
     this.curves = new Map();
     this.calibration = new Map();
     this.drag = null;
@@ -65,34 +65,30 @@ class TaskReplay {
     this.root.className = 'task-replay';
     this.root.hidden = true;
     this.root.dataset.task = task.id;
-    this.root.dataset.camera = this.view;
     this.root.tabIndex = -1;
-    this.root.setAttribute('aria-label', `${replayTaskTitles[task.id] || shortTask(task.id)} recording replay`);
-    const chart = (view, title) => `<figure class="camera-score" data-view="${view}" ${view !== this.view ? 'hidden' : ''}>
-      <div class="camera-score-heading"><h4>${title}</h4><span data-role="readout-${view}"></span></div>
+    this.root.setAttribute('aria-label', `${replayTaskTitles[task.id] || shortTask(task.id)} episode replay`);
+    const chart = (view, title) => `<figure class="camera-score" data-view="${view}" ${view === 'both' ? 'hidden' : ''}>
+      <div class="camera-score-heading"><h4>${title}</h4></div>
       <svg data-role="chart-${view}" class="task-score-chart" role="img" aria-label="${esc(task.title)} ${title} score. Click or drag horizontally to seek."></svg>
     </figure>`;
     this.root.innerHTML = `<div class="task-episode-controls">
-        <label>Recording group<select data-role="group" aria-label="${esc(task.title)} recording group"></select></label>
-        <label>Recording<select data-role="episode" aria-label="${esc(task.title)} recording"></select></label>
+        <label>Task<select data-role="group" aria-label="${esc(task.title)} task"></select></label>
+        <label>Episode<select data-role="episode" aria-label="${esc(task.title)} episode"></select></label>
       </div>
-      <div class="task-camera-controls"><span>Camera</span>
-        <div class="view-toggle" role="radiogroup" aria-label="${esc(task.title)} replay camera">
-          <label><input type="radio" name="replay-view-${task.id}" data-camera-view="fix" value="fix"><span>Fixed</span></label>
-          <label><input type="radio" name="replay-view-${task.id}" data-camera-view="wrist" value="wrist" checked><span>Wrist</span></label>
+      <div class="task-camera-pair">
+        <div class="camera-pair-labels" aria-hidden="true"><span>Fixed</span><span>Wrist</span></div>
+        <div class="task-video-viewport"><video data-role="video" preload="metadata" playsinline muted aria-label="${esc(task.title)} synchronized Fixed camera on the left and Wrist camera on the right"></video></div>
+      </div>
+      <div class="task-playback-bar">
+        <button data-action="play" data-role="play" class="primary" aria-label="Play episode" title="Play or pause (Space)"><svg viewBox="0 0 16 16" aria-hidden="true"><path data-role="play-icon" d="M4 2 L13 8 L4 14 Z"/></svg><span data-role="play-label">Play</span></button>
+        <div class="playback-progress">
+          <div class="seek-wrap"><input data-role="seek" type="range" min="0" max="0" step="1" value="0" aria-label="${esc(task.title)} episode position"></div>
+          <span class="playback-time" data-role="time">0.00 s</span>
         </div>
-      </div>
-      <div class="task-video-viewport"><video data-role="video" preload="metadata" playsinline muted aria-label="${esc(task.title)} Wrist camera recording"></video></div>
-      <div class="readouts"><span data-role="frame">Frame —</span><span data-role="time">0.00 s</span></div>
-      <div class="seek-wrap"><input data-role="seek" type="range" min="0" max="0" step="1" value="0" aria-label="${esc(task.title)} recording frame"><div class="onset-markers" data-role="markers"></div></div>
-      <div class="task-play-controls">
-        <button data-action="previous" class="quiet" aria-label="Previous ${esc(task.title)} recording">←</button>
-        <button data-action="play" data-role="play" class="primary">Play</button>
-        <button data-action="next" class="quiet" aria-label="Next ${esc(task.title)} recording">→</button>
-        <button data-action="frame-back" class="quiet" aria-label="Previous frame">−1</button>
-        <button data-action="frame-next" class="quiet" aria-label="Next frame">+1</button>
-        <label>Speed<select data-role="speed"><option value="0.25">0.25×</option><option value="0.5">0.5×</option><option value="1">1×</option><option value="2" selected>2×</option></select></label>
-        <span class="task-onsets" data-role="onsets"></span>
+        <div class="view-toggle playback-speed" role="radiogroup" aria-label="${esc(task.title)} playback speed">
+          <label><input type="radio" name="replay-speed-${task.id}" data-playback-speed value="1"><span>1×</span></label>
+          <label><input type="radio" name="replay-speed-${task.id}" data-playback-speed value="2" checked><span>2×</span></label>
+        </div>
       </div>
       <div class="task-monitor-controls">
         <label>Monitor<select data-role="method" aria-label="${esc(task.title)} monitor"></select></label>
@@ -110,28 +106,22 @@ class TaskReplay {
     this.$('group').onchange = () => this.selectGroup(Number(this.$('group').value));
     this.$('episode').onchange = () => this.loadEpisode();
     this.$('method').onchange = () => this.updateMonitor();
-    this.root.querySelectorAll('[data-camera-view]').forEach(radio => {
-      radio.onchange = () => this.selectView(radio.value);
-    });
     this.$('show-calibration').onchange = () => this.refreshCalibration();
     this.$('seek').oninput = () => this.seekFrame(this.$('seek').value);
-    this.$('speed').onchange = () => {
-      this.video.defaultPlaybackRate = Number(this.$('speed').value);
-      this.video.playbackRate = this.video.defaultPlaybackRate;
-    };
+    this.root.querySelectorAll('[data-playback-speed]').forEach(radio => {
+      radio.onchange = () => {
+        this.playbackRate = Number(radio.value);
+        this.video.defaultPlaybackRate = this.playbackRate;
+        this.video.playbackRate = this.playbackRate;
+      };
+    });
     this.root.addEventListener('pointerdown', () => this.activate());
     this.root.addEventListener('focusin', () => this.activate());
     this.root.addEventListener('click', event => {
-      const onset = event.target.closest('[data-onset]');
-      if (onset) this.seekFrame(onset.dataset.onset);
       const button = event.target.closest('[data-action]');
       if (!button) return;
       switch (button.dataset.action) {
         case 'play': this.togglePlay(); break;
-        case 'previous': this.moveEpisode(-1); break;
-        case 'next': this.moveEpisode(1); break;
-        case 'frame-back': this.seekFrame(this.frameAt(this.video.currentTime) - 1); break;
-        case 'frame-next': this.seekFrame(this.frameAt(this.video.currentTime) + 1); break;
       }
     });
     for (const event of ['timeupdate', 'seeked', 'play', 'pause', 'loadedmetadata', 'ended']) {
@@ -159,31 +149,9 @@ class TaskReplay {
     activeReplay = this;
     this.root.closest('.replay-panel')?.classList.add('is-active');
   }
-  selectView(view) {
-    if (!['fix', 'wrist'].includes(view)) return Promise.resolve();
-    this.stopScrub();
-    this.view = view;
-    this.root.dataset.camera = view;
-    this.root.querySelectorAll('[data-camera-view]').forEach(radio => { radio.checked = radio.value === view; });
-    this.video.setAttribute('aria-label', `${this.task.title} ${viewName[view]} camera recording`);
-    this.showScoreView();
-    this.updateOnsets();
-    return this.updateMonitor();
-  }
   showScoreView() {
-    const selected = this.curves.has('both') ? 'both' : this.view;
-    for (const view of ['fix', 'wrist', 'both']) this.root.querySelector(`[data-view="${view}"]`).hidden = view !== selected;
-  }
-  updateOnsets() {
-    this.$('onsets').replaceChildren();
-    this.$('markers').replaceChildren();
-    if (!this.recording) return;
-    const view = this.curves.has('both') ? 'both' : this.view;
-    const frames = (view === 'both' ? Object.values(this.recording.onsets) : [this.recording.onsets[view]]).filter(Number.isFinite);
-    if (!frames.length) return;
-    const frame = Math.min(...frames), label = viewName[view];
-    this.$('onsets').innerHTML = `<button class="quiet" data-onset="${frame}" title="Jump to ${label} annotated onset">${label} ${num(this.onsetTime(view))} s</button>`;
-    this.$('markers').innerHTML = `<button data-onset="${frame}" style="left:${frame / Math.max(1, this.recording.times.length - 1) * 100}%" aria-label="Jump to ${label} onset"></button>`;
+    const joint = this.curves.has('both');
+    for (const view of ['fix', 'wrist', 'both']) this.root.querySelector(`[data-view="${view}"]`).hidden = joint ? view !== 'both' : view === 'both';
   }
   selectGroup(index, wanted) {
     this.$('group').value = index;
@@ -199,7 +167,6 @@ class TaskReplay {
     this.video.pause();
     this.root.dataset.ready = 'false';
     this.recording = null;
-    this.updateOnsets();
     this.curves.clear();
     this.calibration.clear();
     this.drawScores();
@@ -207,14 +174,12 @@ class TaskReplay {
     this.$('calibration-legend').hidden = true;
     this.$('validity').textContent = '';
     this.$('status').classList.remove('error');
-    this.$('status').textContent = 'Loading recording…';
+    this.$('status').textContent = 'Loading episode…';
     const id = Number(this.$('episode').value);
     const position = this.group.episodes.findIndex(e => e.id === id);
-    this.root.querySelector('[data-action="previous"]').disabled = position <= 0;
-    this.root.querySelector('[data-action="next"]').disabled = position === this.group.episodes.length - 1;
     if (!this.group.episodes[position]?.available) {
       this.video.removeAttribute('src'); this.video.removeAttribute('poster'); this.video.load();
-      this.$('status').textContent = 'This recording is not included in this export.';
+      this.$('status').textContent = 'This episode is not included in this export.';
       return;
     }
     try {
@@ -223,7 +188,7 @@ class TaskReplay {
       this.recording = recording;
       this.video.src = new URL(recording.video, replayAssetBase).href;
       this.video.poster = new URL(recording.poster, replayAssetBase).href;
-      this.video.defaultPlaybackRate = Number(this.$('speed').value);
+      this.video.defaultPlaybackRate = this.playbackRate;
       this.video.load();
       this.video.playbackRate = this.video.defaultPlaybackRate;
       this.$('seek').max = recording.times.length - 1;
@@ -247,9 +212,8 @@ class TaskReplay {
     const method = this.$('method').value;
     this.preferredMethod = method;
     this.$('method').classList.toggle('ours-selected', method === 'wm_nc');
-    this.curves = new Map(this.recording.curves.filter(c => c.method === method && (c.view === this.view || c.view === 'both')).map(c => [c.view, c]));
+    this.curves = new Map(this.recording.curves.filter(c => c.method === method).map(c => [c.view, c]));
     this.showScoreView();
-    this.updateOnsets();
     return this.refreshCalibration();
   }
   async refreshCalibration() {
@@ -265,17 +229,14 @@ class TaskReplay {
     try {
       const recordings = await loadCalibrationEpisodes(this.task.id);
       if (token !== this.calibrationSelection) return;
-      const counts = [];
       for (const [view, curve] of this.curves) {
         const series = recordings.flatMap(recording => recording.curves
           .filter(c => c.method === curve.method && c.view === view)
           .map(c => ({episode: recording.episode, times: c.frames.map(f => recording.times[f]), scores: c.scores})));
         this.calibration.set(view, series);
-        counts.push(series.length === curve.n_calibration ? String(series.length) : `${series.length} of ${curve.n_calibration}`);
       }
-      const count = [...new Set(counts)].join(' / ');
       if ([...this.calibration.values()].some(series => series.length)) {
-        this.$('calibration-label').textContent = `Successful policy rollouts (calibration set, n = ${count})`;
+        this.$('calibration-label').textContent = 'Calibration set';
         legend.hidden = false;
         note.textContent = '';
         note.hidden = true;
@@ -309,9 +270,26 @@ class TaskReplay {
     this.updateFrame();
   }
   moveEpisode(delta) {
+    if (!this.group) return;
     const index = this.group.episodes.findIndex(e => e.id === Number(this.$('episode').value));
     const next = this.group.episodes[index + delta];
     if (next) { this.$('episode').value = next.id; return this.loadEpisode(); }
+  }
+  handleKey(event) {
+    if (event.defaultPrevented || event.altKey || event.ctrlKey || event.metaKey || event.isComposing) return;
+    const target = event.target;
+    if (target.closest('select, textarea, input:not([type=range]), a, summary') || target.isContentEditable) return;
+    if (event.code === 'Space' && target.closest('button')) return;
+    if (!this.recording || this.root.hidden) return;
+    switch (event.code) {
+      case 'ArrowLeft': this.seekFrame(this.frameAt(this.video.currentTime) - (event.shiftKey ? 10 : 1)); break;
+      case 'ArrowRight': this.seekFrame(this.frameAt(this.video.currentTime) + (event.shiftKey ? 10 : 1)); break;
+      case 'Space': if (!event.repeat) this.togglePlay(); break;
+      case 'KeyN': if (!event.repeat) this.moveEpisode(1); break;
+      case 'KeyP': if (!event.repeat) this.moveEpisode(-1); break;
+      default: return;
+    }
+    event.preventDefault();
   }
   togglePlay() {
     if (!this.recording || this.root.hidden) return;
@@ -323,28 +301,25 @@ class TaskReplay {
     });
   }
   geometry(svg) {
-    const width = Math.max(140, svg.clientWidth), height = Math.max(70, svg.clientHeight);
-    return {width, height, left: 52, right: width - 24, top: 10, bottom: height - 23};
+    const width = Math.max(140, svg.clientWidth), height = Math.max(48, svg.clientHeight);
+    return {width, height, left: 6, right: width - 6, top: 6, bottom: height - 6};
   }
   updateFrame() {
-    this.$('play').textContent = this.video.paused ? 'Play' : 'Pause';
+    const action = this.video.paused ? 'Play' : 'Pause';
+    this.$('play-label').textContent = action;
+    this.$('play').setAttribute('aria-label', `${action} episode`);
+    this.$('play-icon').setAttribute('d', this.video.paused ? 'M4 2 L13 8 L4 14 Z' : 'M3 2 H6 V14 H3 Z M10 2 H13 V14 H10 Z');
     if (!this.recording) return;
     const frame = this.frameAt(this.video.currentTime), times = this.recording.times;
     this.$('seek').value = frame;
-    this.$('frame').textContent = `Frame ${frame} / ${times.length - 1}`;
     this.$('time').textContent = `${num(times[frame])} / ${num(times.at(-1))} s`;
     for (const view of ['fix', 'wrist', 'both']) {
-      const curve = this.curves.get(view), svg = this.$(`chart-${view}`);
+      const svg = this.$(`chart-${view}`);
       const cursor = svg.querySelector('.cursor');
       if (cursor) {
         const g = this.geometry(svg), x = g.left + times[frame] / Math.max(.001, times.at(-1)) * (g.right - g.left);
         cursor.setAttribute('x1', x); cursor.setAttribute('x2', x);
       }
-      let index = -1;
-      if (curve) for (let i = 0; i < curve.frames.length && curve.frames[i] <= frame; i++) index = i;
-      const readout = this.$(`readout-${view}`);
-      readout.textContent = !curve ? 'No separate score' : index < 0 ? 'Waiting for score' : `${Number(curve.scores[index].toPrecision(4))}${curve.scores[index] > curve.threshold ? ' · alarm' : ''}`;
-      readout.classList.toggle('score-alarm', !!curve && index >= 0 && curve.scores[index] > curve.threshold);
     }
   }
   drawScores() {
@@ -367,11 +342,8 @@ class TaskReplay {
       let drawing = '';
       for (let i = 0; i <= 3; i++) {
         const score = lo + (hi - lo) * i / 3;
-        const rounded = String(Number(score.toPrecision(3)));
-        const label = rounded.length <= 7 ? rounded : score.toExponential(1).replace('e+', 'e');
-        drawing += `<line class="chart-grid" x1="${g.left}" x2="${g.right}" y1="${y(score)}" y2="${y(score)}"/><text class="chart-label" x="${g.left - 5}" y="${y(score) + 3}" text-anchor="end">${label}</text>`;
+        drawing += `<line class="chart-grid" x1="${g.left}" x2="${g.right}" y1="${y(score)}" y2="${y(score)}"/>`;
       }
-      for (let i = 0; i <= 2; i++) drawing += `<text class="chart-label" x="${x(end * i / 2)}" y="${g.height - 5}" text-anchor="middle">${num(end * i / 2, 1)} s</text>`;
       const clip = `score-clip-${this.task.id}-${view}`;
       drawing += `<defs><clipPath id="${clip}"><rect x="${g.left}" y="${g.top}" width="${g.right - g.left}" height="${g.bottom - g.top}"/></clipPath></defs><g class="calibration-background" clip-path="url(#${clip})">${background.map(series => `<polyline class="calibration-signal" data-episode="${series.episode}" points="${series.scores.map((score, i) => `${x(series.times[i])},${y(score)}`).join(' ')}"/>`).join('')}</g>`;
       drawing += `<line class="threshold" x1="${g.left}" x2="${g.right}" y1="${y(curve.threshold)}" y2="${y(curve.threshold)}"/>`;
@@ -422,9 +394,18 @@ class ReplayPanel {
     this.root = document.createElement('section');
     this.root.id = `replay-panel-${id}`;
     this.root.className = 'panel replay-panel';
+    this.root.tabIndex = 0;
     this.root.setAttribute('aria-labelledby', `replay-heading-${id}`);
-    this.root.innerHTML = `<div class="replay-panel-heading"><h3 id="replay-heading-${id}">${title}</h3></div>
-      <div class="view-toggle replay-task-toggle" role="radiogroup" aria-label="${title} task">${tasks.map(task => `<label><input type="radio" name="replay-task-${id}" value="${task.id}" aria-controls="replay-${task.id}"><span>${esc(replayTaskTitles[task.id] || shortTask(task.id))}</span></label>`).join('')}</div>`;
+    this.root.setAttribute('aria-keyshortcuts', 'ArrowLeft ArrowRight Shift+ArrowLeft Shift+ArrowRight Space N P');
+    this.root.title = '← / →: one frame · Shift + ← / →: ten frames · Space: play or pause · N / P: next or previous episode';
+    this.root.addEventListener('keydown', event => this.current?.handleKey(event));
+    this.root.addEventListener('focusin', () => this.current?.activate());
+    this.root.addEventListener('pointerdown', event => {
+      this.current?.activate();
+      if (!event.target.closest('button, input, select, textarea, a, label, summary')) this.root.focus({preventScroll: true});
+    });
+    this.root.innerHTML = `<div class="replay-panel-heading"><h3 id="replay-heading-${id}">${title}</h3>
+      <div class="view-toggle replay-task-toggle" role="radiogroup" aria-label="${title} task">${tasks.map(task => `<label><input type="radio" name="replay-task-${id}" value="${task.id}" aria-controls="replay-${task.id}"><span>${esc(replayTaskTitles[task.id] || shortTask(task.id))}</span></label>`).join('')}</div></div>`;
     for (const task of tasks) {
       const replay = new TaskReplay(task);
       replays.set(task.id, replay);

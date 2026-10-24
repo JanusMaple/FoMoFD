@@ -30,13 +30,13 @@
 
   <section id="replay" class="section" aria-labelledby="replay-heading">
     <div class="section-heading">
-      <div><h2 id="replay-heading">Recording replay</h2><p>Explore simulation and real tasks. Drag the score plot to seek.</p></div>
+      <div><h2 id="replay-heading">Episode replay</h2><p>Explore simulation and real tasks. Drag the score plot to seek.</p></div>
     </div>
-    <div id="replay-grid" class="replay-grid" aria-label="Simulation and real recording replay"></div>
+    <div id="replay-grid" class="replay-grid" aria-label="Simulation and real episode replay"></div>
   </section>
 
   <section id="results" class="section" aria-labelledby="results-heading">
-    <div class="section-heading"><div><h2 id="results-heading">Detection results</h2><p>Compare monitors across four tasks and twenty failure modes.</p></div><a id="download-results" class="download" href="downloads/all_results.csv" download title="All tasks, methods, views and studies; unaffected by page filters">Download results <span aria-hidden="true">↓</span></a></div>
+    <div class="section-heading"><div><h2 id="results-heading">Detection results</h2><p>Compare monitors across four tasks and twenty failure modes.</p></div></div>
     <details class="filter-details">
       <summary><span>Filter results</span><span id="population-summary" class="small">All tasks</span></summary>
       <div class="filters result-filters" aria-label="Result filters">
@@ -53,12 +53,12 @@
     <div id="main-comparison" class="panel results-panel">
       <div class="panel-heading"><h3 id="main-title">Failure detection &amp; false alarms</h3><span class="legend"><i></i> <strong class="ours-method">WM-NC (ours)</strong> reference</span></div>
       <div class="comparison-toolbar">
-        <div class="view-toggle" role="radiogroup" aria-label="Camera view"><label><input type="radio" name="comparison-view" value="wrist" checked><span>Wrist</span></label><label><input type="radio" name="comparison-view" value="fix"><span>Fixed</span></label></div>
+        <div class="view-toggle" role="radiogroup" aria-label="Camera view"><label><input type="radio" name="comparison-view" value="wrist" checked><span>Wrist</span></label><label><input type="radio" name="comparison-view" value="fix"><span>Fixed</span></label><label><input type="radio" name="comparison-view" value="all"><span>All</span></label></div>
         <label class="far-switch"><input id="match-far" type="checkbox" role="switch" aria-describedby="comparison-description"><span class="switch-track" aria-hidden="true"></span><span>5% FAR budget</span></label>
         <div class="comparison-context" aria-live="polite"><strong id="comparison-mode">Calibrated thresholds</strong><p id="comparison-description"></p></div>
       </div>
       <div class="metric-cards" id="metrics"></div>
-      <div id="main-chart" class="bars" aria-label="Main single-view detection comparison"></div>
+      <div id="main-chart" class="bars" aria-label="Main detection comparison"></div>
       <details class="reading-notes"><summary>Baselines &amp; evaluation notes</summary>
         <p>Detection requires a score crossing at or after the annotated onset.</p>
         <p>For logpZO and RND, <strong>Policy</strong> denotes the ACT-native features used in the paper; <strong>VAE</strong> denotes additional variants using FoMo-FD's frozen visual latents. logpZO retains proprioception in both.</p>
