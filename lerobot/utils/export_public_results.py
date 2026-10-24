@@ -14,7 +14,7 @@ from public_results import current_rows, current_result
 
 ROOT = Path(__file__).resolve().parents[2]
 PRIVATE = ROOT / 'logs/benchmarks/result_tables/details'
-SITE = ROOT / 'fomofd/tasks/review_site'
+SITE = ROOT / 'website'
 PUBLIC = ROOT / 'docs/results'
 
 

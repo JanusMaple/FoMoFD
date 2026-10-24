@@ -15,8 +15,8 @@ logs/
 /reproducibility/audit/
 
 # Keep the static website's exported score data in the repository.
-!fomofd/tasks/review_site/data/
-!fomofd/tasks/review_site/data/**
+!website/data/
+!website/data/**
 
 fomofd/assets/models/OR_scene_s1371/*
 !fomofd/assets/models/OR_scene_s1371/surgical_background.usd

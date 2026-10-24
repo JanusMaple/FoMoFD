@@ -17,16 +17,11 @@ figure scripts, and an interactive project website.
 
 ## Explore the project
 
-Open the included website from the repository root:
+[**Explore the interactive project website →**](https://anonymous.4open.science/w/FoMoFD/)
 
-```bash
-xdg-open fomofd/tasks/review_site/index.html
-```
-
-It runs directly in a browser, with no Python environment or server required.
 Explore recordings, switch camera views, and drag the score curves to compare
-visual events with detection scores. The page also presents detection results,
-sensitivity experiments, and latency comparisons.
+visual events with detection scores. The website also presents detection results,
+sensitivity experiments, and latency comparisons. No installation is required.
 
 ## Installation
 

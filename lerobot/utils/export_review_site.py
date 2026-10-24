@@ -34,7 +34,7 @@ from public_results import STUDIES, STUDY_FIELDS, select_public_data
 REPO = Path(__file__).resolve().parents[2]
 ASSETS = Path(__file__).with_name('review_site')
 RESULTS = REPO / 'fomofd/tasks/benchmark_results'
-OUTPUT = REPO / 'fomofd/tasks/review_site'
+OUTPUT = REPO / 'website'
 SOURCE_STATE = REPO / 'logs/development/review_site/site_sources.json'
 PRIVATE_TABLES = REPO / 'logs/benchmarks/result_tables'
 TASKS = ('needle_pickup', 'ring_over_post', 'tissue_retraction', 'shunt_insertion')
@@ -229,6 +229,13 @@ def encode_video(episode, stop, target):
     tmp.replace(target)
 
 
+def site_files(output):
+    yield from (path for path in output.rglob('*') if path.is_file())
+    if output.resolve() == OUTPUT.resolve():
+        yield from (path for name in ('index.html', '.nojekyll', 'robots.txt')
+                    if (path := REPO / name).is_file())
+
+
 def scan_public(output):
     """Fail closed on known identity/path leaks in exported text and media tags.
 
@@ -238,12 +245,12 @@ def scan_public(output):
     forbidden = ['/home/', '/storage/project/', 'github.io']
     if private_terms.is_file():
         forbidden += json.loads(private_terms.read_text())
-    for path in output.rglob('*'):
-        if path.is_file() and path.suffix in ('.html', '.js', '.css', '.json', '.csv', '.md', '.svg'):
+    for path in site_files(output):
+        if path.suffix in ('.html', '.js', '.css', '.json', '.csv', '.md', '.svg'):
             text = path.read_text().lower()
             for term in forbidden:
                 if term in text:
-                    raise ValueError(f'Identity/path leak in {path.relative_to(output)}: {term}')
+                    raise ValueError(f'Identity/path leak in {path.name}: {term}')
 
 
 def style_study_svg(text):
@@ -325,6 +332,27 @@ def style_study_svg(text):
     return ET.tostring(root, encoding='unicode')
 
 
+def write_presentation(output, chunks):
+    """Keep the default homepage at the repository root; custom exports are standalone."""
+    output = output.resolve()
+    output.mkdir(parents=True, exist_ok=True)
+    for path in ASSETS.iterdir():
+        if path.suffix in ('.css', '.js'):
+            shutil.copyfile(path, output / path.name)
+    scripts = '\n'.join(f'<script src="{filename}" defer></script>' for filename in chunks)
+    html = (ASSETS / 'index.html').read_text().replace('<!-- DATA_CHUNKS -->', scripts)
+    page_root = REPO if output == OUTPUT.resolve() else output
+    if page_root == REPO:
+        prefix = output.relative_to(REPO).as_posix() + '/'
+        html = re.sub(r'\b(href|src)="(?![a-zA-Z][a-zA-Z0-9+.-]*:|/|#)([^"]+)"',
+                      lambda match: f'{match[1]}="{prefix}{match[2]}"', html)
+    index = page_root / 'index.html'
+    index.write_text(html)
+    (page_root / '.nojekyll').write_text('')
+    (page_root / 'robots.txt').write_text('User-agent: *\nDisallow: /\n')
+    return index
+
+
 def publish_site(output, data, snapshot):
     """Write current results without development records or obsolete assets."""
     select_public_data(data)
@@ -361,9 +389,6 @@ def publish_site(output, data, snapshot):
         if path.is_file() and path.name.startswith(('expert_policy_', 'calibration_', 'main_calibration_')):
             path.unlink()
     shutil.copyfile(ASSETS / 'protocol.md', output / 'downloads/protocol.md')
-    for path in ASSETS.iterdir():
-        if path.suffix in ('.html', '.css', '.js'):
-            shutil.copyfile(path, output / path.name)
     # Packed rows avoid repeating column names and split files stay small enough
     # for common static/anonymized-file hosts. No external CDN is required.
     base = {k: v for k, v in data.items() if k not in ('offline', 'online', 'pairs', 'auc_rows')}
@@ -379,9 +404,8 @@ def publish_site(output, data, snapshot):
             path = output / filename
             write_json(path, rows[start:start+5000], f'window.REVIEW_DATA.{key}.push(...')
             path.write_text(path.read_text().removesuffix(';\n') + ');\n')
-            scripts.append(f'<script src="{filename}" defer></script>')
-    index = output / 'index.html'
-    index.write_text(index.read_text().replace('<!-- DATA_CHUNKS -->', '\n'.join(scripts)))
+            scripts.append(filename)
+    write_presentation(output, scripts)
     state = json.loads(SOURCE_STATE.read_text()) if SOURCE_STATE.exists() else {}
     state[str(output.resolve())] = sha(RESULTS / 'index.html')
     write_json(SOURCE_STATE, state)
@@ -404,7 +428,7 @@ def refresh_presentation(output):
     publish_site(output, data, snapshot)
     scan_public(output)
     manifest = json.loads((output / 'manifest.json').read_text())
-    manifest['bytes'] = sum(p.stat().st_size for p in output.rglob('*') if p.is_file())
+    manifest['bytes'] = sum(p.stat().st_size for p in site_files(output))
     write_json(output / 'manifest.json', manifest)
     print(f'Presentation refreshed; recording videos and score curves reused: {output}')
 
@@ -451,7 +475,7 @@ def refresh_results(output):
     publish_site(output, data, snapshot)
     scan_public(output)
     manifest = json.loads((output / 'manifest.json').read_text())
-    manifest.update(protocol=spec['protocol_id'], bytes=sum(p.stat().st_size for p in output.rglob('*') if p.is_file()))
+    manifest.update(protocol=spec['protocol_id'], bytes=sum(p.stat().st_size for p in site_files(output)))
     write_json(output / 'manifest.json', manifest)
     print(f'Results and {count} episode onset markers refreshed; all videos reused: {output}')
 
@@ -546,20 +570,18 @@ def build(output, tasks=TASKS, episodes=None):
                             **recent_summary_tables(summary)},
                  'media_count': n, 'total_episodes': len(recordings.paths)})
     publish_site(output, data, snapshot)
-    (output / '.nojekyll').write_text('')
-    (output / 'robots.txt').write_text('User-agent: *\nDisallow: /\n')
     scan_public(output)
     manifest = {'schema_version': 1, 'protocol': data['protocol_id'], 'episodes': n,
                 'text_identity_scan': 'passed', 'visual_identity_audit': 'not_performed',
                 'video_timing': 'microsecond VFR PTS verified against recorded wall timestamps',
-                'bytes': sum(p.stat().st_size for p in output.rglob('*') if p.is_file())}
+                'bytes': sum(p.stat().st_size for p in site_files(output))}
     write_json(output / 'manifest.json', manifest)
     print(json.dumps({'output': str(output), **manifest}, indent=2))
 
 
 def main():
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument('--output', type=Path, default=OUTPUT)
+    p.add_argument('--output', type=Path, default=OUTPUT, help='Asset directory; the default website/ uses the repository-root homepage')
     p.add_argument('--tasks', nargs='+', choices=TASKS, default=list(TASKS))
     p.add_argument('--episodes', nargs='+', type=int, help='Optional development-only media subset; results stay complete')
     p.add_argument('--refresh-presentation', action='store_true', help='Refresh the existing site without reading/encoding raw recordings')

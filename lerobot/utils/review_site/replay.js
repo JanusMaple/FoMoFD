@@ -1,5 +1,7 @@
 'use strict';
 
+const replayAssetBase = new URL('.', document.currentScript.src);
+
 const replays = new Map();
 const replayPanels = new Map();
 let activeReplay = null;
@@ -18,7 +20,7 @@ function loadScript(src) {
   if (replayScripts.has(src)) return replayScripts.get(src);
   const pending = new Promise((resolve, reject) => {
     const script = document.createElement('script');
-    script.src = src;
+    script.src = new URL(src, replayAssetBase).href;
     script.onload = () => { script.remove(); resolve(); };
     script.onerror = () => { script.remove(); reject(Error('Recording data could not be loaded.')); };
     document.head.append(script);
@@ -219,8 +221,8 @@ class TaskReplay {
       const recording = await readReplayEpisode(this.task.id, id);
       if (token !== this.selection) return;
       this.recording = recording;
-      this.video.src = recording.video;
-      this.video.poster = recording.poster;
+      this.video.src = new URL(recording.video, replayAssetBase).href;
+      this.video.poster = new URL(recording.poster, replayAssetBase).href;
       this.video.defaultPlaybackRate = Number(this.$('speed').value);
       this.video.load();
       this.video.playbackRate = this.video.defaultPlaybackRate;

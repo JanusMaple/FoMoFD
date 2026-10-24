@@ -3,11 +3,9 @@
 The included static website provides simulation and real-robot replay panels,
 detection results, sensitivity experiments, and latency comparisons.
 
-From the repository root:
+[Open the interactive project website](https://anonymous.4open.science/w/FoMoFD/).
 
-```bash
-xdg-open fomofd/tasks/review_site/index.html
-```
+For a local preview, open the repository's `index.html` in a browser.
 
 The page works directly from disk. It starts with Needle Drop and Shunt
 Insertion Misalignment in wrist view, paused at 2x playback speed. Successful
@@ -17,9 +15,13 @@ panel controls, and drag a score curve or timeline to seek.
 ## Website files
 
 `index.html`, `app.css`, `app.js`, and `replay.js` in this directory are the
-presentation sources. The generated page, score data, and replay media live
-together under `fomofd/tasks/review_site/`. Keep the whole generated directory
-together when copying or hosting it. It uses no remote scripts or fonts.
+presentation sources. The generated homepage is the repository-root `index.html`;
+its styles, scripts, score data, downloads, and replay media live under `website/`.
+Keep `index.html` and `website/` together when copying or hosting the page.
+It uses no remote scripts or fonts.
+
+The default exporter preserves this layout. A custom `--output` directory
+contains a standalone website with its own `index.html`.
 
 ## Rebuild from experiment outputs
 
