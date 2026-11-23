@@ -48,7 +48,7 @@ flattening loader; query tokens do not form a spatial image grid.
 Prepare expert ACT-token features from the repository root:
 
 ```bash
-conda activate lerobot
+conda activate fomofd-lerobot
 python lerobot/utils/npz_to_le_v21.py \
   --task needle_pickup --including_gripper \
   --gripper_transform std_scale --gripper_std_scale 10 \

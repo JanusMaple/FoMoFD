@@ -29,7 +29,7 @@ import yaml
 from replay_inspector import Recordings, onset_views
 from results_inspector import read_viewer_snapshot, resolve_repo_path
 from unified_benchmark import curves
-from public_results import STUDIES, STUDY_FIELDS, select_public_data
+from public_results import PUBLIC_PROJECT_URL, STUDIES, STUDY_FIELDS, select_public_data
 
 REPO = Path(__file__).resolve().parents[2]
 ASSETS = Path(__file__).with_name('review_site')
@@ -247,7 +247,8 @@ def scan_public(output):
         forbidden += json.loads(private_terms.read_text())
     for path in site_files(output):
         if path.suffix in ('.html', '.js', '.css', '.json', '.csv', '.md', '.svg'):
-            text = path.read_text().lower()
+            # The official project link is public; other path/identity checks remain.
+            text = path.read_text().lower().replace(PUBLIC_PROJECT_URL.lower(), '')
             for term in forbidden:
                 if term in text:
                     raise ValueError(f'Identity/path leak in {path.name}: {term}')

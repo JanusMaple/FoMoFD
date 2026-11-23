@@ -17,7 +17,7 @@ figure scripts, and an interactive project website.
 
 ## Explore the project
 
-[**Explore the interactive project website →**](https://anonymous.4open.science/w/FoMoFD/)
+[**Explore the interactive project website →**](https://janusmaple.github.io/FoMoFD/)
 
 Explore episodes, compare both camera views, and drag the score curves to compare
 visual events with detection scores. The website also presents detection results,
@@ -29,15 +29,15 @@ The code uses three separate environments:
 
 | Environment | Python | Purpose |
 | --- | --- | --- |
-| `lerobot` | 3.10 | Policy/world-model training, scoring, evaluation, and figures |
-| `EMILS` | 3.11 | Isaac Sim / Isaac Lab task simulation and recording |
+| `fomofd-lerobot` | 3.10 | Policy/world-model training, scoring, evaluation, and figures |
+| `fomofd-isaac` | 3.11 | Isaac Sim / Isaac Lab task simulation and recording |
 | `fomofd-vlm` | 3.11 | Qwen video-baseline inference |
 
 For training, evaluation, and plotting, run from the repository root:
 
 ```bash
-conda env create -f lerobot/environments/lerobot.yml
-conda activate lerobot
+conda env create -f lerobot/environments/fomofd-lerobot.yml
+conda activate fomofd-lerobot
 python -m pip install --no-deps -e lerobot/policies/act_dinov2
 ```
 
@@ -70,7 +70,7 @@ python lerobot/utils/npz_to_le_v21.py --help
 
 ## Train and score a world model
 
-Activate `lerobot`, then run the following commands from the `lerobot/` directory;
+Activate `fomofd-lerobot`, then run the following commands from the `lerobot/` directory;
 the paths in model configuration files are relative to that directory.
 Training requires the prepared expert VAE features specified by the config.
 
@@ -101,7 +101,7 @@ horizon, history, action-conditioning, and training-data variants, and
 
 ## Evaluation and figures
 
-Run these commands from the repository root in `lerobot`.
+Run these commands from the repository root in `fomofd-lerobot`.
 Once checkpoints and their saved training configurations are installed, inspect
 benchmark jobs before running inference:
 

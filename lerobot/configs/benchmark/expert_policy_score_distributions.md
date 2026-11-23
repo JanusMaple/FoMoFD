@@ -3,7 +3,7 @@
 Run the separate, cache-only main K4/L4 WM-NC experiment from the repo root:
 
 ```bash
-conda activate lerobot
+conda activate fomofd-lerobot
 python lerobot/utils/analyze_experiments.py score-distributions \
   --config lerobot/configs/benchmark/expert_policy_score_distributions.yaml \
   --output fomofd/tasks/benchmark_results/analyses/2026-10-20/expert_policy_score_distributions

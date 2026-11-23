@@ -85,7 +85,7 @@ constant, rather than being replaced with a different score.
 
 ## Commands and artifacts
 
-Run from the repository root using the existing `lerobot` environment:
+Run from the repository root using the existing `fomofd-lerobot` environment:
 
 ```bash
 # Inspect model and dataset prerequisites.

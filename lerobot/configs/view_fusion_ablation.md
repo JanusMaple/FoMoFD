@@ -67,7 +67,7 @@ a new patience or shorten the reference budgets.
 
 ## Commands
 
-From the repository root, activate the `lerobot` environment, then:
+From the repository root, activate the `fomofd-lerobot` environment, then:
 
 ```bash
 cd lerobot

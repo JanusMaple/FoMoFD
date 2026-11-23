@@ -45,7 +45,7 @@ not treated as a miss or zero FAR. Successes never receive onset/latency labels.
 
 ## Run
 
-From the repo root in the `lerobot` environment:
+From the repo root in the `fomofd-lerobot` environment:
 
 ```bash
 # CPU-only plan; select a new output directory.

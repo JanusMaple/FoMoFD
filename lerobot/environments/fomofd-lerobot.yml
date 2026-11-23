@@ -1,4 +1,4 @@
-name: lerobot
+name: fomofd-lerobot
 channels:
   - conda-forge
 dependencies:
@@ -6,4 +6,4 @@ dependencies:
   - pip
   - ffmpeg=7.1
   - pip:
-      - -r requirements-lerobot.txt
+      - -r requirements-fomofd-lerobot.txt

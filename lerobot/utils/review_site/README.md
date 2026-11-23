@@ -3,7 +3,7 @@
 The included static website provides simulation and real-robot replay panels,
 detection results, sensitivity experiments, and latency comparisons.
 
-[Open the interactive project website](https://anonymous.4open.science/w/FoMoFD/).
+[Open the interactive project website](https://janusmaple.github.io/FoMoFD/).
 
 For a local preview, open the repository's `index.html` in a browser.
 
@@ -36,7 +36,7 @@ Rebuilding requires the recordings, cached scores, and benchmark reports
 referenced by `lerobot/configs/benchmark/results_catalog.yaml`. These research
 assets are not bundled; the included static website is already usable.
 
-With those inputs available, run in the `lerobot` environment:
+With those inputs available, run in the `fomofd-lerobot` environment:
 
 ```bash
 python lerobot/utils/export_benchmark_tables.py

@@ -1,2 +1,2 @@
 # Training, scoring, evaluation, and plotting (Python 3.10).
--r lerobot/environments/requirements-lerobot.txt
+-r lerobot/environments/requirements-fomofd-lerobot.txt

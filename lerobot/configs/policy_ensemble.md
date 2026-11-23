@@ -32,7 +32,7 @@ the original next-observation action alignment and gripper standard-deviation
 scale of 10. From the repository root, an example is:
 
 ```bash
-conda activate lerobot
+conda activate fomofd-lerobot
 TASK=needle_pickup
 python lerobot/utils/npz_to_le_v21.py \
   --task "$TASK" \
@@ -54,7 +54,7 @@ Do not overwrite an existing dataset to run this command.
 Use the repository runner, which resolves config paths relative to `lerobot/`:
 
 ```bash
-conda activate lerobot
+conda activate fomofd-lerobot
 cd /path/to/FoMoFD
 bash lerobot/run_act_ensemble.sh needle_pickup 1001
 ```

@@ -7,15 +7,24 @@ System drivers and robot middleware are installed separately.
 
 | Environment | Python | PyTorch | Main dependencies | Requirements |
 | --- | --- | --- | --- | --- |
-| `lerobot` | 3.10 | 2.7.1 | LeRobot 0.4.3, timm, torchdiffeq, Matplotlib | [requirements-lerobot.txt](requirements-lerobot.txt) |
-| `EMILS` | 3.11 | 2.7.0 | Isaac Sim 5.1, pinned Isaac Lab source | [requirements-emils.txt](requirements-emils.txt) |
+| `fomofd-lerobot` | 3.10 | 2.7.1 | LeRobot 0.4.3, timm, torchdiffeq, Matplotlib | [requirements-fomofd-lerobot.txt](requirements-fomofd-lerobot.txt) |
+| `fomofd-isaac` | 3.11 | 2.7.0 | Isaac Sim 5.1, pinned Isaac Lab source | [requirements-fomofd-isaac.txt](requirements-fomofd-isaac.txt) |
 | `fomofd-vlm` | 3.11 | 2.7.1 | Transformers 4.57.6, Qwen VL utilities | [requirements-vlm.txt](requirements-vlm.txt) |
+
+These names do not rename environments already installed on a workstation.
+To rename an existing environment, stop its jobs, activate `base`, and use
+`conda rename -n OLD_NAME NEW_NAME`. Update local interpreter selections or
+launchers that reference the old name or absolute Python path.
+
+Package versions are unchanged. The `lerobot/` source directory and the
+`lerobot` Python dependency keep their names; `fomofd-lerobot` is only the
+Conda environment name.
 
 ## Training, scoring, and plotting
 
 ```bash
-conda env create -f lerobot/environments/lerobot.yml
-conda activate lerobot
+conda env create -f lerobot/environments/fomofd-lerobot.yml
+conda activate fomofd-lerobot
 python -m pip install --no-deps -e lerobot/policies/act_dinov2
 python -m pip check
 ```
@@ -37,8 +46,8 @@ The static project website needs only a browser.
 ## Simulation
 
 ```bash
-conda env create -f lerobot/environments/emils.yml
-conda activate EMILS
+conda env create -f lerobot/environments/fomofd-isaac.yml
+conda activate fomofd-isaac
 git clone https://github.com/isaac-sim/IsaacLab.git ../IsaacLab-FoMoFD
 git -C ../IsaacLab-FoMoFD checkout 22a00e46cfabae61f2e9b05c5384162ae69b4df4
 python -m pip install -e ../IsaacLab-FoMoFD/source/isaaclab \
@@ -59,14 +68,14 @@ A simulated policy rollout uses two terminals. In the first, serve a trained
 ACT policy from the repository root:
 
 ```bash
-conda activate lerobot
+conda activate fomofd-lerobot
 python lerobot/eval_server.py --task needle_pickup --method act_dinov2 --including_gripper
 ```
 
 In the second, start the simulator from the same repository:
 
 ```bash
-conda activate EMILS
+conda activate fomofd-isaac
 python fomofd/eval.py --task needle_pickup --enable_cameras --report_gripper
 ```
 

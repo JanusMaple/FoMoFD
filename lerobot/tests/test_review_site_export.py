@@ -11,7 +11,7 @@ import numpy as np
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'utils'))
 from export_review_site import encode_video, public_rows, scan_public, recent_summary_tables, style_study_svg, PAIR_FIELDS
 from replay_inspector import Episode
-from public_results import current_result, select_public_data
+from public_results import PUBLIC_PROJECT_URL, current_result, select_public_data
 
 
 class ReviewSiteExportTests(unittest.TestCase):
@@ -56,6 +56,17 @@ class ReviewSiteExportTests(unittest.TestCase):
         (self.path / 'data.json').write_text('{"path":"/home/person/checkpoint.pt"}')
         with self.assertRaisesRegex(ValueError, 'Identity/path leak'):
             scan_public(self.path)
+
+    def test_public_project_url_is_allowed(self):
+        (self.path / "README.md").write_text(PUBLIC_PROJECT_URL)
+        scan_public(self.path)
+
+    def test_public_link_does_not_allow_other_identity_or_local_paths(self):
+        for suffix in ("https://janusmaple.github.io/", "/home/person/private.pt"):
+            with self.subTest(suffix=suffix):
+                (self.path / "README.md").write_text(PUBLIC_PROJECT_URL + "\n" + suffix)
+                with self.assertRaisesRegex(ValueError, "Identity/path leak"):
+                    scan_public(self.path)
 
     def test_vector_relabel_preserves_plot_geometry_and_shared_glyph_definitions(self):
         # The W glyph is defined inside the replaced label but reused elsewhere.

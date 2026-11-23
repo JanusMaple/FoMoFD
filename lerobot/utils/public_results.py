@@ -1,6 +1,8 @@
 """Select current, reproducible results for the paper companion release."""
 from __future__ import annotations
 
+PUBLIC_PROJECT_URL = 'https://janusmaple.github.io/FoMoFD/'
+
 MAIN_METHODS = {'wm_nc', 'wm_pe', 'wm_pu', 'logpzo', 'rnd', 'logpzo_native', 'rnd_native'}
 SEEDS = ('main', 'wm_k4_l4_seed1', 'wm_k4_l4_seed2_local_20261018',
          'wm_k4_l4_seed3_local_20261018')

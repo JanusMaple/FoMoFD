@@ -211,7 +211,7 @@ class EndToEndAdapter:
             raise RuntimeError('This hardware benchmark requires CUDA; no CPU fallback')
         torch.set_num_threads(2)
         sys.path.insert(0, str(REPO / 'lerobot'))
-        # The environment can retain an editable ACT installation from EMILS.
+        # The environment can retain an editable ACT installation from an older checkout.
         # Resolve the encoder from this repository, as dataset preparation does.
         sys.path.insert(0, str(REPO / 'lerobot/policies/act_dinov2/src'))
         if ODE_METER is None:

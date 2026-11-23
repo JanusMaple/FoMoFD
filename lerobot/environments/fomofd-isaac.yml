@@ -1,4 +1,4 @@
-name: EMILS
+name: fomofd-isaac
 channels:
   - conda-forge
 dependencies:
@@ -6,4 +6,4 @@ dependencies:
   - pip
   - git
   - pip:
-      - -r requirements-emils.txt
+      - -r requirements-fomofd-isaac.txt
