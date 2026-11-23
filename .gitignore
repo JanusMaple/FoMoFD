@@ -20,3 +20,6 @@ logs/
 
 fomofd/assets/models/OR_scene_s1371/*
 !fomofd/assets/models/OR_scene_s1371/surgical_background.usd
+
+# Local metadata created by hf download --local-dir .
+/.cache/huggingface/
