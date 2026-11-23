@@ -8,12 +8,10 @@ both representations for all four tasks without retraining any model.
 ## Download
 
 The verified release contains about **66.5 GB** of raw data, metadata and main
-checkpoints. Both repositories are currently **private** and require an account
-with access. Activate `fomofd-lerobot` (which already includes the `hf` CLI), then
+checkpoints. Activate `fomofd-lerobot` (which already includes the `hf` CLI), then
 run from the code repository root:
 
 ```bash
-hf auth login
 hf download Januxes/FoMoFD-datasets --repo-type dataset \
   --revision 9b98d062e8300f59eca4d6a437077180a10cac68 \
   --local-dir . --include "fomofd/**"

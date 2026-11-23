@@ -23,10 +23,7 @@ For Isaac Sim or Qwen, follow the [environment setup](lerobot/environments/READM
 | [Raw datasets](https://huggingface.co/datasets/Januxes/FoMoFD-datasets) | 35.33 GB | CC BY 4.0 |
 | [Main models](https://huggingface.co/Januxes/FoMoFD-models) | 31.15 GB | Apache 2.0 |
 
-The repositories are currently private; log in with an account that has access.
-
 ```bash
-hf auth login
 hf download Januxes/FoMoFD-datasets --repo-type dataset \
   --revision 9b98d062e8300f59eca4d6a437077180a10cac68 \
   --local-dir . --include "fomofd/**"
