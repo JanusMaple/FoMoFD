@@ -63,7 +63,7 @@
       <div class="metric-cards" id="metrics"></div>
       <div id="main-chart" class="bars" aria-label="Main detection comparison"></div>
       <details class="reading-notes"><summary>Baselines &amp; evaluation notes</summary>
-        <p>Real-robot policy execution was configured at <strong>10 Hz</strong>; recorded rates average about 9.7 Hz for real tasks and 5.6–6.0 Hz for simulation. Online replay follows recorded wall-clock timestamps, and detector updates depend on inference speed. Qwen samples its video history at 1 Hz.</p>
+        <p>Real-robot policy execution was configured at <strong>10 Hz</strong>, with an observed recording rate of about 9.7 Hz. Online replay follows recorded wall-clock timestamps, and detector updates depend on inference speed. Qwen samples its video history at 1 Hz.</p>
         <p>Detection requires a score crossing at or after the annotated onset.</p>
         <p>For logpZO and RND, <strong>Policy</strong> denotes the ACT-native features used in the paper; <strong>VAE</strong> denotes additional variants using FoMo-FD's frozen visual latents. logpZO retains proprioception in both.</p>
         <p id="main-note">Qwen has no conformal threshold or continuous-score AUROC; its displayed FDR includes late returned detections, whereas paired latency uses on-time detections only. NoACT removes action-conditioning paths from <strong class="ours-method">WM-NC (ours)</strong>.</p>
